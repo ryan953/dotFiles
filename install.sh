@@ -88,7 +88,14 @@ if [ $OS == "Darwin" ]; then
 	# fi
 fi
 
+if [ ! git st &> /dev/null ]; then
+	git init
+	git remote add origin git@github.com:ryan953/dotFiles.git
+	git fetch
+	git reset origin/master
+fi
+
 git submodule init
 git submodule update
 
-ln -s ~/submodules/arcanist/bin/arc ~/bin/arc &> /dev/null
+ln -s `pwd`/submodules/arcanist/bin/arc ~/bin/arc &> /dev/null
