@@ -1,0 +1,37 @@
+[user]
+	name = Ryan Albrecht
+	email = ryanalbrecht@pinterest.com
+
+[core]
+	editor = vim
+	excludesfile = ~/.gitignore
+
+[color]
+	branch = auto
+	diff = auto
+	status = auto
+
+[pager]
+	diff = diff-highlight | less
+	log = diff-highlight | less
+	show = diff-highlight | less
+
+[branch]
+	autosetuprebase = always
+
+[push]
+	default = current
+
+[diff]
+	noprefix = true
+	algorithm = patience
+	# mnemonicprefix = true
+
+[alias]
+	pullr = pull --rebase
+	reauthor = commit --amend --reset-author --no-edit
+	# reauthor = !sh -c 'eval `git log --reverse --topo-order --pretty=format:\"git cherry-pick %H &&  git commit --amend -C %H --author=\\\"%aN <%aE>\\\" && \" $0 ` "echo success" '
+	review = !GIT_CURRENT_BRANCH=$(git name-rev --name-only HEAD) && git log -p origin/$GIT_CURRENT_BRANCH..$GIT_CURRENT_BRANCH
+	st = status
+	tree = log --color --graph --all --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%C(bold blue)<%an>%Creset' --abbrev-commit
+

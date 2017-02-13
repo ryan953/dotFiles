@@ -1,0 +1,7 @@
+[submodule "arcanist"]
+	path = submodules/arcanist
+	url = https://github.com/phacility/arcanist.git
+
+[submodule "libphutil"]
+	path = submodules/libphutil
+	url = https://github.com/phacility/libphutil.git

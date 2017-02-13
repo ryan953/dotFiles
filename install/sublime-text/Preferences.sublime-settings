@@ -1,0 +1,36 @@
+{
+	"always_prompt_for_file_reload": false,
+	"always_show_minimap_viewport": true,
+	"auto_find_in_selection": false,
+	"auto_match_enabled": false,
+	"caret_style": "blink",
+	"color_scheme": "Packages/User/SublimeLinter/Monokai (SL).tmTheme",
+	"ensure_newline_at_eof_on_save": true,
+	"env":
+	{
+		"PATH": "/Users/ryan/bin:/Users/ryan/bin/homebrew/bin:/Users/ryan/bin/homebrew/sbin:$PATH"
+	},
+	"find_selected_text": true,
+	"font_size": 12,
+	"highlight_line": true,
+	"highlight_modified_tabs": false,
+	"hot_exit": false,
+	"ignored_packages":
+	[
+		"Vintage"
+	],
+	"indent_guide_options":
+	[
+		"draw_active",
+		"draw_normal"
+	],
+	"rulers":
+	[
+		80,
+		100
+	],
+	"save_on_focus_lost": true,
+	"shift_tab_unindent": true,
+	"translate_tabs_to_spaces": true,
+	"word_wrap": false
+}

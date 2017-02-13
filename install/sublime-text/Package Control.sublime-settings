@@ -1,0 +1,32 @@
+{
+  "installed_packages": [
+    "ApacheConf.tmLanguage",
+    "Babel",
+    "Dockerfile Syntax Highlighting",
+    "FileDiffs",
+    "Handlebars",
+    "INI",
+    "LESS",
+    "nginx",
+    "Package Control",
+    "Phabricator",
+    "Pretty JSON",
+    "SCSS",
+    "Statusbar Path",
+    "SublimeCodeIntel",
+    "SublimeGit",
+    "SublimeLinter",
+    "SublimeLinter-annotations",
+    "SublimeLinter-contrib-eslint",
+    "SublimeLinter-contrib-eslintscss-lint",
+    "SublimeLinter-contrib-stylelint",
+    "SublimeLinter-pylint",
+    "SublimeLinter-flow",
+    "SublimeLinter-json",
+    "SublimeLinter-jsxhint",
+    "SublimeLinter-phpcs",
+    "SublimeOnSaveBuild",
+    "TrailingSpaces",
+    "Twig"
+  ]
+}

@@ -1,0 +1,94 @@
+#!/bin/bash
+
+backup_and_link() {
+	local FILE=$1
+	local DEST=$2
+
+	BASE=`basename "$FILE"`
+	if ! [ "$FILE" == '.' ] && ! [ "$FILE" == '..' ]; then
+		if [ -f "$DEST$BASE" ];
+		then
+			! [ -f "$DEST$BASE.bak" ] && \
+				echo "Linking $BASE"
+				cp "$DEST$BASE" "$DEST$BASE.bak" && \
+				echo "- Backed up $DEST$BASE"
+		fi
+		rm "$DEST$BASE"
+		ln -s "$FILE" "$DEST$BASE"
+		echo "Linked $BASE to $DEST$BASE"
+	fi
+}
+
+for FILE in `pwd`/config/*
+do
+	backup_and_link "$FILE" "$HOME/."
+done
+
+source $HOME/.bash_profile
+
+OS="`uname`"
+if [ $OS == "Darwin" ]; then
+	echo "Installing MacOS Scripts"
+
+	# Homebrew
+	if brew -h &> /dev/null; then
+		echo "Found Homebrew"
+	else
+		/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+		echo "Installed Homebrew"
+	fi
+
+	install_brew() {
+		local BREW=${1}
+		if brew ls --versions $BREW > /dev/null; then
+			echo "Found $BREW"
+			return 1
+		else
+			brew install $BREW
+			echo "Installed $BREW"
+			return 0
+		fi
+	}
+
+	install_cask() {
+		local CASK=${1}
+		if brew cask ls --versions $CASK > /dev/null; then
+			echo "Found $CASK"
+			return 1
+		else
+			brew cask install $CASK
+			echo "Installed $CASK"
+			return 0
+		fi
+	}
+
+	install_brew "flow"
+	install_brew "git" && ln -s `brew --prefix git`/share/git-core/contrib/diff-highlight/diff-highlight $HOME/bin/diff-highlight
+	install_brew "node" && npm install -g yarn
+	install_brew "tig"
+	install_brew "tmux"
+	install_brew "wget"
+	install_cask "iterm2" && curl -L https://iterm2.com/misc/bash_startup.in > $HOME/bin/iterm2_shell_integration.bash
+
+	if install_cask "sublime-text"; then
+		SUBL="$HOME/Library/Application Support/Sublime Text 3"
+		wget -O "$SUBL/Installed Packages/Package Control.sublime-package" https://packagecontrol.io/Package%20Control.sublime-package
+
+		for FILE in `pwd`/install/sublime-text/*
+		do
+			backup_and_link "$FILE" "$SUBL/Packages/User/"
+		done
+	fi
+
+	# if install_cask "atom"; then
+	# 	install_brew "watchman"
+	# 	# also depends on `install_brew "flow"`
+	# 	# `amp install nuclide`
+	# 	# or save my APM modules and install from user-account
+	# fi
+fi
+
+git submodule init
+git submodule update
+
+ln -s ~/submodules/arcanist/bin/arc ~/bin/arc &> /dev/null
