@@ -1,0 +1,3 @@
+#!/bin/bash
+
+python ~/code/pinboard/bin/watcher.py -s ~/code dev:~/code --exclude-git

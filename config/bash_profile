@@ -31,7 +31,6 @@ set convert-meta off
 alias less='less -R'
 alias ls='CLICOLOR_FORCE=1 ls -G'
 alias subl='subl -a -n'
-alias watcher='python ~/code/pinboard/bin/watcher.py -s ~/code/pinboard dev:~/code/pinboard --exclude-git'
 
 function source_file() {
 	if [ -f $1 ]; then

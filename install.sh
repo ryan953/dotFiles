@@ -24,6 +24,11 @@ do
 	backup_and_link "$FILE" "$HOME/."
 done
 
+for FILE in `pwd`/bin/*
+do
+	backup_and_link "$FILE" "$HOME/bin/"
+done
+
 source $HOME/.bash_profile
 
 OS="`uname`"
