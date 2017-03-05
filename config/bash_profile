@@ -38,6 +38,8 @@ function source_file() {
 	fi
 }
 
+source_file "~/.bash_homebrew_github_token"
+
 source_file "~/bin/iterm2_shell_integration.bash"
 source_file "~/bin/arcanist/resources/shell/bash-completion"
 
