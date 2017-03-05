@@ -104,10 +104,12 @@ if [ ! git st &> /dev/null ]; then
 	git remote add origin git@github.com:ryan953/dotFiles.git
 	git fetch
 	git reset origin/master
-fi
 
-git submodule init
-git submodule update
+	git submodule init
+	git submodule update
+else
+	git submodule foreach git pull origin master
+fi
 
 ln -s `pwd`/submodules/arcanist/bin/arc ~/bin/arc &> /dev/null
 
