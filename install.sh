@@ -80,7 +80,7 @@ if [ $OS == "Darwin" ]; then
 		SUBL="$HOME/Library/Application Support/Sublime Text 3"
 		wget -O "$SUBL/Installed Packages/Package Control.sublime-package" https://packagecontrol.io/Package%20Control.sublime-package
 
-		for FILE in `pwd`/install/sublime-text/*
+		for FILE in `pwd`/install/sublime-text/User/*
 		do
 			backup_and_link "$FILE" "$SUBL/Packages/User/"
 		done
