@@ -110,3 +110,5 @@ git submodule init
 git submodule update
 
 ln -s `pwd`/submodules/arcanist/bin/arc ~/bin/arc &> /dev/null
+
+`pwd`/install/vim.sh
