@@ -35,11 +35,15 @@ alias subl='subl -a -n'
 function source_file() {
 	if [ -f $1 ]; then
 		source $1
+		return 1
 	fi
+	return 0
 }
 
-source_file "~/bin/iterm2_shell_integration.bash"
-source_file "~/bin/arcanist/resources/shell/bash-completion"
+source_file "$HOME/.bash_profile_local"
+
+source_file "$HOME/bin/iterm2_shell_integration.bash"
+source_file "$HOME/bin/arcanist/resources/shell/bash-completion"
 
 # Add tab completion for SSH hostnames based on ~/.ssh/config, ignoring wildcards
 [ -e "$HOME/.ssh/config" ] && complete -o "default" -o "nospace" -W "$(grep "^Host" ~/.ssh/config | grep -v "[?*]" | cut -d " " -f2)" scp sftp ssh
@@ -47,7 +51,7 @@ source_file "~/bin/arcanist/resources/shell/bash-completion"
 if brew -h &> /dev/null; then
 	BREW_PREFIX=`brew --prefix`
 
-	source_file "~/.bash_homebrew_github_token"
+	source_file "$HOME/.bash_homebrew_github_token"
 
 	source_file "$BREW_PREFIX/etc/bash_completion.d/brew"
 	source_file "$BREW_PREFIX/etc/bash_completion.d/flow-completion.bash"
