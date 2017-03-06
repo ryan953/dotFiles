@@ -115,3 +115,5 @@ fi
 ln -s `pwd`/submodules/arcanist/bin/arc ~/bin/arc &> /dev/null
 
 `pwd`/install/vim.sh
+
+echo "You can extend this setup by adding the file \'~/.bash_profile_local\' and running \'source ~/.bash_profile\'"
