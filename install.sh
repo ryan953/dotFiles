@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 backup_and_link() {
 	local FILE=$1
