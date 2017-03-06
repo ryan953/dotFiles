@@ -72,6 +72,11 @@ if [ $OS == "Darwin" ]; then
 		echo "Visit https://github.com/settings/tokens and fill in ~/.bash_homebrew_github_token"
 	fi
 
+	if ! [ -f "$HOME/.gitconfig_local" ]; then
+		less `pwd`/install/git/gitconfig_local > "$HOME/.gitconfig_local"
+		echo "Add your custom git.name and git.email to ~/.gitconfig_local"
+	fi
+
 	install_brew "flow"
 	install_brew "fzf"
 	install_brew "git" && ln -s `brew --prefix git`/share/git-core/contrib/diff-highlight/diff-highlight $HOME/bin/diff-highlight

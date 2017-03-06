@@ -1,6 +1,9 @@
 [user]
 	name = Ryan Albrecht
-	email = ryanalbrecht@pinterest.com
+	email = ryan@ryanalbrecht.com
+
+[include]
+	path = ~/.gitconfig_local
 
 [core]
 	editor = vim
