@@ -38,8 +38,6 @@ function source_file() {
 	fi
 }
 
-source_file "~/.bash_homebrew_github_token"
-
 source_file "~/bin/iterm2_shell_integration.bash"
 source_file "~/bin/arcanist/resources/shell/bash-completion"
 
@@ -48,6 +46,9 @@ source_file "~/bin/arcanist/resources/shell/bash-completion"
 
 if brew -h &> /dev/null; then
 	BREW_PREFIX=`brew --prefix`
+
+	source_file "~/.bash_homebrew_github_token"
+
 	source_file "$BREW_PREFIX/etc/bash_completion.d/brew"
 	source_file "$BREW_PREFIX/etc/bash_completion.d/flow-completion.bash"
 	source_file "$BREW_PREFIX/etc/bash_completion.d/git-completion.bash"
@@ -55,8 +56,11 @@ if brew -h &> /dev/null; then
 	source_file "$BREW_PREFIX/etc/bash_completion.d/tig-completion.bash"
 	source_file "$BREW_PREFIX/etc/bash_completion.d/tmux"
 
-	if [ -f $BREW_PREFIX/etc/bash_completion.d/git-prompt.sh ]; then
-		source $BREW_PREFIX/etc/bash_completion.d/git-prompt.sh
+	source_file "$BREW_PREFIX/opt/fzf/shell/completion.bash"
+	source_file "$BREW_PREFIX/opt/fzf/shell/key-bindings.bash"
+
+	if [ -f "$BREW_PREFIX/etc/bash_completion.d/git-prompt.sh" ]; then
+		source "$BREW_PREFIX/etc/bash_completion.d/git-prompt.sh"
 
 		GREEN='\[\033[32m\]'
 		WHITE='\[\033[00m\]'

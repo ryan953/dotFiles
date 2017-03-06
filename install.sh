@@ -73,6 +73,7 @@ if [ $OS == "Darwin" ]; then
 	fi
 
 	install_brew "flow"
+	install_brew "fzf"
 	install_brew "git" && ln -s `brew --prefix git`/share/git-core/contrib/diff-highlight/diff-highlight $HOME/bin/diff-highlight
 	install_brew "node" && npm install -g yarn
 	install_brew "tig"
