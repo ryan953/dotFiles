@@ -114,8 +114,8 @@ git submodule update
 if ! [ -e "$HOME/bin/arc" ]; then
 	ln -s `pwd`/submodules/arcanist/bin/arc "$HOME/bin/arc"
 
-	arc install-certificate
-	arc set-config editor vim
+	# arc install-certificate
+	# arc set-config editor vim
 fi
 
 `pwd`/install/vim.sh
