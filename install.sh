@@ -4,10 +4,9 @@ backup_and_link() {
 	local FILE=$1
 	local DEST=$2
 
-	BASE=`basename "$FILE"`
-	if ! [ "$FILE" == '.' ] && ! [ "$FILE" == '..' ]; then
-		if [ -f "$DEST$BASE" ];
-		then
+	if ! [ "$FILE" == '.' ] && ! [ "$FILE" == '..' ] && ! [ -d "$FILE" ]; then
+		BASE=`basename "$FILE"`
+		if [ -f "$DEST$BASE" ]; then
 			! [ -f "$DEST$BASE.bak" ] && \
 				echo "Linking $BASE"
 				cp "$DEST$BASE" "$DEST$BASE.bak" && \
@@ -22,6 +21,10 @@ backup_and_link() {
 for FILE in `pwd`/config/*
 do
 	backup_and_link "$FILE" "$HOME/."
+done
+for FILE in `pwd`/config/ssh/*
+do
+	backup_and_link "$FILE" "$HOME/.ssh/"
 done
 
 for FILE in `pwd`/bin/*
