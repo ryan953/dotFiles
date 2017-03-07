@@ -96,13 +96,6 @@ if [ $OS == "Darwin" ]; then
 			backup_and_link "$FILE" "$SUBL/Packages/User/"
 		done
 	fi
-
-	# if install_cask "atom"; then
-	# 	install_brew "watchman"
-	# 	# also depends on `install_brew "flow"`
-	# 	# `amp install nuclide`
-	# 	# or save my APM modules and install from user-account
-	# fi
 fi
 
 if [ ! git st &> /dev/null ]; then
