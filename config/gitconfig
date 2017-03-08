@@ -34,6 +34,7 @@
 	# mnemonicprefix = true
 
 [alias]
+	co = checkout
 	pullr = pull --rebase
 	reauthor = commit --amend --reset-author --no-edit
 	# reauthor = !sh -c 'eval `git log --reverse --topo-order --pretty=format:\"git cherry-pick %H &&  git commit --amend -C %H --author=\\\"%aN <%aE>\\\" && \" $0 ` "echo success" '
