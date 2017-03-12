@@ -22,6 +22,7 @@ for FILE in `pwd`/config/*
 do
 	backup_and_link "$FILE" "$HOME/."
 done
+
 for FILE in `pwd`/config/ssh/*
 do
 	backup_and_link "$FILE" "$HOME/.ssh/"
@@ -117,6 +118,12 @@ if ! [ -e "$HOME/bin/arc" ]; then
 	# arc install-certificate
 	# arc set-config editor vim
 fi
+
+DiffSoFancy=`pwd`/submodules/diff-so-fancy
+backup_and_link "$DiffSoFancy/third_party/diff-highlight/diff-highlight" "$HOME/bin/"
+backup_and_link "$DiffSoFancy/diff-so-fancy" "$HOME/bin/"
+mkdir "$HOME/bin/libexec"
+backup_and_link "$DiffSoFancy/libexec/diff-so-fancy.pl" "$HOME/bin/libexec/"
 
 `pwd`/install/vim.sh
 

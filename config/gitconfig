@@ -8,6 +8,7 @@
 [core]
 	editor = vim
 	excludesfile = ~/.gitignore
+	pager = diff-highlight | diff-so-fancy | less --tabs=4 -RFX
 
 [color]
 	branch = auto
@@ -15,9 +16,9 @@
 	status = auto
 
 [pager]
-	diff = diff-highlight | less
-	log = diff-highlight | less
-	show = diff-highlight | less
+	; diff = diff-highlight | less
+	; log = diff-highlight | less
+	; show = diff-highlight | less
 
 [branch]
 	# rebase during `git pull` instead of making merge commits
@@ -31,9 +32,12 @@
 [diff]
 	noprefix = true
 	algorithm = patience
-	# mnemonicprefix = true
+	; mnemonicprefix = true
 	# Beta heuristic to make add/remove boundaries try to start at blank lines
 	compactionHeuristic = true
+
+[interactive]
+	diffFilter = diff-highlight
 
 [alias]
 	co = checkout
