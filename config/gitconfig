@@ -32,6 +32,8 @@
 	noprefix = true
 	algorithm = patience
 	# mnemonicprefix = true
+	# Beta heuristic to make add/remove boundaries try to start at blank lines
+	compactionHeuristic = true
 
 [alias]
 	co = checkout
