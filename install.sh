@@ -18,18 +18,15 @@ backup_and_link() {
 	fi
 }
 
-for FILE in `pwd`/config/*
-do
+for FILE in `pwd`/config/*; do
 	backup_and_link "$FILE" "$HOME/."
 done
 
-for FILE in `pwd`/config/ssh/*
-do
+for FILE in `pwd`/config/ssh/*; do
 	backup_and_link "$FILE" "$HOME/.ssh/"
 done
 
-for FILE in `pwd`/bin/*
-do
+for FILE in `pwd`/bin/*; do
 	backup_and_link "$FILE" "$HOME/bin/"
 done
 
@@ -95,8 +92,7 @@ if [ $OS == "Darwin" ]; then
 		SUBL="$HOME/Library/Application Support/Sublime Text 3"
 		wget -O "$SUBL/Installed Packages/Package Control.sublime-package" https://packagecontrol.io/Package%20Control.sublime-package
 
-		for FILE in `pwd`/install/sublime-text/User/*
-		do
+		for FILE in `pwd`/install/sublime-text/User/*; do
 			backup_and_link "$FILE" "$SUBL/Packages/User/"
 		done
 	fi
