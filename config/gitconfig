@@ -5,6 +5,9 @@
 [include]
 	path = ~/.gitconfig_local
 
+[help]
+	autocorrect = 1
+
 [core]
 	editor = vim
 	excludesfile = ~/.gitignore
