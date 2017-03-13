@@ -46,6 +46,10 @@ source_file "$HOME/.bash_profile.local"
 source_file "$HOME/bin/iterm2_shell_integration.bash"
 source_file "$HOME/bin/arcanist/resources/shell/bash-completion"
 
+# FZF with the_silver_searcher
+export FZF_DEFAULT_COMMAND='ag --ignore *.pyc -g ""'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+
 # Add tab completion for SSH hostnames based on ~/.ssh/config, ignoring wildcards
 [ -e "$HOME/.ssh/config" ] && complete -o "default" -o "nospace" -W "$(grep "^Host" ~/.ssh/config | grep -v "[?*]" | cut -d " " -f2)" scp sftp ssh
 
