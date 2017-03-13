@@ -1,6 +1,6 @@
 [user]
 	name = Ryan Albrecht
-	email = ryan@ryanalbrecht.com
+	email = ryan@ryanalbrecht.ca
 
 [include]
 	path = ~/.gitconfig_local
