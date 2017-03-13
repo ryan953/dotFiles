@@ -22,10 +22,7 @@ for FILE in `pwd`/config/*; do
 	backup_and_link "$FILE" "$HOME/."
 done
 
-for FILE in `pwd`/config/ssh/*; do
-	backup_and_link "$FILE" "$HOME/.ssh/"
-done
-
+mkdir "$HOME/bin/"
 for FILE in `pwd`/bin/*; do
 	backup_and_link "$FILE" "$HOME/bin/"
 done
@@ -35,6 +32,10 @@ source $HOME/.bash_profile
 OS="`uname`"
 if [ $OS == "Darwin" ]; then
 	echo "Installing MacOS Scripts"
+
+	for FILE in `pwd`/config/ssh/*; do
+		backup_and_link "$FILE" "$HOME/.ssh/"
+	done
 
 	# Homebrew
 	if brew -h &> /dev/null; then
@@ -75,7 +76,7 @@ if [ $OS == "Darwin" ]; then
 
 	if ! [ -f "$HOME/.gitconfig_local" ]; then
 		less `pwd`/install/git/gitconfig_local > "$HOME/.gitconfig_local"
-		echo "Add your custom git.name and git.email to ~/.gitconfig_local"
+		echo "Add your custom git.name and git.email to ~/.gitconfig_local along with anything else you want"
 	fi
 
 	install_brew "flow"
