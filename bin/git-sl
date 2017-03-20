@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+git log --graph --simplify-by-decoration --branches --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' | grep -v "(tag:" | less -RFXr

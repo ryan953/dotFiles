@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+git wtf `git show-ref --heads | awk '{print $2}' | sed 's/refs\///'` | less -RFXr

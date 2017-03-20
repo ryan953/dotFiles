@@ -1,0 +1,73 @@
+#!/usr/bin/env bash
+
+#git log --all --no-patch --author="Ryan Albrecht" --grep='Differential Revision'
+
+
+# git log --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%C(bold blue)<%an>%Creset' --graph $(git branch | tr -d ' *' | awk '{ print "master~1.."$0 }')
+
+
+pr() {
+    for j in {1..20}; do
+        echo $j
+    done
+}
+
+main() {
+    # pr
+
+    # see http://www.termsys.demon.co.uk/vtansi.htm
+    # echo -en "\x1B[8A"
+    # printf "\033[8A"
+
+    # printf "\x1B[0K\rnew line"
+
+    # echo ""
+
+    # tips=`git show-branch --independent -a`
+
+    # bases=''
+    # for tip in $tips; do
+    #     base=`git merge-base master $tip`
+    #     # echo $base
+    #     bases+=" $base"
+    #     # echo $tip
+    #     # echo $base
+    #     # echo ""
+    # done
+
+    # commits=("${tips[@]}" "${bases[@]}")
+    # commits=$tips+' '+$bases
+    # commits=$tips
+    # commits+=" $bases"
+    # echo $tips
+    # echo ${bases[@]}
+    # echo ${commits[@]}
+
+    # git show -s --format=%d $(git show-branch --independent -a) | sed 's/,/\n/g; s/[ ()]//g'
+    # git show --oneline  --decorate -s $commits
+
+    # this seems good as a smart-log starting point
+    # git log --graph --oneline --branches
+    # git log --oneline --graph --decorate
+    # git log --oneline --graph --decorate $(git branch | tr -d ' *' | awk '{ print "master~1.."$0 }')
+    git log --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --graph $(git branch | tr -d ' *' | awk '{ print "master~1.."$0 }')
+    # out=`git log --all --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%C(bold blue)<%an>%Creset'`
+}
+
+# F     Scroll  forward,  and  keep trying to read when the end of
+#       file is reached.  Normally this command would be used when
+#       already  at  the  end of the file.  It is a way to monitor
+#       the tail of a file which is  growing  while  it  is  being
+#       viewed.   (The  behavior  is similar to the "tail -f" com-
+#       mand.)
+# -X or --no-init
+#       Disables sending the termcap initialization and deinitial-
+#       ization strings to the terminal.  This is sometimes desir-
+#       able if the deinitialization string does something  unnec-
+#       essary, like clearing the screen.
+# r or ^R or ^L
+#       Repaint the screen.
+
+main | less -RFXr
+# main
+
