@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+for branch in $(git branch | grep -v '*'); do
+  if ! [ $branch == 'master' ]; then
+    git rebase --no-stat --no-verify --autostash master "$branch";
+  fi
+done
+
+git rm-merged
