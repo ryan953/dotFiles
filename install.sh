@@ -1,40 +1,40 @@
 #!/usr/bin/env bash
 
 backup_and_link() {
-	local FILE=$1
-	local DEST=$2
+	local file=$1
+	local dest=$2
 
-	if ! [ "$FILE" == '.' ] && ! [ "$FILE" == '..' ] && ! [ -d "$FILE" ]; then
-		BASE=`basename "$FILE"`
-		if [ -f "$DEST$BASE" ]; then
-			! [ -f "$DEST$BASE.bak" ] && \
-				echo "Linking $BASE"
-				cp "$DEST$BASE" "$DEST$BASE.bak" && \
-				echo "- Backed up $DEST$BASE"
+	if ! [ "$file" == '.' ] && ! [ "$file" == '..' ] && ! [ -d "$file" ]; then
+		base=`basename "$file"`
+		if [ -f "$dest$base" ]; then
+			! [ -f "$dest$base.bak" ] && \
+				echo "Linking $base"
+				cp "$dest$base" "$dest$base.bak" && \
+				echo "- Backed up $dest$base"
 		fi
-		rm "$DEST$BASE"
-		ln -s "$FILE" "$DEST$BASE"
-		echo "Linked $BASE to $DEST$BASE"
+		rm "$dest$base"
+		ln -s "$file" "$dest$base"
+		echo "Linked $base to $dest$base"
 	fi
 }
 
-for FILE in `pwd`/config/*; do
-	backup_and_link "$FILE" "$HOME/."
+for file in `pwd`/config/*; do
+	backup_and_link "$file" "$HOME/."
 done
 
 mkdir "$HOME/bin/"
-for FILE in `pwd`/bin/*; do
-	backup_and_link "$FILE" "$HOME/bin/"
+for file in `pwd`/bin/*; do
+	backup_and_link "$file" "$HOME/bin/"
 done
 
 source $HOME/.bash_profile
 
-OS="`uname`"
-if [ $OS == "Darwin" ]; then
+os="`uname`"
+if [ $os == "Darwin" ]; then
 	echo "Installing MacOS Scripts"
 
-	for FILE in `pwd`/config/ssh/*; do
-		backup_and_link "$FILE" "$HOME/.ssh/"
+	for file in `pwd`/config/ssh/*; do
+		backup_and_link "$file" "$HOME/.ssh/"
 	done
 
 	# Homebrew
@@ -46,25 +46,25 @@ if [ $OS == "Darwin" ]; then
 	fi
 
 	install_brew() {
-		local BREW=${1}
-		if brew ls --versions $BREW > /dev/null; then
-			echo "Found $BREW"
+		local brew=${1}
+		if brew ls --versions $brew > /dev/null; then
+			echo "Found $brew"
 			return 1
 		else
-			brew install $BREW
-			echo "Installed $BREW"
+			brew install $brew
+			echo "Installed $brew"
 			return 0
 		fi
 	}
 
 	install_cask() {
-		local CASK=${1}
-		if brew cask ls --versions $CASK > /dev/null; then
-			echo "Found $CASK"
+		local cask=${1}
+		if brew cask ls --versions $cask > /dev/null; then
+			echo "Found $cask"
 			return 1
 		else
-			brew cask install $CASK
-			echo "Installed $CASK"
+			brew cask install $cask
+			echo "Installed $cask"
 			return 0
 		fi
 	}
@@ -90,11 +90,11 @@ if [ $OS == "Darwin" ]; then
 	install_brew "reattach-to-user-namespace"
 
 	if install_cask "sublime-text"; then
-		SUBL="$HOME/Library/Application Support/Sublime Text 3"
-		wget -O "$SUBL/Installed Packages/Package Control.sublime-package" https://packagecontrol.io/Package%20Control.sublime-package
+		subl="$HOME/Library/Application Support/Sublime Text 3"
+		wget -O "$subl/Installed Packages/Package Control.sublime-package" https://packagecontrol.io/Package%20Control.sublime-package
 
-		for FILE in `pwd`/install/sublime-text/User/*; do
-			backup_and_link "$FILE" "$SUBL/Packages/User/"
+		for file in `pwd`/install/sublime-text/User/*; do
+			backup_and_link "$file" "$subl/Packages/User/"
 		done
 	fi
 else

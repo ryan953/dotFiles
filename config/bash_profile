@@ -50,22 +50,22 @@ source_file "$HOME/bin/arcanist/resources/shell/bash-completion"
 [ -e "$HOME/.ssh/config" ] && complete -o "default" -o "nospace" -W "$(grep "^Host" ~/.ssh/config | grep -v "[?*]" | cut -d " " -f2)" scp sftp ssh
 
 if brew -h &> /dev/null; then
-	BREW_PREFIX=`brew --prefix`
+	brew_prefix=`brew --prefix`
 
 	source_file "$HOME/.bash_homebrew_github_token"
 
-	source_file "$BREW_PREFIX/etc/bash_completion.d/brew"
-	source_file "$BREW_PREFIX/etc/bash_completion.d/flow-completion.bash"
-	source_file "$BREW_PREFIX/etc/bash_completion.d/git-completion.bash"
-	source_file "$BREW_PREFIX/etc/bash_completion.d/npm"
-	source_file "$BREW_PREFIX/etc/bash_completion.d/tig-completion.bash"
-	source_file "$BREW_PREFIX/etc/bash_completion.d/tmux"
+	source_file "$brew_prefix/etc/bash_completion.d/brew"
+	source_file "$brew_prefix/etc/bash_completion.d/flow-completion.bash"
+	source_file "$brew_prefix/etc/bash_completion.d/git-completion.bash"
+	source_file "$brew_prefix/etc/bash_completion.d/npm"
+	source_file "$brew_prefix/etc/bash_completion.d/tig-completion.bash"
+	source_file "$brew_prefix/etc/bash_completion.d/tmux"
 
-	source_file "$BREW_PREFIX/opt/fzf/shell/completion.bash"
-	source_file "$BREW_PREFIX/opt/fzf/shell/key-bindings.bash"
+	source_file "$brew_prefix/opt/fzf/shell/completion.bash"
+	source_file "$brew_prefix/opt/fzf/shell/key-bindings.bash"
 
-	if [ -f "$BREW_PREFIX/etc/bash_completion.d/git-prompt.sh" ]; then
-		source "$BREW_PREFIX/etc/bash_completion.d/git-prompt.sh"
+	if [ -f "$brew_prefix/etc/bash_completion.d/git-prompt.sh" ]; then
+		source "$brew_prefix/etc/bash_completion.d/git-prompt.sh"
 
 		GREEN='\[\033[32m\]'
 		WHITE='\[\033[00m\]'
