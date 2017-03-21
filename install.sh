@@ -97,6 +97,31 @@ if [ $OS == "Darwin" ]; then
 			backup_and_link "$FILE" "$SUBL/Packages/User/"
 		done
 	fi
+else
+	echo "Not on OSX"
+	# # Ubuntu >= 13.10 (Saucy) or Debian >= 8 (Jessie)
+	# apt-get install silversearcher-ag
+
+	# # Fedora 21 and lower
+	# yum install the_silver_searcher
+
+	# # Fedora 22+
+	# dnf install the_silver_searcher
+
+	# # RHEL7+
+	# yum install epel-release.noarch the_silver_searcher
+
+	# # Gentoo
+	# emerge the_silver_searcher
+
+	# # Arch
+	# pacman -S the_silver_searcher
+
+	# # Slackware
+	# sbopkg -i the_silver_searcher
+
+	# # openSUSE:
+	# zypper install the_silver_searcher
 fi
 
 if [ ! git st &> /dev/null ]; then
