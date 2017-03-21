@@ -148,10 +148,23 @@ backup_and_link "$DiffSoFancy/libexec/diff-so-fancy.pl" "$HOME/bin/libexec/"
 
 `pwd`/install/vim.sh
 
-if ! [ -f "$HOME/.bash_profile.local" ] || ! [ -f "$HOME/.ssh/config.local" ]; then
-	echo ""
-	echo "You can extend this setup by adding/editing the files:"
-	echo " - '~/.bash_profile.local' then run 'source ~/.bash_profile'"
-	echo " - '~/.gitconfig.local'"
-	echo " - '~/.ssh/config.local'"
-fi
+check_if_file() {
+	file=$1
+	message=$2
+
+	if [[ -f "$file" ]]; then
+		out="\033[1;32m✔\033[0m"
+	else
+		out="\033[1;31m✘\033[0m"
+	fi
+
+	printf " $out $message\n"
+}
+
+echo ""
+echo "You can extend this setup by adding/editing the files:"
+check_if_file "$HOME/.bash_profile.local" "~/.bash_profile.local then run 'source ~/.bash_profile'"
+check_if_file "$HOME/.bash_homebrew_github_token" "~/.bash_homebrew_github_token"
+check_if_file "$HOME/.gitconfig.local" "~/.gitconfig.local"
+check_if_file "$HOME/.ssh/config.local" "~/.ssh/config.local"
+
