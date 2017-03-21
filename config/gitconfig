@@ -3,7 +3,7 @@
 	email = ryan@ryanalbrecht.ca
 
 [include]
-	path = ~/.gitconfig_local
+	path = ~/.gitconfig.local
 
 [help]
 	autocorrect = 1

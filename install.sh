@@ -6,9 +6,8 @@ backup_and_link() {
 
 	if ! [ "$file" == '.' ] && ! [ "$file" == '..' ] && ! [ -d "$file" ]; then
 		base=`basename "$file"`
-		if [ -f "$dest$base" ]; then
+		if [ -f "$dest$base" ] && ! [ -e "$dest$base" ]; then
 			! [ -f "$dest$base.bak" ] && \
-				echo "Linking $base"
 				cp "$dest$base" "$dest$base.bak" && \
 				echo "- Backed up $dest$base"
 		fi
@@ -22,7 +21,7 @@ for file in `pwd`/config/*; do
 	backup_and_link "$file" "$HOME/."
 done
 
-mkdir "$HOME/bin/"
+mkdir -p "$HOME/bin/"
 for file in `pwd`/bin/*; do
 	backup_and_link "$file" "$HOME/bin/"
 done
@@ -48,11 +47,11 @@ if [ $os == "Darwin" ]; then
 	install_brew() {
 		local brew=${1}
 		if brew ls --versions $brew > /dev/null; then
-			echo "Found $brew"
+			echo "Found brew $brew"
 			return 1
 		else
 			brew install $brew
-			echo "Installed $brew"
+			echo "Installed brew $brew"
 			return 0
 		fi
 	}
@@ -60,11 +59,11 @@ if [ $os == "Darwin" ]; then
 	install_cask() {
 		local cask=${1}
 		if brew cask ls --versions $cask > /dev/null; then
-			echo "Found $cask"
+			echo "Found brew-cask $cask"
 			return 1
 		else
 			brew cask install $cask
-			echo "Installed $cask"
+			echo "Installed brew-cask $cask"
 			return 0
 		fi
 	}
@@ -74,9 +73,9 @@ if [ $os == "Darwin" ]; then
 		echo "Visit https://github.com/settings/tokens and fill in ~/.bash_homebrew_github_token"
 	fi
 
-	if ! [ -f "$HOME/.gitconfig_local" ]; then
-		less `pwd`/install/git/gitconfig_local > "$HOME/.gitconfig_local"
-		echo "Add your custom git.name and git.email to ~/.gitconfig_local along with anything else you want"
+	if ! [ -f "$HOME/.gitconfig.local" ]; then
+		less `pwd`/install/git/gitconfig.local > "$HOME/.gitconfig.local"
+		echo "Add your custom git.name and git.email to ~/.gitconfig.local along with anything else you want"
 	fi
 
 	install_brew "flow"
@@ -144,9 +143,15 @@ fi
 DiffSoFancy=`pwd`/submodules/diff-so-fancy
 backup_and_link "$DiffSoFancy/third_party/diff-highlight/diff-highlight" "$HOME/bin/"
 backup_and_link "$DiffSoFancy/diff-so-fancy" "$HOME/bin/"
-mkdir "$HOME/bin/libexec"
+mkdir -p "$HOME/bin/libexec"
 backup_and_link "$DiffSoFancy/libexec/diff-so-fancy.pl" "$HOME/bin/libexec/"
 
 `pwd`/install/vim.sh
 
-echo "You can extend this setup by adding the file \'~/.bash_profile_local\' and running \'source ~/.bash_profile\'"
+if ! [ -f "$HOME/.bash_profile.local" ] || ! [ -f "$HOME/.ssh/config.local" ]; then
+	echo ""
+	echo "You can extend this setup by adding/editing the files:"
+	echo " - '~/.bash_profile.local' then run 'source ~/.bash_profile'"
+	echo " - '~/.gitconfig.local'"
+	echo " - '~/.ssh/config.local'"
+fi

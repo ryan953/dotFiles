@@ -41,7 +41,7 @@ function source_file() {
 	return 0
 }
 
-source_file "$HOME/.bash_profile_local"
+source_file "$HOME/.bash_profile.local"
 
 source_file "$HOME/bin/iterm2_shell_integration.bash"
 source_file "$HOME/bin/arcanist/resources/shell/bash-completion"
