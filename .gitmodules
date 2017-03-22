@@ -25,9 +25,6 @@
 [submodule "submodules/vim-bundle/vim-fzf"]
 	path = submodules/vim-bundle/vim-fzf
 	url = https://github.com/junegunn/fzf.vim.git
-[submodule "submodules/vim-bundle/vim-indent-guides"]
-	path = submodules/vim-bundle/vim-indent-guides
-	url = https://github.com/nathanaelkane/vim-indent-guides.git
 [submodule "submodules/vim-bundle/vim-ack"]
 	path = submodules/vim-bundle/vim-ack
 	url = https://github.com/mileszs/ack.vim.git
