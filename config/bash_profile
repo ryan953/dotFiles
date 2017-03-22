@@ -31,7 +31,6 @@ set convert-meta off
 alias less='less -R'
 alias ls='CLICOLOR_FORCE=1 ls -G'
 alias subl='subl -a -n'
-alias subl-head='subl --add --project=~/code/pinboard $(git files -r HEAD)'
 
 function source_file() {
 	if [ -f $1 ]; then

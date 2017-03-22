@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+for file in $(git files); do
+    subl "$file";
+done
