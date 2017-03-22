@@ -6,6 +6,7 @@ call pathogen#helptags()
 
 
 "" General
+set directory^=$HOME/.vim/tmp//
 set list " Show whitespace as a character
 set listchars=eol:¬,tab:»\ ,trail:~,extends:>,precedes:<,space:·
 set number  " Show line numbers

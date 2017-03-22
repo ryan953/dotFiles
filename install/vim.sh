@@ -3,6 +3,7 @@
 VIM="$HOME/.vim/"
 
 mkdir -p "$VIM"
+mkdir -p "$VIM/tmp"
 
 link_if() {
 	local FILE=$1
