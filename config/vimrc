@@ -12,6 +12,7 @@ set number  " Show line numbers
 set cursorline  " highlight current line
 set showmatch   " Highlight matching brace
 set visualbell  " Use visual bell (no beeping)
+set mouse=a " Enable mouse scrolling and other behaviors
 
 set ruler   " Show row and column ruler information
 " set showtabline=5   " Show tab bar
