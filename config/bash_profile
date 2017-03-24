@@ -39,6 +39,7 @@ set convert-meta off
 alias less='less -R'
 alias ls='CLICOLOR_FORCE=1 ls -G'
 alias subl='subl -a -n'
+alias dotfiles='subl ~/.dotFiles'
 
 function source_file() {
 	if [ -f $1 ]; then
