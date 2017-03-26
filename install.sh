@@ -88,6 +88,7 @@ if [ $os == "Darwin" ]; then
 	install_brew "wget"
 	install_cask "iterm2" && curl -L https://iterm2.com/misc/bash_startup.in > $HOME/bin/iterm2_shell_integration.bash
 	install_brew "reattach-to-user-namespace"
+	install_brew "vim"
 
 	if install_cask "sublime-text"; then
 		subl="$HOME/Library/Application Support/Sublime Text 3"
