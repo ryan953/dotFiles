@@ -8,6 +8,14 @@ export LSCOLORS='Gxfxcxdxdxegedabagacad'
 export MANPAGER="less -X" # Don’t clear the screen after quitting a manual page
 export PATH=$HOME/.yarn/bin:$HOME/bin:$PATH
 
+if [[ ! $TERM =~ screen ]] && [[ -z "$TMUX" ]]; then
+	if tmux has-session 2>/dev/null; then
+		exec tmux attach
+	else
+		exec tmux
+	fi
+fi
+
 # append to the history file, don't override it
 shopt -s histappend
 
