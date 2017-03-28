@@ -28,3 +28,6 @@
 [submodule "submodules/vim-bundle/vim-ack"]
 	path = submodules/vim-bundle/vim-ack
 	url = https://github.com/mileszs/ack.vim.git
+[submodule "submodules/vim-bundle/vim-fugitive"]
+	path = submodules/vim-bundle/vim-fugitive
+	url = git://github.com/tpope/vim-fugitive.git
