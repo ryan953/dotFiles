@@ -78,6 +78,7 @@ if [ $os == "Darwin" ]; then
 		echo "Add your custom git.name and git.email to ~/.gitconfig.local along with anything else you want"
 	fi
 
+	install_brew "ctags"
 	install_brew "flow"
 	install_brew "fzf"
 	install_brew "git" && ln -s `brew --prefix git`/share/git-core/contrib/diff-highlight/diff-highlight $HOME/bin/diff-highlight

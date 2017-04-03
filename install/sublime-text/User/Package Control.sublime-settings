@@ -7,6 +7,7 @@
 	[
 		"ApacheConf.tmLanguage",
 		"Babel",
+		"CTags",
 		"Dockerfile Syntax Highlighting",
 		"FileDiffs",
 		"Handlebars",
