@@ -58,9 +58,6 @@ source_file "$HOME/bin/arcanist/resources/shell/bash-completion"
 export FZF_DEFAULT_COMMAND='ag --ignore *.pyc -g ""'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
-# Add tab completion for SSH hostnames based on ~/.ssh/config, ignoring wildcards
-[ -e "$HOME/.ssh/config" ] && complete -o "default" -o "nospace" -W "$(grep "^Host" ~/.ssh/config | grep -v "[?*]" | cut -d " " -f2)" scp sftp ssh
-
 if brew -h &> /dev/null; then
 	brew_prefix=`brew --prefix`
 
@@ -87,6 +84,13 @@ if brew -h &> /dev/null; then
 
 		PS1=$GREEN'\u@\h'$WHITE': '$BLUE'\w'$RED'$(__git_ps1 " (%s)")'$WHITE'$ '
 	fi
+fi
+
+# Add tab completion for SSH hostnames based on ~/.ssh/config, ignoring wildcards
+# This is after HomeBrew fzf/shell/completion.bash so we can include hosts from ~/.ssh/config.local
+if [ -f "$HOME/.ssh/config" ]; then
+	ssh_hosts=$(grep --no-filename "^Host" $HOME/.ssh/config $HOME/.ssh/config.local | grep -v "[?*]" | cut -d " " -f2)
+	complete  -o "nospace" -W "$ssh_hosts" scp sftp ssh
 fi
 
 function json() {
