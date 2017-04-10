@@ -61,12 +61,26 @@
 			<key>Text</key>
 			<string></string>
 		</dict>
+		<key>0xf700-0x320000</key>
+		<dict>
+			<key>Action</key>
+			<integer>25</integer>
+			<key>Text</key>
+			<string>Move Divider Up</string>
+		</dict>
 		<key>0xf701-0x300000</key>
 		<dict>
 			<key>Action</key>
 			<integer>21</integer>
 			<key>Text</key>
 			<string></string>
+		</dict>
+		<key>0xf701-0x320000</key>
+		<dict>
+			<key>Action</key>
+			<integer>25</integer>
+			<key>Text</key>
+			<string>Move Divider Down</string>
 		</dict>
 		<key>0xf702-0x300000</key>
 		<dict>
@@ -75,12 +89,26 @@
 			<key>Text</key>
 			<string></string>
 		</dict>
+		<key>0xf702-0x320000</key>
+		<dict>
+			<key>Action</key>
+			<integer>25</integer>
+			<key>Text</key>
+			<string>Move Divider Left</string>
+		</dict>
 		<key>0xf703-0x300000</key>
 		<dict>
 			<key>Action</key>
 			<integer>19</integer>
 			<key>Text</key>
 			<string></string>
+		</dict>
+		<key>0xf703-0x320000</key>
+		<dict>
+			<key>Action</key>
+			<integer>25</integer>
+			<key>Text</key>
+			<string>Select Pane Right</string>
 		</dict>
 		<key>0xf729-0x100000</key>
 		<dict>
@@ -222,7 +250,7 @@
 	<key>NSWindow Frame SessionsPreferences</key>
 	<string>269 93 606 456 0 0 1280 778 </string>
 	<key>NSWindow Frame SharedPreferences</key>
-	<string>265 185 796 473 0 0 1280 778 </string>
+	<string>265 193 796 473 0 0 1280 778 </string>
 	<key>NSWindow Frame UKCrashReporter</key>
 	<string>80 193 592 584 0 0 1280 777 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
