@@ -17,8 +17,41 @@ backup_and_link() {
 	fi
 }
 
+copy_into() {
+	local file=$1
+	local dest=$2
+
+	if ! [ "$file" == '.' ] && ! [ "$file" == '..' ] && ! [ -d "$file" ]; then
+		base=`basename "$file"`
+		if ! [ -f "$dest$base" ]; then
+			cat "$file" > "$dest$base"
+			echo "Cloned $base to $dest$base"
+		else
+			echo "Skipping cloning $base into $dest$base"
+		fi
+	fi
+}
+
+print_check() {
+	printf "\033[1;32m✔\033[0m "
+}
+print_warn() {
+	printf "\033[1;31m⚠\033[0m "
+}
+print_error() {
+	printf "\033[1;31m✘\033[0m "
+}
+
 for file in `pwd`/config/*; do
 	backup_and_link "$file" "$HOME/."
+done
+
+for file in `pwd`/install/templates/*; do
+	copy_into "$file" "$HOME/."
+done
+
+for file in `pwd`/install/templates/ssh/*; do
+	copy_into "$file" "$HOME/.ssh/"
 done
 
 mkdir -p "$HOME/bin/"
@@ -35,6 +68,15 @@ if [ $os == "Darwin" ]; then
 	for file in `pwd`/config/ssh/*; do
 		backup_and_link "$file" "$HOME/.ssh/"
 	done
+
+	if cat ~/Library/Preferences/com.googlecode.iterm2.plist | grep .dotFiles/install/iterm/ > /dev/null; then
+		echo "iTerm2 prefs appears correct"
+	else
+		backup_and_link "`pwd`/install/iterm/com.googlecode.iterm2.plist" "$HOME/Library/Preferences/"
+		defaults read com.googlecode.iterm2 > /dev/null
+		echo "Set iTerm2 Prefs"
+		print_warn && echo "Click 'Save Current Settings to Folder' Button in iTerm2 Prefs window"
+	fi
 
 	# Homebrew
 	if brew -h &> /dev/null; then
@@ -67,16 +109,6 @@ if [ $os == "Darwin" ]; then
 			return 0
 		fi
 	}
-
-	if ! [ -f "$HOME/.bash_homebrew_github_token" ]; then
-		less `pwd`/install/homebrew/bash_homebrew_github_token.template > "$HOME/.bash_homebrew_github_token"
-		echo "Visit https://github.com/settings/tokens and fill in ~/.bash_homebrew_github_token"
-	fi
-
-	if ! [ -f "$HOME/.gitconfig.local" ]; then
-		less `pwd`/install/git/gitconfig.local > "$HOME/.gitconfig.local"
-		echo "Add your custom git.name and git.email to ~/.gitconfig.local along with anything else you want"
-	fi
 
 	install_brew "ctags"
 	install_brew "flow"
@@ -151,23 +183,47 @@ backup_and_link "$DiffSoFancy/libexec/diff-so-fancy.pl" "$HOME/bin/libexec/"
 
 `pwd`/install/vim.sh
 
-check_if_file() {
-	file=$1
-	message=$2
+has_statements() {
+	local file=$1
+	local line_count=$(grep -v -E -e '(^\s?#)|(^\s*?$)' "$file" | wc -l)
+    if [ $line_count == 0 ]; then
+    	return 1
+    else
+    	return 0
+    fi
+}
 
-	if [[ -f "$file" ]]; then
-		out="\033[1;32m✔\033[0m"
+check_has_bash_profile_local() {
+	if has_statements "$HOME/.bash_profile.local"; then
+		print_check
+		echo "~/.bash_profile.local"
 	else
-		out="\033[1;31m✘\033[0m"
+		print_error
+		echo "X Update ~/.bash_profile.local and run 'source ~/.bash_profile'"
 	fi
+}
 
-	printf " $out $message\n"
+check_has_gitconfig_local() {
+	if [[ -f "$HOME/.gitconfig.local" ]] && git config --global --includes --get user.name > /dev/null; then
+		print_check
+		echo "~/.gitconfig.local"
+	else
+		print_error
+		echo "Add your custom git.name and git.email to ~/.gitconfig.local along with anything else you want"
+	fi
+}
+
+check_has_ssh_config_local() {
+	if has_statements "$HOME/.ssh/config.local"; then
+		print_check
+	else
+		print_error
+	fi
+	echo "~/.ssh/config.local"
 }
 
 echo ""
 echo "You can extend this setup by adding/editing the files:"
-check_if_file "$HOME/.bash_profile.local" "~/.bash_profile.local then run 'source ~/.bash_profile'"
-check_if_file "$HOME/.bash_homebrew_github_token" "~/.bash_homebrew_github_token"
-check_if_file "$HOME/.gitconfig.local" "~/.gitconfig.local"
-check_if_file "$HOME/.ssh/config.local" "~/.ssh/config.local"
-
+check_has_bash_profile_local
+check_has_gitconfig_local
+check_has_ssh_config_local
