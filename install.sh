@@ -186,11 +186,11 @@ backup_and_link "$DiffSoFancy/libexec/diff-so-fancy.pl" "$HOME/bin/libexec/"
 has_statements() {
 	local file=$1
 	local line_count=$(grep -v -E -e '(^\s?#)|(^\s*?$)' "$file" | wc -l)
-    if [ $line_count == 0 ]; then
-    	return 1
-    else
-    	return 0
-    fi
+	if [ $line_count == 0 ]; then
+		return 1
+	else
+		return 0
+	fi
 }
 
 check_has_bash_profile_local() {
@@ -204,12 +204,20 @@ check_has_bash_profile_local() {
 }
 
 check_has_gitconfig_local() {
-	if [[ -f "$HOME/.gitconfig.local" ]] && git config --global --includes --get user.name > /dev/null; then
-		print_check
-		echo "~/.gitconfig.local"
+	# Via: https://orrsella.com/2013/08/10/git-using-different-user-emails-for-different-repositories/
+
+	if [[ -f "$HOME/.gitconfig.local" ]]; then
+		# if `git --version` > 2.8; then
+		if git config --global --includes --get user.email > /dev/null; then
+			print_error
+			echo "Remove user.email from ~/.gitconfig.local. 'useConfigOnly' will force us to have per-repo settings everywhere."
+		else
+			print_check
+			echo "~/.gitconfig.local"
+		fi
 	else
 		print_error
-		echo "Add your custom git.name and git.email to ~/.gitconfig.local along with anything else you want"
+		echo "Missing ~/.gitconfig.local."
 	fi
 }
 
