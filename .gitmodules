@@ -4,9 +4,30 @@
 [submodule "submodules/libphutil"]
 	path = submodules/libphutil
 	url = https://github.com/phacility/libphutil.git
-[submodule "submodules/vim-monokai"]
-	path = submodules/vim-monokai
-	url = https://github.com/sickill/vim-monokai.git
 [submodule "submodules/diff-so-fancy"]
 	path = submodules/diff-so-fancy
 	url = https://github.com/so-fancy/diff-so-fancy.git
+[submodule "submodules/vim-monokai"]
+	path = submodules/vim-monokai
+	url = https://github.com/sickill/vim-monokai.git
+[submodule "submodules/vim-pathogen"]
+	path = submodules/vim-pathogen
+	url = https://github.com/tpope/vim-pathogen.git
+[submodule "submodules/vim-bundle/nerdtree"]
+	path = submodules/vim-bundle/nerdtree
+	url = git://github.com/wycats/nerdtree.git
+[submodule "submodules/vim-bundle/vim-tmux-navigator"]
+	path = submodules/vim-bundle/vim-tmux-navigator
+	url = https://github.com/christoomey/vim-tmux-navigator.git
+[submodule "submodules/vim-bundle/vim-tmux"]
+	path = submodules/vim-bundle/vim-tmux
+	url = https://github.com/tmux-plugins/vim-tmux.git
+[submodule "submodules/vim-bundle/vim-fzf"]
+	path = submodules/vim-bundle/vim-fzf
+	url = https://github.com/junegunn/fzf.vim.git
+[submodule "submodules/vim-bundle/vim-ack"]
+	path = submodules/vim-bundle/vim-ack
+	url = https://github.com/mileszs/ack.vim.git
+[submodule "submodules/vim-bundle/vim-fugitive"]
+	path = submodules/vim-bundle/vim-fugitive
+	url = git://github.com/tpope/vim-fugitive.git

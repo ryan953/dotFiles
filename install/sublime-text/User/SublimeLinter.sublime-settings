@@ -1,0 +1,155 @@
+{
+    "user": {
+        "@disable": true,
+        "debug": true,
+        "delay": 0.15,
+        "error_color": "D02000",
+        "gutter_theme": "Packages/SublimeLinter/gutter-themes/Default/Default.gutter-theme",
+        "gutter_theme_excludes": [],
+        "lint_mode": "background",
+        "linters": {
+            "annotations": {
+                "@disable": false,
+                "args": [],
+                "errors": [
+                    "FIXME"
+                ],
+                "excludes": [],
+                "warnings": [
+                    "TODO",
+                    "README"
+                ]
+            },
+            "csslint": {
+                "@disable": true,
+                "args": [],
+                "errors": "",
+                "excludes": [],
+                "ignore": "",
+                "warnings": ""
+            },
+            "eslint": {
+                "@disable": false,
+                "args": [],
+                "excludes": []
+            },
+            "flake8": {
+                "@disable": false,
+                "args": [],
+                "builtins": "",
+                "excludes": [],
+                "executable": "",
+                "ignore": "",
+                "jobs": "1",
+                "max-complexity": -1,
+                "max-line-length": null,
+                "select": "",
+                "show-code": false
+            },
+            "flow": {
+                "@disable": false,
+                "all": false,
+                "args": [],
+                "excludes": [],
+                "lib": "",
+                "show-all-errors": true
+            },
+            "htmltidy": {
+                "@disable": false,
+                "args": [],
+                "excludes": []
+            },
+            "jshint": {
+                "@disable": true,
+                "args": [
+                    "esnext"
+                ],
+                "excludes": []
+            },
+            "jslint": {
+                "@disable": true,
+                "args": [],
+                "excludes": []
+            },
+            "json": {
+                "@disable": false,
+                "args": [],
+                "excludes": [],
+                "strict": true
+            },
+            "jsxhint": {
+                "@disable": true,
+                "args": [
+                    "esnext"
+                ],
+                "excludes": []
+            },
+            "phpcs": {
+                "@disable": false,
+                "args": [
+                    "--tab-width=4"
+                ],
+                "excludes": [],
+                "standard": "PSR2"
+            },
+            "pylint": {
+                "@disable": false,
+                "args": [],
+                "disable": "",
+                "enable": "",
+                "excludes": [],
+                "paths": [],
+                "rcfile": "",
+                "show-codes": false
+            },
+            "scss": {
+                "@disable": false,
+                "args": [],
+                "exclude-linter": "",
+                "excludes": [],
+                "include-linter": ""
+            },
+            "stylelint": {
+                "@disable": false,
+                "args": [],
+                "excludes": []
+            }
+        },
+        "mark_style": "outline",
+        "no_column_highlights_line": true,
+        "passive_warnings": true,
+        "paths": {
+            "linux": [],
+            "osx": [
+                "./node_modules/.bin",
+                "/Users/ryan/bin",
+                "/Users/ryan/bin/homebrew/bin"
+            ],
+            "windows": []
+        },
+        "python_paths": {
+            "linux": [],
+            "osx": [],
+            "windows": []
+        },
+        "rc_search_limit": 3,
+        "shell_timeout": 10,
+        "show_errors_on_save": false,
+        "show_marks_in_minimap": true,
+        "syntax_map": {
+            "JavaScript (Babel)": "javascript",
+            "html (django)": "html",
+            "html (rails)": "html",
+            "html 5": "html",
+            "javascript (babel)": "javascript",
+            "php": "html",
+            "python django": "python"
+        },
+        "tooltip_fontsize": "1rem",
+        "tooltip_theme": "Packages/SublimeLinter/tooltip-themes/Default/Default.tooltip-theme",
+        "tooltip_theme_excludes": [],
+        "tooltips": true,
+        "warning_color": "DDB700",
+        "wrap_find": true
+    }
+}

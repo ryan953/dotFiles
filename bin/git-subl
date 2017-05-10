@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+reporoot=$(git rev-parse --show-cdup)
+
+if [ $? != 0 ]; then
+    exit $?
+fi
+
+for file in $(git files); do
+    subl "$reporoot$file"
+done

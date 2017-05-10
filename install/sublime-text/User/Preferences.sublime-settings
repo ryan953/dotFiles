@@ -4,7 +4,7 @@
 	"auto_find_in_selection": false,
 	"auto_match_enabled": false,
 	"caret_style": "blink",
-	"color_scheme": "Packages/Color Scheme - Default/Monokai.tmTheme",
+	"color_scheme": "Packages/User/SublimeLinter/Monokai (SL).tmTheme",
 	"ensure_newline_at_eof_on_save": true,
 	"env":
 	{
