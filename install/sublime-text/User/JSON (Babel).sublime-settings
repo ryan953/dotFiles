@@ -1,9 +1,10 @@
 {
-    "extensions":
-    [
-        ".eslintrc",
-        ".csslintrc",
-        ".watchmanconfig",
-        ".sublimelinterrc"
-    ]
+	"extensions":
+	[
+		".eslintrc",
+		".csslintrc",
+		".watchmanconfig",
+		".sublimelinterrc",
+		"json"
+	]
 }

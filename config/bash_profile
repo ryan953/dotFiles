@@ -34,11 +34,11 @@ alias subl='subl -a -n'
 alias dotfiles='subl ~/.dotFiles'
 
 function source_file() {
-	if [ -f $1 ]; then
-		source $1
-		return 1
-	fi
-	return 0
+  if [ -f $1 ]; then
+    source $1
+    return 1
+  fi
+  return 0
 }
 
 source_file "$HOME/.bash_profile.local"
@@ -51,36 +51,36 @@ export FZF_DEFAULT_COMMAND='ag --ignore *.pyc -g ""'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
 if brew -h &> /dev/null; then
-	brew_prefix=`brew --prefix`
+  brew_prefix=`brew --prefix`
 
-	source_file "$brew_prefix/etc/bash_completion.d/brew"
-	source_file "$brew_prefix/etc/bash_completion.d/flow-completion.bash"
-	source_file "$brew_prefix/etc/bash_completion.d/git-completion.bash"
-	source_file "$brew_prefix/etc/bash_completion.d/npm"
-	source_file "$brew_prefix/etc/bash_completion.d/tig-completion.bash"
-	source_file "$brew_prefix/etc/bash_completion.d/tmux"
+  source_file "$brew_prefix/etc/bash_completion.d/brew"
+  source_file "$brew_prefix/etc/bash_completion.d/flow-completion.bash"
+  source_file "$brew_prefix/etc/bash_completion.d/git-completion.bash"
+  source_file "$brew_prefix/etc/bash_completion.d/npm"
+  source_file "$brew_prefix/etc/bash_completion.d/tig-completion.bash"
+  source_file "$brew_prefix/etc/bash_completion.d/tmux"
 
-	source_file "$brew_prefix/opt/fzf/shell/completion.bash"
-	source_file "$brew_prefix/opt/fzf/shell/key-bindings.bash"
+  source_file "$brew_prefix/opt/fzf/shell/completion.bash"
+  source_file "$brew_prefix/opt/fzf/shell/key-bindings.bash"
 
-	if [ -f "$brew_prefix/etc/bash_completion.d/git-prompt.sh" ]; then
-		source "$brew_prefix/etc/bash_completion.d/git-prompt.sh"
+  if [ -f "$brew_prefix/etc/bash_completion.d/git-prompt.sh" ]; then
+    source "$brew_prefix/etc/bash_completion.d/git-prompt.sh"
 
-		GREEN='\[\033[32m\]'
-		WHITE='\[\033[00m\]'
-		BLUE='\[\033[1;36m\]'
-		RED='\[\033[31m\]'
-		ORANGE='\[\033[31m\]'
+    GREEN='\[\033[32m\]'
+    WHITE='\[\033[00m\]'
+    BLUE='\[\033[1;36m\]'
+    RED='\[\033[31m\]'
+    ORANGE='\[\033[31m\]'
 
-		PS1=$GREEN'\u@\h'$WHITE': '$BLUE'\w'$RED'$(__git_ps1 " (%s)")'$WHITE'$ '
-	fi
+    PS1=$GREEN'\u@\h'$WHITE': '$BLUE'\w'$RED'$(__git_ps1 " (%s)")'$WHITE'$ '
+  fi
 fi
 
 # Add tab completion for SSH hostnames based on ~/.ssh/config, ignoring wildcards
 # This is after HomeBrew fzf/shell/completion.bash so we can include hosts from ~/.ssh/config.local
 if [ -f "$HOME/.ssh/config" ]; then
-	ssh_hosts=$(grep --no-filename "^Host" $HOME/.ssh/config $HOME/.ssh/config.local | grep -v "[?*]" | cut -d " " -f2)
-	complete  -o "nospace" -W "$ssh_hosts" scp sftp ssh
+  ssh_hosts=$(grep --no-filename "^Host" $HOME/.ssh/config $HOME/.ssh/config.local | grep -v "[?*]" | cut -d " " -f2)
+  complete  -o "nospace" -W "$ssh_hosts" scp sftp ssh
 fi
 
 function json() {
