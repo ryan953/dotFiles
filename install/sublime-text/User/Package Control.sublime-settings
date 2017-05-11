@@ -32,6 +32,7 @@
 		"SublimeLinter-jsxhint",
 		"SublimeLinter-phpcs",
 		"SublimeLinter-pylint",
+		"SublimeLinter-shellcheck",
 		"SublimeOnSaveBuild",
 		"TrailingSpaces",
 		"Twig"
