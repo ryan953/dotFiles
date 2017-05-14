@@ -112,6 +112,7 @@ if [ "$os" == "Darwin" ]; then
 
 	install_brew "ctags"
 	install_brew "flow"
+	install_brew "fswatch"
 	install_brew "fzf"
 	install_brew "git" && ln -s "$(brew --prefix git)/share/git-core/contrib/diff-highlight/diff-highlight" "$HOME/bin/diff-highlight"
 	install_brew "git-extras"
