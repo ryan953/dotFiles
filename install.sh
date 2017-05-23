@@ -114,14 +114,17 @@ if [ $os == "Darwin" ]; then
 	install_brew "flow"
 	install_brew "fzf"
 	install_brew "git" && ln -s `brew --prefix git`/share/git-core/contrib/diff-highlight/diff-highlight $HOME/bin/diff-highlight
+	install_brew "git-extras"
+	install_brew "node" && npm install -g yarn
+	install_brew "reattach-to-user-namespace"
 	install_brew "the_silver_searcher"
 	install_brew "tig"
 	install_brew "tmux"
-	install_brew "wget"
-	install_cask "iterm2" && curl -L https://iterm2.com/misc/bash_startup.in > $HOME/bin/iterm2_shell_integration.bash
-	install_brew "reattach-to-user-namespace"
-	install_brew "yarn"
 	install_brew "vim"
+	install_brew "wget"
+	install_brew "yarn"
+	install_cask "iterm2" && curl -L https://iterm2.com/misc/bash_startup.in > $HOME/bin/iterm2_shell_integration.bash
+	install_cask "java"
 
 	if install_cask "sublime-text"; then
 		subl="$HOME/Library/Application Support/Sublime Text 3"
