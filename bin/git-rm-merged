@@ -5,3 +5,7 @@ for branch in $(git branch --merged | grep -v '*'); do
     git branch -d "$branch";
   fi
 done
+
+for remote in $(git remote); do
+  git remote prune $remote
+done
