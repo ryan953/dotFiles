@@ -28,11 +28,15 @@ set input-meta on
 set output-meta on
 set convert-meta off
 
-GREEN='\[\033[32m\]'
-WHITE='\[\033[00m\]'
+# this was helpful: http://misc.flogisoft.com/bash/tip_colors_and_formatting
 BLUE='\[\033[1;36m\]'
+BOLD='\[\033[1m\]'
+DIM='\[\033[2m\]'
+GREEN='\[\033[32m\]'
+ORANGE='\[\033[93m\]'
 RED='\[\033[31m\]'
-ORANGE='\[\033[31m\]'
+UNDIM='\[\033[22m\]'
+WHITE='\[\033[00m\]'
 
 alias less='less -R'
 os="`uname`"
@@ -42,7 +46,7 @@ if [ $os == "Darwin" ]; then
 	alias dotfiles='subl ~/.dotFiles'
 else
 	alias ls='ls --color'
-	PS1=$GREEN'\u@\h'$WHITE': '$BLUE'\w'$RED'$(__git_ps1 " (%s)")'$WHITE'$ '
+	PS1=$GREEN'\u'$DIM'@'$UNDIM$BOLD$ORANGE'\h'$WHITE': '$BLUE'\w'$RED'$(__git_ps1 " (%s)")'$WHITE'$ '
 fi
 
 function source_file() {
@@ -78,7 +82,7 @@ if brew -h &> /dev/null; then
 	if [ -f "$brew_prefix/etc/bash_completion.d/git-prompt.sh" ]; then
 		source "$brew_prefix/etc/bash_completion.d/git-prompt.sh"
 
-		PS1=$GREEN'\u@\h'$WHITE': '$BLUE'\w'$RED'$(__git_ps1 " (%s)")'$WHITE'$ '
+		PS1=$GREEN'\u'$DIM'@'$UNDIM'\h'$WHITE': '$BLUE'\w'$RED'$(__git_ps1 " (%s)")'$WHITE'$ '
 	fi
 fi
 
