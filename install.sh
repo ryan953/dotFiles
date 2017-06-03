@@ -202,7 +202,7 @@ check_has_bash_profile_local() {
 		echo "~/.bash_profile.local"
 	else
 		print_error
-		echo "X Update ~/.bash_profile.local and run 'source ~/.bash_profile'"
+		echo "Update ~/.bash_profile.local and run 'source ~/.bash_profile'"
 	fi
 }
 
