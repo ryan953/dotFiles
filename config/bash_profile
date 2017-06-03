@@ -29,10 +29,14 @@ set output-meta on
 set convert-meta off
 
 alias less='less -R'
-alias ls='CLICOLOR_FORCE=1 ls -G'
-alias subl='subl -a -n'
-alias dotfiles='subl ~/.dotFiles'
-alias bfg='java -jar ~/bin/bfg-1.12.15.jar'
+os="`uname`"
+if [ $os == "Darwin" ]; then
+	alias ls='CLICOLOR_FORCE=1 ls -G'
+	alias subl='subl -a -n'
+	alias dotfiles='subl ~/.dotFiles'
+else
+	alias ls='ls --color'
+fi
 
 function source_file() {
 	if [ -f $1 ]; then
