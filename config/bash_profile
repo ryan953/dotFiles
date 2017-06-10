@@ -58,6 +58,7 @@ function source_file() {
 }
 
 source_file "$HOME/.bash_profile.local"
+source_file "$HOME/.ssh/saveagent"
 
 source_file "$HOME/bin/iterm2_shell_integration.bash"
 source_file "$HOME/bin/arcanist/resources/shell/bash-completion"
@@ -96,3 +97,8 @@ fi
 function json() {
   python -mjson.tool <<< "$*" | pygmentize -l javascript
 }
+
+if [[ -z $SSH_CONNECTION ]] && [ -x tmux ]; then
+	tmux attach || tmux new
+	tmux send-keys "source $HOME/.ssh/latestagent"
+fi
