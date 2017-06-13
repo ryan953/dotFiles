@@ -45,7 +45,7 @@ if [ $os == "Darwin" ]; then
 	alias subl='subl -a -n'
 	alias dotfiles='subl ~/.dotFiles'
 else
-	alias ls='ls --color'
+	alias ls='LC_COLLATE=C ls --color'
 	PS1=$GREEN'\u'$DIM'@'$UNDIM$BOLD$ORANGE'\h'$WHITE': '$BLUE'\w'$RED'$(__git_ps1 " (%s)")'$WHITE'$ '
 fi
 
