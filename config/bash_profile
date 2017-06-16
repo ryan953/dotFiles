@@ -80,6 +80,10 @@ if brew -h &> /dev/null; then
 	source_file "$brew_prefix/opt/fzf/shell/completion.bash"
 	source_file "$brew_prefix/opt/fzf/shell/key-bindings.bash"
 
+	source_file "/Applications/Docker.app/Contents/Resources/etc/docker.bash-completion"
+	source_file "/Applications/Docker.app/Contents/Resources/etc/docker-machine.bash-completion"
+	source_file "/Applications/Docker.app/Contents/Resources/etc/docker-compose.bash-completion"
+
 	if [ -f "$brew_prefix/etc/bash_completion.d/git-prompt.sh" ]; then
 		source "$brew_prefix/etc/bash_completion.d/git-prompt.sh"
 
