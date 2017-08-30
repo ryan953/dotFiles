@@ -72,7 +72,7 @@ if brew -h &> /dev/null; then
 
 	source_file "$brew_prefix/etc/bash_completion.d/brew"
 	source_file "$brew_prefix/etc/bash_completion.d/flow-completion.bash"
-	source_file "$brew_prefix/etc/bash_completion.d/git-completion.bash"
+	source_file "$(brew --prefix git)/etc/bash_completion.d/git-completion.bash"
 	source_file "$brew_prefix/etc/bash_completion.d/npm"
 	source_file "$brew_prefix/etc/bash_completion.d/tig-completion.bash"
 	source_file "$brew_prefix/etc/bash_completion.d/tmux"
@@ -84,8 +84,8 @@ if brew -h &> /dev/null; then
 	source_file "/Applications/Docker.app/Contents/Resources/etc/docker-machine.bash-completion"
 	source_file "/Applications/Docker.app/Contents/Resources/etc/docker-compose.bash-completion"
 
-	if [ -f "$brew_prefix/etc/bash_completion.d/git-prompt.sh" ]; then
-		source "$brew_prefix/etc/bash_completion.d/git-prompt.sh"
+	if [ -f "$(brew --prefix git)/etc/bash_completion.d/git-prompt.sh" ]; then
+		source "$(brew --prefix git)/etc/bash_completion.d/git-prompt.sh"
 
 		PS1=$GREEN'\u'$DIM'@'$UNDIM'\h'$WHITE': '$BLUE'\w'$RED'$(__git_ps1 " (%s)")'$WHITE'$ '
 	fi
