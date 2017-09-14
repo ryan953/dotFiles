@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+function check () {
+  git merge-base --is-ancestor $1 $2
+
+  if [[ $? == 0 ]]; then
+    echo "$2 includes the chages from $1"
+    exit 0
+  fi
+}
+
+one=$1
+two=$2
+
+check $one $two
+check $two $one
+
+echo "Commits are unrelated"
