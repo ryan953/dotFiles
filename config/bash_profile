@@ -20,7 +20,7 @@ shopt -s nocaseglob
 
 set completion-ignore-case on # Make Tab autocomplete regardless of filename case
 set page-completions off # Immediately show all possible completions
-set show-all-if-ambiguous on # List all matches in case multiple possible completions are possible
+set show-all-if-ambiguous off # List all matches in case multiple possible completions are possible
 set skip-completed-text on # Be more intelligent when autocompleting by also looking at the text after the cursor.
 
 # Allow UTF-8 input and output, instead of showing stuff like $'\0123\0456'
