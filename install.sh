@@ -110,6 +110,8 @@ if [ "$os" == "Darwin" ]; then
 		fi
 	}
 
+	install_brew "bash"
+	install_brew "bash-completion"
 	install_brew "ctags"
 	install_brew "flow"
 	install_brew "fswatch"
