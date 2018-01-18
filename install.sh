@@ -127,6 +127,7 @@ if [ "$os" == "Darwin" ]; then
 	install_brew "vim"
 	install_brew "wget"
 	install_brew "yarn"
+	install_cask "atom" && apm starred --install
 	install_cask "docker-toolbox"
 	install_cask "iterm2" && curl -L https://iterm2.com/shell_integration/bash > "$HOME/bin/iterm2_shell_integration.bash"
 	install_cask "java"
