@@ -11,13 +11,14 @@ link_if() {
 
 	BASE=`basename "$FILE"`
 
-	if ! [ -e "$DEST$BASE" ]; then
-		ln -s "$FILE" "$DEST$BASE"
-		echo "Linked $FILE to $DEST$BASE"
+	if [ -e "$DEST$BASE" ]; then
+		rm "$DEST$BASE"
 	fi
+	ln -s "$FILE" "$DEST$BASE"
+	echo "Linked $FILE to $DEST$BASE"
 }
 
-link_if `pwd`/submodules/vim-monokai/colors "$VIM"
+link_if `pwd`/submodules/vim-one/colors "$VIM"
 link_if `pwd`/submodules/vim-pathogen/autoload "$VIM"
 
 DEST=""$VIM"bundle/"

@@ -31,3 +31,6 @@
 [submodule "submodules/vim-bundle/vim-fugitive"]
 	path = submodules/vim-bundle/vim-fugitive
 	url = git://github.com/tpope/vim-fugitive.git
+[submodule "submodules/vim-one"]
+	path = submodules/vim-one
+	url = https://github.com/rakr/vim-one
