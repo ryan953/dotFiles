@@ -42,6 +42,8 @@ print_error() {
 	printf "\033[1;31m✘\033[0m "
 }
 
+cd "$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
 for file in $(pwd)/config/*; do
 	backup_and_link "$file" "$HOME/."
 done
