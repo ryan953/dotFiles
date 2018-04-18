@@ -22,9 +22,9 @@
 	status = auto
 
 [pager]
-	diff = diff-highlight | diff-so-fancy | less --tabs=4 -RFX --pattern '^(Date|added|deleted|modified): '
-	log = diff-highlight | diff-so-fancy | less --tabs=4 -RFX
-	show = diff-highlight | diff-so-fancy | less --tabs=4 -RFX --pattern '^(Date|added|deleted|modified): '
+	diff = diff-so-fancy | less --tabs=4 -RFX --pattern '^(Date|added|deleted|modified): '
+	log = diff-so-fancy | less --tabs=4 -RFX
+	show = diff-so-fancy | less --tabs=4 -RFX --pattern '^(Date|added|deleted|modified): '
 
 [branch]
 	# rebase during `git pull` instead of making merge commits

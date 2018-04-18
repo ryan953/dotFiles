@@ -116,7 +116,6 @@ if [ "$os" == "Darwin" ]; then
 	install_brew "flow"
 	install_brew "fswatch"
 	install_brew "fzf"
-	install_brew "git" && ln -s "$(brew --prefix git)/share/git-core/contrib/diff-highlight/diff-highlight" "$HOME/bin/diff-highlight"
 	install_brew "git-extras"
 	install_brew "node" && npm install -g yarn
 	install_brew "reattach-to-user-namespace"
@@ -185,7 +184,6 @@ if ! [ -e "$HOME/bin/arc" ]; then
 fi
 
 DiffSoFancy=$(pwd)/submodules/diff-so-fancy
-backup_and_link "$DiffSoFancy/third_party/diff-highlight/diff-highlight" "$HOME/bin/"
 backup_and_link "$DiffSoFancy/diff-so-fancy" "$HOME/bin/"
 mkdir -p "$HOME/bin/libexec"
 backup_and_link "$DiffSoFancy/libexec/diff-so-fancy.pl" "$HOME/bin/libexec/"
