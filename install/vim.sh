@@ -13,7 +13,7 @@ link_if() {
 
 	BASE=`basename "$FILE"`
 
-	if [ -e "$DEST$BASE" ]; then
+	if [ -h "$DEST$BASE" ]; then
 		rm "$DEST$BASE"
 	fi
 	ln -s "$FILE" "$DEST$BASE"
