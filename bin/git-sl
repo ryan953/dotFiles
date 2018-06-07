@@ -1,3 +1,5 @@
 #!/usr/bin/env bash
 
-git log --graph --simplify-by-decoration --branches --not --remotes=* --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' | grep -v "(tag:" | less -RFXr
+git log --graph --simplify-by-decoration --branches --not --remotes=* --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' | \
+  grep -v "(tag:" |\
+  less --quit-if-one-screen --no-init --RAW-CONTROL-CHARS
