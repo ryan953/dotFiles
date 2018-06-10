@@ -80,6 +80,9 @@ if [ "$os" == "Darwin" ]; then
 		print_warn && echo "Click 'Save Current Settings to Folder' Button in iTerm2 Prefs window"
 	fi
 
+	# Xcode Command Line Tools
+	xcode-select --install
+
 	# Homebrew
 	if brew -h &> /dev/null; then
 		echo "Found Homebrew"
