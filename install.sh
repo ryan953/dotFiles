@@ -131,7 +131,6 @@ if [ "$os" == "Darwin" ]; then
 	install_brew "vim"
 	install_brew "wget"
 	install_brew "yarn"
-	install_cask "atom" && apm starred --install
 	install_cask "docker-toolbox"
 	install_cask "iterm2" && curl -L https://iterm2.com/shell_integration/bash > "$HOME/bin/iterm2_shell_integration.bash"
 	install_cask "java"
@@ -143,6 +142,11 @@ if [ "$os" == "Darwin" ]; then
 		for file in $(pwd)/install/sublime-text/User/*; do
 			backup_and_link "$file" "$subl/Packages/User/"
 		done
+	fi
+
+	if install_cask "atom"; then
+		atom_path="$HOME/.atom"
+		apm starred --install
 	fi
 else
 	echo "Not on OSX"
