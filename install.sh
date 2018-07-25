@@ -122,6 +122,7 @@ if [ "$os" == "Darwin" ]; then
 	install_brew "fswatch"
 	install_brew "fzf"
 	install_brew "git-extras"
+	install_brew "mosh"
 	install_brew "node" && npm install -g yarn
 	install_brew "reattach-to-user-namespace"
 	install_brew "shellcheck"
@@ -151,7 +152,11 @@ if [ "$os" == "Darwin" ]; then
 else
 	echo "Not on OSX"
 	# # Ubuntu >= 13.10 (Saucy) or Debian >= 8 (Jessie)
-	# apt-get install silversearcher-ag
+	if [[ $(lsb_release -a) =~ "Ubuntu" ]]; then
+		sudo apt-get install \
+			mosh \
+			silversearcher-ag
+	fi
 
 	# # Fedora 21 and lower
 	# yum install the_silver_searcher
