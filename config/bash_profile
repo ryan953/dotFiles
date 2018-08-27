@@ -65,7 +65,7 @@ source_file "$HOME/bin/arcanist/resources/shell/bash-completion"
 source_file "$HOME/.nvm/nvm.sh"
 source_file "$HOME/.nvm/bash_completion"
 
-arc set-config base 'arc:amended, git:merge-base(master)'
+arc set-config base 'arc:verbose, arc:amended, git:merge-base(master)'
 
 # FZF with the_silver_searcher
 export FZF_DEFAULT_COMMAND='ag --ignore *.pyc -g ""'
