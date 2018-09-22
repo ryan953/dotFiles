@@ -124,6 +124,7 @@ if [ "$os" == "Darwin" ]; then
 	install_brew "git-extras"
 	install_brew "mosh"
 	install_brew "node" && npm install -g yarn
+	install_brew "python3"
 	install_brew "reattach-to-user-namespace"
 	install_brew "shellcheck"
 	install_brew "the_silver_searcher"
