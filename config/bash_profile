@@ -67,7 +67,7 @@ source_file "$HOME/bin/pages-gem/contrib/func.sh"
 source_file "$HOME/.nvm/nvm.sh"
 source_file "$HOME/.nvm/bash_completion"
 
-if arc help 2> /dev/null ; then
+if arc help &> /dev/null ; then
   arc set-config base 'arc:verbose, arc:amended, git:merge-base(master)'
 fi
 
