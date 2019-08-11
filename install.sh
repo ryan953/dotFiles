@@ -138,6 +138,9 @@ if [ "$os" == "Darwin" ]; then
 	install_cask "iterm2" && curl -L https://iterm2.com/shell_integration/bash > "$HOME/bin/iterm2_shell_integration.bash"
 	install_cask "java"
 
+	defaults write com.googlecode.iterm2.plist PrefsCustomFolder -string "$(pwd)/install/iterm/"
+	defaults write com.googlecode.iterm2.plist LoadPrefsFromCustomFolder -bool true
+
 	if install_cask "sublime-text"; then
 		subl="$HOME/Library/Application Support/Sublime Text 3"
 		wget -O "$subl/Installed Packages/Package Control.sublime-package" https://packagecontrol.io/Package%20Control.sublime-package
