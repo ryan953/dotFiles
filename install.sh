@@ -117,6 +117,7 @@ if [ "$os" == "Darwin" ]; then
 
 	install_brew "bash"
 	install_brew "bash-completion"
+	install_brew "coreutils"
 	install_brew "ctags"
 	install_brew "flow"
 	install_brew "fswatch"

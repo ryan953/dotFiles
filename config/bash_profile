@@ -63,6 +63,7 @@ source_file "$HOME/.ssh/saveagent"
 
 source_file "$HOME/bin/iterm2_shell_integration.bash"
 source_file "$HOME/bin/arcanist/resources/shell/bash-completion"
+source_file "$HOME/bin/pages-gem/contrib/func.sh"
 source_file "$HOME/.nvm/nvm.sh"
 source_file "$HOME/.nvm/bash_completion"
 
