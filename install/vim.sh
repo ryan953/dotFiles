@@ -39,6 +39,3 @@ for FILE in `pwd`/submodules/vim-bundle/*; do
 	fi
 done
 
-# This submodule was really installed to the wrong place, so link it manually
-# Next time move it to vim-bundles
-link_if $(pwd)/submodules/vim-one/colors/one.vim "${VIM}colors/"

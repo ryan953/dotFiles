@@ -7,18 +7,9 @@
 [submodule "submodules/diff-so-fancy"]
 	path = submodules/diff-so-fancy
 	url = https://github.com/so-fancy/diff-so-fancy.git
-[submodule "submodules/vim-monokai"]
-	path = submodules/vim-monokai
-	url = https://github.com/sickill/vim-monokai.git
 [submodule "submodules/vim-pathogen"]
 	path = submodules/vim-pathogen
 	url = https://github.com/tpope/vim-pathogen.git
-[submodule "submodules/vim-bundle/nerdtree"]
-	path = submodules/vim-bundle/nerdtree
-	url = git://github.com/wycats/nerdtree.git
-[submodule "submodules/vim-bundle/vim-tmux-navigator"]
-	path = submodules/vim-bundle/vim-tmux-navigator
-	url = https://github.com/christoomey/vim-tmux-navigator.git
 [submodule "submodules/vim-bundle/vim-tmux"]
 	path = submodules/vim-bundle/vim-tmux
 	url = https://github.com/tmux-plugins/vim-tmux.git
@@ -31,9 +22,6 @@
 [submodule "submodules/vim-bundle/vim-fugitive"]
 	path = submodules/vim-bundle/vim-fugitive
 	url = git://github.com/tpope/vim-fugitive.git
-[submodule "submodules/vim-one"]
-	path = submodules/vim-one
-	url = https://github.com/rakr/vim-one
 [submodule "submodules/vim-bundle/onedark.vim"]
 	path = submodules/vim-bundle/onedark.vim
 	url = https://github.com/joshdick/onedark.vim
@@ -43,3 +31,15 @@
 [submodule "submodules/vim-bundle/vim-airline"]
 	path = submodules/vim-bundle/vim-airline
 	url = https://github.com/vim-airline/vim-airline
+[submodule "submodules/vim-bundle/vim-bufferline"]
+	path = submodules/vim-bundle/vim-bufferline
+	url = https://github.com/bling/vim-bufferline
+[submodule "submodules/vim-bundle/vim-vinegar"]
+	path = submodules/vim-bundle/vim-vinegar
+	url = https://github.com/tpope/vim-vinegar
+[submodule "submodules/vim-bundle/ctrlp.vim"]
+	path = submodules/vim-bundle/ctrlp.vim
+	url = https://github.com/ctrlpvim/ctrlp.vim
+[submodule "submodules/vim-bundle/vim-tmux-navigator"]
+	path = submodules/vim-bundle/vim-tmux-navigator
+	url = https://github.com/christoomey/vim-tmux-navigator

@@ -1,5 +1,11 @@
 set nocompatible
 
+" allow modified buffers to be hidden:
+set hidden
+
+" explicit about what <leader> is mapped to:
+let mapleader = "\\"
+
 " Include pathogen
 call pathogen#infect()
 call pathogen#helptags()
@@ -62,14 +68,56 @@ set background=dark
 set wildmenu " visual autocomplete for command menu
 
 
-"" NERDTree
-" Open NERDTree automatically when vim starts up on opening a directory
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
+"" Airline
+let g:airline#extensions#tabline#enabled = 1
 
-" Close vim if the only window left open is a NERDTree
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+"" Netrw
+" Show the help banner
+let g:netrw_banner = 1
+" Long listing, with file size and timestamp
+let g:netrw_liststyle = 1
+autocmd FileType netrw set nolist
 
+"" Stop using tabs:
+
+" To open a new empty buffer
+" This replaces :tabnew which I used to bind to this mapping
+nmap <leader>T :enew<cr>
+
+" Move to the next buffer
+nmap <leader>l :bnext<CR>
+
+" Move to the previous buffer
+nmap <leader>h :bprevious<CR>
+
+" Close the current buffer and move to the previous one
+" This replicates the idea of closing a tab
+nmap <leader>bq :bp <BAR> bd #<CR>
+
+" Show all open buffers and their status
+nmap <leader>bl :ls<CR>
+
+
+"" CtrlP
+
+" Setup some default ignores
+let g:ctrlp_custom_ignore = {
+  \ 'dir':  '\v[\/](\.(git|hg|svn)|\_site)$',
+  \ 'file': '\v\.(exe|so|dll|class|png|jpg|jpeg)$',
+\}
+
+" 'c' - the directory of the current file.
+" 'r' - the nearest ancestor that contains one of these directories or files: .git .hg .svn .bzr _darcs
+" 'a' - like c, but only if the current working directory outside of CtrlP is not a direct ancestor of the directory of the 
+let g:ctrlp_working_path_mode = 'ra'
+
+" Use a leader instead of the actual named binding
+nmap <leader>p :CtrlP<cr>
+
+" Easy bindings for its various modes
+nmap <leader>bb :CtrlPBuffer<cr>
+nmap <leader>bm :CtrlPMixed<cr>
+nmap <leader>bs :CtrlPMRU<cr>
 
 "" FZF
 " set rtp+=/usr/local/opt/fzf
