@@ -146,4 +146,4 @@ nmap <Leader>b :Buffers<CR>
 if executable('ag')
   let g:ackprg = 'ag --vimgrep'
 endif
-map <Leader>a :Ack<Space>
+map <Leader>a :Ack!<Space>
