@@ -143,5 +143,7 @@ nmap <Leader>b :Buffers<CR>
 
 " Let ack plugin use the_silver_searcher instead for fast text find
 " let g:ackprg = 'ag --nogroup --nocolor --column'
-let g:ackprg = 'ag --vimgrep'
+if executable('ag')
+  let g:ackprg = 'ag --vimgrep'
+endif
 map <Leader>a :Ack<Space>
