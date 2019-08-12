@@ -109,8 +109,3 @@ fi
 function json() {
   python -mjson.tool <<< "$*" | pygmentize -l javascript
 }
-
-if [[ -z $SSH_CONNECTION ]] && [ -x tmux ]; then
-	tmux attach || tmux new
-	tmux send-keys "source $HOME/.ssh/latestagent"
-fi
