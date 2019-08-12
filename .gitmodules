@@ -37,3 +37,9 @@
 [submodule "submodules/vim-bundle/onedark.vim"]
 	path = submodules/vim-bundle/onedark.vim
 	url = https://github.com/joshdick/onedark.vim
+[submodule "submodules/vim-bundle/vim-polyglot"]
+	path = submodules/vim-bundle/vim-polyglot
+	url = https://github.com/sheerun/vim-polyglot
+[submodule "submodules/vim-bundle/vim-airline"]
+	path = submodules/vim-bundle/vim-airline
+	url = https://github.com/vim-airline/vim-airline
