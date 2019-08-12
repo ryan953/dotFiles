@@ -68,7 +68,7 @@ source_file "$HOME/.nvm/nvm.sh"
 source_file "$HOME/.nvm/bash_completion"
 
 if arc help &> /dev/null ; then
-  arc set-config base 'arc:verbose, arc:amended, git:merge-base(master)'
+  arc set-config base 'arc:verbose, arc:amended, git:merge-base(master)' > /dev/null
 fi
 
 # FZF with the_silver_searcher
