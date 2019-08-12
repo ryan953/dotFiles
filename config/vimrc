@@ -53,7 +53,7 @@ map <Leader>a :Ack<Space>
 "" Colors
 
 syntax enable
-colorscheme one
+colorscheme onedark
 set background=dark
 
 
