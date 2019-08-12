@@ -16,3 +16,4 @@ verify_tmux_version () {
 }
 
 verify_tmux_version
+
