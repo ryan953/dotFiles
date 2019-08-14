@@ -193,6 +193,7 @@ fi
 
 git submodule init
 git submodule update
+git submodule foeach git checkout master
 
 if ! [ -e "$HOME/bin/arc" ]; then
 	ln -s "$(pwd)/submodules/arcanist/bin/arc" "$HOME/bin/arc"
