@@ -5,3 +5,9 @@
 
 # Fill this in with a token from https://github.com/settings/tokens
 # export HOMEBREW_GITHUB_API_TOKEN=''
+
+# if [[ -z "$TMUX" ]] && [ "$SSH_TTY" != "" ] && [[ $- =~ i ]]; then
+#   tmux attach-session -t ssh || tmux new-session -s ssh
+#   exit
+# fi
+
