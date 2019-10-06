@@ -45,6 +45,7 @@ if [ $os == "Darwin" ]; then
 	alias ls='CLICOLOR_FORCE=1 ls -G'
 	alias subl='subl -a -n'
 	alias dotfiles='subl ~/.dotFiles'
+    alias chrome='/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome'
 else
 	alias ls='LC_COLLATE=C ls --color'
 	PS1=$GREEN'\u'$DIM'@'$UNDIM$BOLD$ORANGE'\h'$WHITE': '$BLUE'\w'$RED'$(__git_ps1 " (%s)")'$WHITE'$ '
