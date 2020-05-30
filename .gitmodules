@@ -43,3 +43,6 @@
 [submodule "submodules/vim-bundle/vim-tmux-navigator"]
 	path = submodules/vim-bundle/vim-tmux-navigator
 	url = https://github.com/christoomey/vim-tmux-navigator
+[submodule "submodules/sleuth"]
+	path = submodules/vim-bundle/sleuth
+	url = https://tpope.io/vim/sleuth.git
