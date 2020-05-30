@@ -59,9 +59,6 @@ function source_file() {
 	return 0
 }
 
-source_file "$HOME/.bash_profile.local"
-source_file "$HOME/.ssh/saveagent"
-
 source_file "$HOME/bin/iterm2_shell_integration.bash"
 source_file "$HOME/bin/pages-gem/contrib/func.sh"
 source_file "$HOME/.nvm/nvm.sh"
@@ -113,6 +110,16 @@ if [ -f "$HOME/.ssh/config" ]; then
 	complete  -o "nospace" -W "$ssh_hosts" scp sftp ssh
 fi
 
+# Predictable SSH authentication socket location.
+SOCK="/tmp/ssh-agent-$USER-screen"
+if test $SSH_AUTH_SOCK && [ $SSH_AUTH_SOCK != $SOCK ]; then
+	rm -f /tmp/ssh-agent-$USER-screen
+	ln -sf $SSH_AUTH_SOCK $SOCK
+	export SSH_AUTH_SOCK=$SOCK
+fi
+
 function json() {
   python -mjson.tool <<< "$*" | pygmentize -l javascript
 }
+
+source_file "$HOME/.bash_profile.local"
