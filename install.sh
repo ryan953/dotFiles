@@ -225,13 +225,23 @@ check_install_sh() {
 	shellcheck ./*.sh ./config/bash_profile
 }
 
-check_has_bash_profile_local() {
-	if has_statements "$HOME/.bash_profile.local"; then
+check_has_bash_profile_init() {
+	if has_statements "$HOME/.bash_profile.init"; then
 		print_check
-		echo 'Checked ~/.bash_profile.local'
+		echo 'Checked ~/.bash_profile.init'
 	else
 		print_error
-		echo "Update ~/.bash_profile.local and run 'source ~/.bash_profile'"
+		echo "Update ~/.bash_profile.init and run 'source ~/.bash_profile'"
+	fi
+}
+
+check_has_bash_profile_end() {
+	if has_statements "$HOME/.bash_profile.end"; then
+		print_check
+		echo 'Checked ~/.bash_profile.end'
+	else
+		print_error
+		echo "Update ~/.bash_profile.end and run 'source ~/.bash_profile'"
 	fi
 }
 
@@ -264,6 +274,7 @@ check_has_ssh_config_local() {
 
 echo ""
 echo "You can extend this setup by adding/editing the files:"
-check_has_bash_profile_local
+check_has_bash_profile_init
+check_has_bash_profile_end
 check_has_gitconfig_local
 check_has_ssh_config_local

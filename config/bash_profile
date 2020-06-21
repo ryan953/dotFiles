@@ -59,6 +59,8 @@ function source_file() {
 	return 0
 }
 
+source_file "$HOME/.bash_profile.init"
+
 source_file "$HOME/bin/iterm2_shell_integration.bash"
 source_file "$HOME/bin/pages-gem/contrib/func.sh"
 source_file "$HOME/.nvm/nvm.sh"
@@ -122,4 +124,4 @@ function json() {
   python -mjson.tool <<< "$*" | pygmentize -l javascript
 }
 
-source_file "$HOME/.bash_profile.local"
+source_file "$HOME/.bash_profile.end"
