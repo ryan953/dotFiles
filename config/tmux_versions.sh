@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 verify_tmux_version () {
-    local tmux_version="$(tmux -V | cut -c 6-)"
+    local tmux_version="$(tmux -V | cut -c 6- | tr -dc '0-9.')"
 
     if [[ $(echo "$tmux_version >= 2.1" | bc) -eq 1 ]] ; then
         tmux source-file "$HOME/.tmux_2.1_up.conf"
