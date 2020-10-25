@@ -1,0 +1,24 @@
+antigen use oh-my-zsh
+
+antigen bundles <<EOBUNDLES
+  colored-man-pages
+  command-not-found
+  safe-paste
+
+  z # https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/z
+  changyuheng/fz
+
+  zdharma/zsh-diff-so-fancy
+  zsh-users/zsh-autosuggestions
+  zsh-users/zsh-completions
+
+  # Apply syntax highlighting to result of auto-suggest, completions, etc.
+  zsh-users/zsh-syntax-highlighting
+
+  # Must be after zsh-syntax-highlighting
+  history-substring-search
+EOBUNDLES
+
+antigen theme romkatv/powerlevel10k
+
+antigen apply

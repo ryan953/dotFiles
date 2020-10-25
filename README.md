@@ -1,3 +1,25 @@
+# Testing in Ubuntu
+
+$ docker build -t ubuntu-zsh .
+$ docker run -it --rm -v $(pwd):/home/ryan953/dotFiles ubuntu-zsh
+
+Then in the image run:
+$ ~/dotFiles/bootstrap.sh; ~/dotFiles/install-zsh.sh && /bin/zsh
+
+# Install
+$ bootstrap.sh && /bin/zsh
+
+# iTerm colors:
+curl https://raw.githubusercontent.com/one-dark/iterm-one-dark-theme/master/One%20Dark.itermcolors > 'One Dark.itermcolors'
+
+Then import via the iTerm Settings->Profile->Colors panel
+
+# Update Antigen
+$ curl -L git.io/antigen > dotFiles/templates/antigen.zsh
+$ antigen update
+
+
+<!--
 # Install on OSX
 
   ```bash
@@ -7,7 +29,6 @@
     rm dotFiles.zip && \
     ~/.dotFiles/install.sh
    ```
-
 
 # More things to install
 
@@ -31,4 +52,4 @@ if install_cask "atom"; then
   # `amp install nuclide`
   # or save my APM modules and install from user-account
 fi
-```
+``` -->

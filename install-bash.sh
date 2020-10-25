@@ -28,7 +28,7 @@ done
 
 source $HOME/.bash_profile
 
-os="`uname`"
+os="$(uname)"
 if [ $os == "Darwin" ]; then
 	echo "Installing MacOS Scripts"
 

@@ -52,8 +52,6 @@ source_file "$HOME/bin/arcanist/resources/shell/bash-completion"
 if brew -h &> /dev/null; then
 	brew_prefix=`brew --prefix`
 
-	source_file "$HOME/.bash_homebrew_github_token"
-
 	source_file "$brew_prefix/etc/bash_completion.d/brew"
 	source_file "$brew_prefix/etc/bash_completion.d/flow-completion.bash"
 	source_file "$brew_prefix/etc/bash_completion.d/git-completion.bash"
@@ -79,4 +77,21 @@ fi
 
 function json() {
   python -mjson.tool <<< "$*" | pygmentize -l javascript
+}
+
+gitPreAutoStatusCommands=(
+  'add'
+  'rm'
+  'mv'
+  'checkout'
+  'rebase'
+)
+
+function git() {
+  command git "${@}"
+
+  if [[ " ${gitPreAutoStatusCommands[@]} " =~ " ${1} " ]]; then
+    echo  # empty line
+    command git status
+  fi
 }

@@ -1,7 +1,0 @@
-# into: .ipython/profile_default/startup/startup.ipy on devapp (docker image)
-import core
-
-me = core.User.manager.get_by_username('ryan8339')
-
-from webapp.tests.fixtures.context import context_factory
-context = context_factory()
