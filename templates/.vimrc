@@ -21,6 +21,11 @@ Plugin 'https://github.com/joshdick/onedark.vim'
 
 Plugin 'christoomey/vim-tmux-navigator'
 
+Plugin 'airblade/vim-gitgutter'
+
+"""
+" After adding a new plugin, run `:PluginInstall`
+"""
 call vundle#end()
 
 filetype plugin indent on
@@ -44,6 +49,8 @@ set hlsearch    " Highlight all search results
 set ignorecase  " Always case-insensitive
 set incsearch   " Searches for strings incrementally
 set smartcase   " Enable smart-case search
+
+set updatetime=100
 
 " Disable backups and .swp files.
 set nobackup
@@ -162,6 +169,12 @@ nnoremap <C-A><S-Left>  <C-w>5< " Make split narrower
 nnoremap <C-A><S-Up>    <C-w>5- " Make split shorter
 nnoremap <C-A><S-Down>  <C-w>5+ " Make split taller
 nnoremap <C-A><S-Right> <C-w>5> " Make split wider:
+
+
+""" Plugins
+
+" GitGutter
+let g:gitgutter_map_keys = 0
 
 nnoremap <Leader>] <C-]>            " Jump to ctags tag definition.
 nnoremap <Leader>p :CtrlP<cr>       " Fuzzy complete for files.
