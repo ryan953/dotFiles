@@ -23,6 +23,10 @@ Plugin 'christoomey/vim-tmux-navigator'
 
 Plugin 'airblade/vim-gitgutter'
 
+Plugin 'https://github.com/ctrlpvim/ctrlp.vim.git'
+
+Plugin 'preservim/nerdcommenter'
+
 """
 " After adding a new plugin, run `:PluginInstall`
 """
@@ -175,6 +179,20 @@ nnoremap <C-A><S-Right> <C-w>5> " Make split wider:
 
 " GitGutter
 let g:gitgutter_map_keys = 0
+
+" CtrlP
+let g:ctrlp_custom_ignore = {
+  \ 'dir':  '\v[\/]\.(git|hg|svn)$',
+  \ 'file': '\v\.(exe|so|dll)$',
+  \ 'link': 'some_bad_symbolic_links',
+  \ }
+" let g:ctrlp_user_command = 'find %s -type f' " TODO: improve this with fzf
+
+" NERDCommenter
+let g:NERDCreateDefaultMappings = 0
+nmap <C-z> <Plug>NERDCommenterToggle
+vmap <C-z> <Plug>NERDCommenterToggle
+
 
 nnoremap <Leader>] <C-]>            " Jump to ctags tag definition.
 nnoremap <Leader>p :CtrlP<cr>       " Fuzzy complete for files.
