@@ -1,3 +1,9 @@
+"""""""""""""""""""""""""""""""
+" Open/Close folds with: `za` "
+"""""""""""""""""""""""""""""""
+
+""" Vundle ---------------------------- {{{
+
 set nocompatible           " be iMproved, required for Vundle
 filetype off               " required for Vundle, will be turned on later
 
@@ -20,12 +26,19 @@ Plugin 'https://github.com/joshdick/onedark.vim'
 " Plugin 'edkolev/tmuxline.vim'
 
 Plugin 'christoomey/vim-tmux-navigator'
+Plugin 'tmux-plugins/vim-tmux-focus-events'
+Plugin 'tmux-plugins/vim-tmux'
+Plugin 'roxma/vim-tmux-clipboard'
 
+Plugin 'ryanoasis/vim-devicons'
 Plugin 'airblade/vim-gitgutter'
 
-Plugin 'https://github.com/ctrlpvim/ctrlp.vim.git'
+" Plugin 'weynhamz/vim-plugin-minibufexpl'
 
-Plugin 'preservim/nerdcommenter'
+" Plugin 'tpope/vim-vinegar'
+" Plugin 'https://github.com/ctrlpvim/ctrlp.vim.git'
+" Plugin 'preservim/tagbar'
+" Plugin 'preservim/nerdcommenter'
 
 """
 " After adding a new plugin, run `:PluginInstall`
@@ -34,9 +47,10 @@ call vundle#end()
 
 filetype plugin indent on
 
+" }}}
 
+""" Basics ---------------------------- {{{
 
-""" Basics
 set cursorline  " highlight current line
 set number      " Show line numbers
 set ruler       " Show row and column ruler information
@@ -77,10 +91,12 @@ set mouse=a " Enable mouse scrorling and other behaviors
 set hidden
 " set nohidden
 
+" Autoreload files that change outside of vim
+set autoread
 
-""" Color Settings
+" }}}
 
-" Airline Settings
+""" Colors & Airline Settings --------- {{{
 let g:airline_powerline_fonts = 0
 let g:airline_theme = 'onedark'
 let g:airline#extensions#tabline#enabled = 1
@@ -117,23 +133,53 @@ syntax on
 set background=dark
 colorscheme onedark
 
+" }}}
+
+""" Functions ------------------------- {{{
+
 " Trim trailing whitespace in the file.
 command TrimWhitespace %s/\s\+$//e
+
+" strips trailing whitespace at the end of files. this
+" is called on buffer write in the autogroup above.
+function! <SID>StripTrailingWhitespaces()
+    " save last search & cursor position
+    let _s=@/
+    let l = line(".")
+    let c = col(".")
+    %s/\s\+$//e
+    let @/=_s
+    call cursor(l, c)
+endfunction
+
+" toggle between number and relativenumber
+function! ToggleNumber()
+    if(&relativenumber == 1)
+        set norelativenumber
+        set number
+    else
+        set relativenumber
+    endif
+endfunc
 
 " Map leader key.
 let mapleader = "\\"
 
+" }}}
 
+""" Bindings -------------------------- {{{
 
-""" Bindings
 " The optional `nore` segment means that the RHS is not itself a mapped sequence.
 " :[nore]map  => normal mode, visual + select, operator-pending
 " :n[nore]map => normal mode
 " :v[nore]map => visual + select
 " :o[nore]map => operator-pending
 
+" }}}
 
-""" Within a pane
+
+""" Within a pane --------------------- {{{
+
 nnoremap <Leader>ve :e $MYVIMRC<cr>  " Edit .vimrc file
 nnoremap <Leader>vr :so $MYVIMRC<cr> " Reload .vimrc file
 nnoremap <Leader>rr :redraw!<cr>     " Redraw screen to fix visual problems
@@ -143,7 +189,9 @@ nnoremap <Leader>w :w<CR>            " Write a file.
 nnoremap j gj
 nnoremap k gk
 
-""" Buffers & Splits
+" }}}
+
+""" Buffers & Splits ------------------ {{{
 nnoremap <leader>T :enew<cr> " To open a new empty buffer
 nnoremap <leader>bq :bp <BAR> bd #<CR> " Close buffer and move to previous
 
@@ -174,26 +222,54 @@ nnoremap <C-A><S-Up>    <C-w>5- " Make split shorter
 nnoremap <C-A><S-Down>  <C-w>5+ " Make split taller
 nnoremap <C-A><S-Right> <C-w>5> " Make split wider:
 
+" }}}
 
 """ Plugins
 
-" GitGutter
+""" GitGutter ------------------------- {{{
+
 let g:gitgutter_map_keys = 0
 
-" CtrlP
-let g:ctrlp_custom_ignore = {
-  \ 'dir':  '\v[\/]\.(git|hg|svn)$',
-  \ 'file': '\v\.(exe|so|dll)$',
-  \ 'link': 'some_bad_symbolic_links',
-  \ }
-" let g:ctrlp_user_command = 'find %s -type f' " TODO: improve this with fzf
+" }}}
 
-" NERDCommenter
+""" CtrlP ----------------------------- {{{
+
+""" window on the bottom, show matches top to bottom
+" let g:ctrlp_match_window = 'bottom,order:ttb'
+""" always use a new buffer
+" let g:ctrlp_switch_buffer = 0
+""" ctrlp uses vim's working directory
+" let g:ctrlp_working_path_mode = 0
+""" use ag to search => `g:ctrlp_show_hidden` and `g:ctrlp_custom_ignore` do not work
+let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""'
+
+" }}}
+
+""" NERDCommenter --------------------- {{{
+
 let g:NERDCreateDefaultMappings = 0
 nmap <C-z> <Plug>NERDCommenterToggle
 vmap <C-z> <Plug>NERDCommenterToggle
 
+" }}}
+
+"""NetRW ------------------------------ {{{
+
+let g:netrw_banner = 0
+let g:netrw_liststyle = 3
+" 1 - open files in a new horizontal split
+" 2 - open files in a new vertical split
+" 3 - open files in a new tab
+" 4 - open in previous window
+let g:netrw_browse_split = 4
+" new split is to the right:
+let g:netrw_altv = 1
+let g:netrw_winsize = 83
 
 nnoremap <Leader>] <C-]>            " Jump to ctags tag definition.
 nnoremap <Leader>p :CtrlP<cr>       " Fuzzy complete for files.
 nnoremap <Leader>t :CtrlPTag<cr>    " Fuzzy complete for tags.
+
+" }}}
+
+" vim:foldmethod=marker:foldlevel=0

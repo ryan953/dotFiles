@@ -9,7 +9,7 @@ backup_file () {
   # https://tldp.org/LDP/abs/html/fto.html
   if [ -f "$file" ] && [ ! -h "$file" ]; then
     mv "$file" $file.bak
-    echo "   --- Backed up $file"
+    echo "   --- Backed up: $file"
   fi
 }
 
@@ -42,6 +42,16 @@ ensure_repo () {
   fi
 }
 
+ensure_font () {
+  local release=$1
+  local name=$2
+
+  wget \
+    --output-document /tmp/${name}.zip \
+    https://github.com/ryanoasis/nerd-fonts/releases/download/${release}/${name}.zip
+  unzip -o /tmp/${name}.zip -d ~/.local/share/fonts
+}
+
 check_file_exists () {
 	file=$1
 	message=$2
@@ -61,10 +71,23 @@ init () {
     Darwin)
       echo "###### Installing OSX Dependencies"
       brew install \
+        # universal-ctags \
         ripgrep \
         the_silver_searcher \
         tmux \
         vim
+      brew install --HEAD universal-ctags/universal-ctags/universal-ctags
+
+      # NerdFonts
+      brew tap homebrew/cask-fonts
+      brew cask install font-meslo-for-powerline
+
+      # UI Programs
+      brew cask install \
+        chrome
+
+      # OSX Settings
+      ./install-osx.sh
     ;;
     Linux)
       echo "###### Installing Linux Dependencies"
@@ -75,10 +98,19 @@ init () {
       fi
 
       $Sudo apt-get install -y \
+        universal-ctags \
         ripgrep \
         silversearcher-ag \
         tmux \
+        unzip \
         vim
+
+        # NerdFonts
+        echo "### Download fonts"
+        # ensure_font "v2.1.0" "Meslo"
+        if which fc-cache > /dev/null; then
+          fc-cache -fv
+        fi
     ;;
   esac
 
@@ -108,13 +140,9 @@ init () {
   ensure_repo "fzf" https://github.com/junegunn/fzf.git ~/.fzf
   ~/.fzf/install --key-bindings --completion --no-update-rc
 
-  # Install or update Tmux onedark theme
   ensure_repo "Tmux Theme (clone)" https://github.com/ryan953/tmux-onedark-theme.git ~/.tmux/tmux-onedark-theme
-
   ensure_repo "Tmux Sensible" https://github.com/tmux-plugins/tmux-sensible ~/.tmux/tmux-sensible
-
   ensure_repo "Tmux Prefix Highlight" https://github.com/tmux-plugins/tmux-prefix-highlight.git ~/.tmux/tmux-prefix-highlight
-
   ensure_repo "Tmux fzf" https://github.com/sainnhe/tmux-fzf ~/.tmux/tmux-fzf
 
   # Install or update vundle (depends on vim)

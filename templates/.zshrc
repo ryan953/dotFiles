@@ -16,18 +16,22 @@ fi
 export FZF_DEFAULT_COMMAND='rg --files --hidden'
 export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --inline-info'
 
+if which brew > /dev/null; then
+	alias ctags="$(brew --prefix)/bin/ctags"
+fi
+
 # `curl -L git.io/antigen > dotFiles/templates/.antigen.zsh`
-[[ ! -f ~/.antigen.zsh ]] || source ~/.antigen.zsh
-antigen init ~/.antigenrc
+[[ -f ~/.antigen.zsh ]] && source ~/.antigen.zsh
+[[ -f ~/.antigenrc ]] && antigen init ~/.antigenrc
 
 # https://github.com/romkatv/powerlevel10k
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+[[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh
 
 # Override the generated .p10k.zsh file
-[[ ! -f ~/.p10k.overrides.zsh ]] | source ~/.p10k.overrides.zsh
+[[ -f ~/.p10k.overrides.zsh ]] && source ~/.p10k.overrides.zsh
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+[[ -f ~/.fzf.zsh ]] && source ~/.fzf.zsh
 
 # When you start typing a command and then hit the up key, rather than just replacing
 # what you already typed with the previous command, the shell will instead search
@@ -43,4 +47,4 @@ if test $SSH_AUTH_SOCK && [ $SSH_AUTH_SOCK != $SOCK ]; then
 	export SSH_AUTH_SOCK=$SOCK
 fi
 
-[[ ! -f ~/.zsh.local ]] | source ~/.zsh.local
+[[ -f ~/.zsh.local ]] && source ~/.zsh.local
