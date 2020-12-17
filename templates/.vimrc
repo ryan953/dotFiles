@@ -85,7 +85,7 @@ set tabstop=4
 " Use system clipboard.
 set clipboard=unnamedplus
 
-set mouse=a " Enable mouse scrorling and other behaviors
+set mouse=i " Enable mouse scrolling and other behaviors in insert mode
 
 " Don't complain about unsaved files when switching buffers.
 set hidden
@@ -261,7 +261,7 @@ let g:netrw_liststyle = 3
 " 2 - open files in a new vertical split
 " 3 - open files in a new tab
 " 4 - open in previous window
-let g:netrw_browse_split = 4
+let g:netrw_browse_split = 0
 " new split is to the right:
 let g:netrw_altv = 1
 let g:netrw_winsize = 83
