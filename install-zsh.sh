@@ -71,12 +71,16 @@ init () {
     Darwin)
       echo "###### Installing OSX Dependencies"
       brew install \
-        # universal-ctags \
         ripgrep \
         the_silver_searcher \
         tmux \
         vim
       brew install --HEAD universal-ctags/universal-ctags/universal-ctags
+
+      # Keep homebrew up to date
+      brew install terminal-notifier
+      brew tap domt4/autoupdate
+      brew autoupdate --start --enable-notification
 
       # NerdFonts
       brew tap homebrew/cask-fonts
@@ -84,6 +88,7 @@ init () {
 
       # UI Programs
       brew cask install \
+	alacritty \
         chrome
 
       # OSX Settings

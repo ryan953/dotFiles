@@ -3,9 +3,9 @@ set -e
 
 ###############
 # Can run with:
-# `sh -c "$(wget -O- https://raw.githubusercontent.com/ryan953/dotFiles/master/bootstrap.sh)"`
+# `BRANCH=master && sh -c "$(wget -O- https://raw.githubusercontent.com/ryan953/dotFiles/${BRANCH}/bootstrap.sh)"`
 # or
-# `sh -c "$(curl https://raw.githubusercontent.com/ryan953/dotFiles/master/bootstrap.sh)"`
+# `BRANCH=master && sh -c "$(curl https://raw.githubusercontent.com/ryan953/dotFiles/${BRANCH}/bootstrap.sh)"`
 ###############
 
 cd "$(dirname "$0")"
@@ -22,9 +22,23 @@ install_osx_dependencies () {
   echo "###### Installing dependencies for macOS"
 
   softwareupdate --all --install --force
+  echo "######## Done running software update"
 
-  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
-  brew install git zsh
+  if which brew > /dev/null; then
+    echo "######## Found homebrew"
+    if $(git rev-parse --is-shallow-repository); then
+      echo "########## Making repo's unshallow (this may take a while)..."
+      git -C /usr/local/Homebrew/Library/Taps/homebrew/homebrew-core fetch --unshallow
+      git -C /usr/local/Homebrew/Library/Taps/homebrew/homebrew-cask fetch --unshallow
+    fi
+    echo "######## Updating homebrew..."
+    brew update
+  else
+    echo "######## Installing homebrew"
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+  fi
+  brew list git > /dev/null || brew install git
+  brew list zsh > /dev/null || brew install zsh
 }
 
 install_linux_dependencies () {
@@ -87,7 +101,7 @@ init () {
   else
     echo '###### Cloning ryan953/dotFiles'
     # Using https transport because we havn't setup ssh keys yet!
-    git clone https://github.com/ryan953/dotFiles.git "$HOME/.dotFiles"
+    git clone -b ${BRANCH:-master} https://github.com/ryan953/dotFiles.git "$HOME/.dotFiles"
   fi
 
   "$HOME/.dotFiles/install-zsh.sh"
