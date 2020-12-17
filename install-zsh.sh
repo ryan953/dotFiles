@@ -169,9 +169,18 @@ init () {
   touch ~/.z
 
   # Allow zsh, then change the default
-  sudo sh -c "echo $(which zsh) >> /etc/shells"
-  chsh -s $(which zsh)
-
+  case $OS in
+    Darwin)
+        if [[ $(dscl . -read ~/ UserShell | sed 's/UserShell: //') == $(which zsh) ]]; then
+        echo "Shell set to $(which zsh)"
+      else
+        sudo sh -c "echo $(which zsh) >> /etc/shells"
+        chsh -s $(which zsh)
+      fi
+    ;;
+    Linux)
+    ;;
+  esac
   echo "###### Done"
 
   echo ""
