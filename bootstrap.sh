@@ -105,7 +105,6 @@ init () {
   fi
 
   "$HOME/.dotFiles/install-zsh.sh"
-  chsh -s $(which zsh)
 }
 
 init

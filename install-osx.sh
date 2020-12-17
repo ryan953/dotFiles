@@ -39,7 +39,7 @@ defaults write com.apple.dock autohide -bool true
 
 # Hot corners
 # Possible values:
-#  0: no-op
+#  1: no-op
 #  2: Mission Control
 #  3: Show application windows
 #  4: Desktop

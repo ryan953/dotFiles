@@ -42,6 +42,12 @@ ensure_repo () {
   fi
 }
 
+ensure_brew () {
+  local name=$1
+
+  brew upgrade $name || brew install $name
+}
+
 ensure_font () {
   local release=$1
   local name=$2
@@ -70,11 +76,11 @@ init () {
   case $OS in
     Darwin)
       echo "###### Installing OSX Dependencies"
-      brew upgrade ripgrep || brew install ripgrep
-      brew upgrade the_silver_searcher || brew install the_silver_searcher
-      brew upgrade tmux || brew install tmux
-      brew upgrade vim || brew install vim
-      brew upgrade universal-ctags/universal-ctags/universal-ctags || brew install --HEAD universal-ctags/universal-ctags/universal-ctags
+      ensure_brew ripgrep
+      ensure_brew the_silver_searcher
+      ensure_brew tmux
+      ensure_brew vim
+      ensure_brew universal-ctags/universal-ctags/universal-ctags || brew install --HEAD universal-ctags/universal-ctags/universal-ctags
 
       # Keep homebrew up to date
       brew upgrade terminal-notifier || brew install terminal-notifier
@@ -83,11 +89,13 @@ init () {
 
       # NerdFonts
       brew tap homebrew/cask-fonts
-      brew install --cask font-meslo-for-powerline
+      brew install --cask font-meslo-for-powerline || true
 
       # UI Programs
       brew install --cask alacritty || true
-      brew install --cack google-chrome || true
+      brew install --cask bitwarden || true
+      brew install --cask google-chrome || true
+      brew install --cask slack || true
 
       # OSX Settings
       ./install-osx.sh
@@ -118,13 +126,13 @@ init () {
   esac
 
   echo "###### Linking templates/ to $HOME"
-  for source in $(find $(pwd)/templates -type f -printf "%T@ %p\n" | sort -nr | cut -d\  -f2-); do
+  for source in $(find $(pwd)/templates -type f | sort -nr); do
     dest="${source//$(pwd)\/templates/$HOME}"
     backup_file "$dest"
     link_file "$source" "$dest"
   done
 
-  rm -f "$HOME"/.tmux/version_*
+  rm -f "$HOME"/.tmux/version_* || true
   copy_file "$(pwd)/templates/.tmux/version_1.9_down.conf" "$HOME/.tmux/version_1.9_down.conf"
   copy_file "$(pwd)/templates/.tmux/version_1.9_to_2.1.conf" "$HOME/.tmux/version_1.9_to_2.1.conf"
   copy_file "$(pwd)/templates/.tmux/version_2.1_up.conf" "$HOME/.tmux/version_2.1_up.conf"
@@ -154,6 +162,9 @@ init () {
 
   # File dependency for `z` antigen plugin (see .antigenrc)
   touch ~/.z
+
+  # Change the shell to zsh finally
+  chsh -s $(which zsh)
 
   echo "###### Done"
 
