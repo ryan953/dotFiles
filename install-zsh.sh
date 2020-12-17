@@ -89,7 +89,7 @@ init () {
 
       # NerdFonts
       brew tap homebrew/cask-fonts
-      brew install --cask font-meslo-for-powerline || true
+      brew install --cask font-meslo-lg-nerd-font || true
 
       # UI Programs
       brew install --cask alacritty || true
@@ -163,7 +163,8 @@ init () {
   # File dependency for `z` antigen plugin (see .antigenrc)
   touch ~/.z
 
-  # Change the shell to zsh finally
+  # Allow zsh, then change the default
+  sudo sh -c "echo $(which zsh) >> /etc/shells"
   chsh -s $(which zsh)
 
   echo "###### Done"
@@ -176,7 +177,7 @@ init () {
 
   echo ""
   # https://github.com/romkatv/powerlevel10k/blob/master/README.md#weird-things-happen-after-typing-source-zshrc
-  echo "Start a new zsh session to load changes."
+  echo "Start a new zsh session to load changes. (new tab, or run $(which zsh)"
 }
 
 init
