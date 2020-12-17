@@ -142,8 +142,13 @@ init () {
     Darwin)
       echo 'Host *' > ~/.ssh/config.darwin
       echo '    UseKeychain yes' > ~/.ssh/config.darwin
+
+      echo 'import:' > ~/.alacritty.yml
+      echo "  - $HOME/.alacritty.darwin.yml" >> ~/.alacritty.yml
     ;;
     Linux)
+      echo 'import:' > ~/.alacritty.yml
+      echo "  - $HOME/.alacritty.linux.yml" >> ~/.alacritty.yml
     ;;
   esac
 
