@@ -1,3 +1,5 @@
+#!/usr/bin/env zsh
+
 # From: https://github.com/mathiasbynens/dotfiles/blob/main/.macos
 
 # Trackpad: enable tap to click for this user and for the login screen
@@ -14,7 +16,7 @@ defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
 defaults write com.apple.desktopservices DSDontWriteUSBStores -bool true
 
 # Show the ~/Library folder
-chflags nohidden ~/Library && xattr -d com.apple.FinderInfo ~/Library
+# chflags nohidden ~/Library && xattr -d com.apple.FinderInfo ~/Library
 
 # Finder: show all filename extensions
 defaults write NSGlobalDomain AppleShowAllExtensions -bool true
@@ -61,9 +63,10 @@ defaults write com.apple.dock wvous-bl-modifier -int 0
 defaults write com.apple.dock wvous-bl-corner -int 2
 defaults write com.apple.dock wvous-bl-modifier -int 0
 
-
 for app in \
-	"Dock" \
-	"Finder" \
-	; do
-	killall "${app}" &> /dev/null
+  "Dock" \
+  "Finder" \
+  ; do
+  killall "${app}" &> /dev/null
+done
+

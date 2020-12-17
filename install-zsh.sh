@@ -70,26 +70,24 @@ init () {
   case $OS in
     Darwin)
       echo "###### Installing OSX Dependencies"
-      brew install \
-        ripgrep \
-        the_silver_searcher \
-        tmux \
-        vim
-      brew install --HEAD universal-ctags/universal-ctags/universal-ctags
+      brew upgrade ripgrep || brew install ripgrep
+      brew upgrade the_silver_searcher || brew install the_silver_searcher
+      brew upgrade tmux || brew install tmux
+      brew upgrade vim || brew install vim
+      brew upgrade universal-ctags/universal-ctags/universal-ctags || brew install --HEAD universal-ctags/universal-ctags/universal-ctags
 
       # Keep homebrew up to date
-      brew install terminal-notifier
+      brew upgrade terminal-notifier || brew install terminal-notifier
       brew tap domt4/autoupdate
-      brew autoupdate --start --enable-notification
+      brew autoupdate --start --enable-notification || true
 
       # NerdFonts
       brew tap homebrew/cask-fonts
-      brew cask install font-meslo-for-powerline
+      brew install --cask font-meslo-for-powerline
 
       # UI Programs
-      brew cask install \
-	alacritty \
-        chrome
+      brew install --cask alacritty || true
+      brew install --cack google-chrome || true
 
       # OSX Settings
       ./install-osx.sh
