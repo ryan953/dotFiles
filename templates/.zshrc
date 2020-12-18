@@ -47,4 +47,3 @@ if test $SSH_AUTH_SOCK && [ $SSH_AUTH_SOCK != $SOCK ]; then
 	export SSH_AUTH_SOCK=$SOCK
 fi
 
-[[ -f ~/.zsh.local ]] && source ~/.zsh.local

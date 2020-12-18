@@ -75,6 +75,9 @@ init () {
   OS="$(uname)"
   case $OS in
     Darwin)
+      echo "##### Install Apple Command Line Tools"
+      xcode-select --install || true
+
       echo "###### Installing OSX Dependencies"
       ensure_brew ripgrep
       ensure_brew the_silver_searcher
@@ -185,7 +188,7 @@ init () {
 
   echo ""
   echo "You can extend this setup by editing these files:"
-  check_file_exists "$HOME/.zsh.local" "~/.zsh.local then start a new zsh session"
+  check_file_exists "$HOME/.zprofile" "~/.zprofile then start a new zsh session"
   check_file_exists "$HOME/.gitconfig.local" "~/.gitconfig.local"
   check_file_exists "$HOME/.ssh/config.local" "~/.ssh/config.local"
 
