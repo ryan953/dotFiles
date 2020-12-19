@@ -2,6 +2,9 @@
 " Open/Close folds with: `za` "
 """""""""""""""""""""""""""""""
 
+" Map leader key.
+let mapleader = "\\"
+
 """ Vundle ---------------------------- {{{
 
 set nocompatible           " be iMproved, required for Vundle
@@ -30,6 +33,7 @@ Plugin 'tmux-plugins/vim-tmux-focus-events'
 Plugin 'tmux-plugins/vim-tmux'
 Plugin 'roxma/vim-tmux-clipboard'
 
+Plugin 'liuchengxu/vim-which-key'
 Plugin 'ryanoasis/vim-devicons'
 Plugin 'airblade/vim-gitgutter'
 
@@ -56,6 +60,7 @@ set number      " Show line numbers
 set ruler       " Show row and column ruler information
 set showmatch   " Highlight matching brace
 set wildmenu    " visual autocomplete for command menu
+set wildmode=longest:list,full
 
 set undolevels=1000             " Number of undo levels
 set backspace=indent,eol,start  " Backspace behaviour
@@ -81,6 +86,9 @@ set expandtab
 set shiftwidth=4
 set softtabstop=4
 set tabstop=4
+
+set list
+set listchars=eol:⏎,tab:┊\ ,trail:●,extends:…,precedes:…,space:·
 
 " Use system clipboard.
 set clipboard=unnamedplus
@@ -162,9 +170,6 @@ function! ToggleNumber()
     endif
 endfunc
 
-" Map leader key.
-let mapleader = "\\"
-
 " }}}
 
 """ Bindings -------------------------- {{{
@@ -176,7 +181,6 @@ let mapleader = "\\"
 " :o[nore]map => operator-pending
 
 " }}}
-
 
 """ Within a pane --------------------- {{{
 
