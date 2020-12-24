@@ -39,8 +39,8 @@ Plugin 'airblade/vim-gitgutter'
 
 " Plugin 'weynhamz/vim-plugin-minibufexpl'
 
+Plugin 'https://github.com/ctrlpvim/ctrlp.vim.git'
 " Plugin 'tpope/vim-vinegar'
-" Plugin 'https://github.com/ctrlpvim/ctrlp.vim.git'
 " Plugin 'preservim/tagbar'
 " Plugin 'preservim/nerdcommenter'
 
