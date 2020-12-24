@@ -3,9 +3,9 @@ set -e
 
 ###############
 # Can run with:
-# `BRANCH=master && sh -c "$(wget -O- https://raw.githubusercontent.com/ryan953/dotFiles/${BRANCH}/bootstrap.sh)"`
+# `BRANCH=master && BRANCH=${BRANCH} sh -c "$(wget -O- https://raw.githubusercontent.com/ryan953/dotFiles/${BRANCH}/bootstrap.sh)"`
 # or
-# `BRANCH=master && sh -c "$(curl https://raw.githubusercontent.com/ryan953/dotFiles/${BRANCH}/bootstrap.sh)"`
+# `BRANCH=master && BRANCH=${BRANCH} sh -c "$(curl https://raw.githubusercontent.com/ryan953/dotFiles/${BRANCH}/bootstrap.sh)"`
 ###############
 
 cd "$(dirname "$0")"
