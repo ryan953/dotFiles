@@ -111,8 +111,12 @@ init () {
         Sudo='sudo'
       fi
 
+      if dpkg --compare-versions $(lsb_release -sr) 'le' '18.04' ; then
+        (cd /tmp && curl -LO https://github.com/BurntSushi/ripgrep/releases/download/12.1.1/ripgrep_12.1.1_amd64.deb)
+        $Sudo dpkg -i /tmp/ripgrep_12.1.1_amd64.deb
+      fi
+
       $Sudo apt-get install -y \
-        universal-ctags \
         ripgrep \
         silversearcher-ag \
         tmux \
