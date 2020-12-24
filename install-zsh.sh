@@ -59,16 +59,16 @@ ensure_font () {
 }
 
 check_file_exists () {
-	file=$1
-	message=$2
+  file=$1
+  message=$2
 
-	if [[ -f "$file" ]]; then
-		out="\033[1;32m✔\033[0m"
-	else
-		out="\033[1;31m✘\033[0m"
-	fi
+  if [[ -f "$file" ]]; then
+    out="\033[1;32m✔\033[0m"
+  else
+    out="\033[1;31m✘\033[0m"
+  fi
 
-	printf " $out $message\n"
+  printf " $out $message\n"
 }
 
 init () {
@@ -119,12 +119,12 @@ init () {
         unzip \
         vim
 
-        # NerdFonts
-        echo "### Download fonts"
-        # ensure_font "v2.1.0" "Meslo"
-        if which fc-cache > /dev/null; then
-          fc-cache -fv
-        fi
+      # NerdFonts
+      echo "### Download fonts"
+      # ensure_font "v2.1.0" "Meslo"
+      if which fc-cache > /dev/null; then
+        fc-cache -fv
+      fi
     ;;
   esac
 
@@ -176,7 +176,7 @@ init () {
   # Allow zsh, then change the default
   case $OS in
     Darwin)
-        if [[ $(dscl . -read ~/ UserShell | sed 's/UserShell: //') == $(which zsh) ]]; then
+      if [[ $(dscl . -read ~/ UserShell | sed 's/UserShell: //') == $(which zsh) ]]; then
         echo "Shell set to $(which zsh)"
       else
         sudo sh -c "echo $(which zsh) >> /etc/shells"
