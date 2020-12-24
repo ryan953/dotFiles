@@ -196,7 +196,7 @@ init () {
 
   echo ""
   # https://github.com/romkatv/powerlevel10k/blob/master/README.md#weird-things-happen-after-typing-source-zshrc
-  echo "Start a new zsh session to load changes. (new tab, or run $(which zsh)"
+  echo "Start a new zsh session to load changes. (new tab, or run $(which zsh))"
 }
 
 init
