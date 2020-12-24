@@ -143,13 +143,15 @@ init () {
   echo "###### OS Specific Change to templates"
   case $OS in
     Darwin)
-      echo 'Host *' > ~/.ssh/config.darwin
-      echo '    UseKeychain yes' > ~/.ssh/config.darwin
+      echo 'Include ./config.darwin' >> ~/.ssh/config
+      echo 'Include ./config.local' >> ~/.ssh/config
 
       echo 'import:' > ~/.alacritty.yml
       echo "  - $HOME/.alacritty.darwin.yml" >> ~/.alacritty.yml
     ;;
     Linux)
+      echo 'Include ./config.linux' >> ~/.ssh/config
+      echo 'Include ./config.local' >> ~/.ssh/config
       echo 'import:' > ~/.alacritty.yml
       echo "  - $HOME/.alacritty.linux.yml" >> ~/.alacritty.yml
     ;;
