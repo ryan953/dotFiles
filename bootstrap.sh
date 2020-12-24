@@ -99,7 +99,7 @@ init () {
     echo "###### Pulling changes into $HOME/.dotFiles"
     cd "$HOME/.dotFiles" && git stash -u && git pull
   else
-    echo '###### Cloning ryan953/dotFiles'
+    echo "###### Cloning ryan953/dotFiles ${BRANCH:-master}"
     # Using https transport because we havn't setup ssh keys yet!
     git clone -b ${BRANCH:-master} https://github.com/ryan953/dotFiles.git "$HOME/.dotFiles"
   fi
