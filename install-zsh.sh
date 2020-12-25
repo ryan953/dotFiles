@@ -149,15 +149,10 @@ init () {
     Darwin)
       echo 'Include ./config.darwin' >> ~/.ssh/config
       echo 'Include ./config.local' >> ~/.ssh/config
-
-      echo 'import:' > ~/.alacritty.yml
-      echo "  - $HOME/.alacritty.darwin.yml" >> ~/.alacritty.yml
     ;;
     Linux)
       echo 'Include ./config.linux' >> ~/.ssh/config
       echo 'Include ./config.local' >> ~/.ssh/config
-      echo 'import:' > ~/.alacritty.yml
-      echo "  - $HOME/.alacritty.linux.yml" >> ~/.alacritty.yml
     ;;
   esac
 
