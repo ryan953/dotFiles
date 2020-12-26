@@ -10,6 +10,12 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
+# See the path with:
+echo_path () {
+  echo $PATH  | tr ':' '\n'
+}
+export PATH=$HOME/bin:$PATH
+
 # Use fzf with: The Silver Searcher
 # export FZF_DEFAULT_COMMAND='ag -l --hidden -g ""'
 # Use fzf with: ripgrep

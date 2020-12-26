@@ -139,22 +139,19 @@ init () {
     link_file "$source" "$dest"
   done
 
+  # Files which must be copied, not symlinked
   rm -f "$HOME"/.tmux/version_* || true
   copy_file "$(pwd)/templates/.tmux/version_1.9_down.conf" "$HOME/.tmux/version_1.9_down.conf"
   copy_file "$(pwd)/templates/.tmux/version_1.9_to_2.1.conf" "$HOME/.tmux/version_1.9_to_2.1.conf"
   copy_file "$(pwd)/templates/.tmux/version_2.1_up.conf" "$HOME/.tmux/version_2.1_up.conf"
 
-  echo "###### OS Specific Change to templates"
-  case $OS in
-    Darwin)
-      echo 'Include ./config.darwin' >> ~/.ssh/config
-      echo 'Include ./config.local' >> ~/.ssh/config
-    ;;
-    Linux)
-      echo 'Include ./config.linux' >> ~/.ssh/config
-      echo 'Include ./config.local' >> ~/.ssh/config
-    ;;
-  esac
+  echo "###### Generating config files"
+  for source in $(find $(pwd)/generators -type f | sort -nr); do
+    dest="${source//$(pwd)\/generators/$HOME}"
+    backup_file "$dest"
+    eval "$source" > "$dest"
+    echo "   --- Generated: $dest"
+  done
 
   # Install or update fzf
   ensure_repo "fzf" https://github.com/junegunn/fzf.git ~/.fzf
