@@ -58,17 +58,14 @@ ensure_font () {
   unzip -o /tmp/${name}.zip -d ~/.local/share/fonts
 }
 
-check_file_exists () {
-  file=$1
-  message=$2
+file_exists_indicator () {
+  file="$1:-"
 
   if [[ -f "$file" ]]; then
-    out="\033[1;32m✔\033[0m"
+    printf "\033[1;32m✔\033[0m"
   else
-    out="\033[1;31m✘\033[0m"
+    printf "\033[1;31m✘\033[0m"
   fi
-
-  printf " $out $message\n"
 }
 
 init () {
@@ -186,9 +183,9 @@ init () {
 
   echo ""
   echo "You can extend this setup by editing these files:"
-  check_file_exists "$HOME/.zprofile" "~/.zprofile then start a new zsh session"
-  check_file_exists "$HOME/.gitconfig.local" "~/.gitconfig.local"
-  check_file_exists "$HOME/.ssh/config.local" "~/.ssh/config.local"
+  echo " $(file_exists_indicator "$HOME/.zprofile") ~/.zprofile then start a new zsh session"
+  echo " $(file_exists_indicator "$HOME/.gitconfig.local") ~/.gitconfig.local"
+  echo " $(file_exists_indicator "$HOME/.ssh/config.local") ~/.ssh/config.local"
 
   echo ""
   # https://github.com/romkatv/powerlevel10k/blob/master/README.md#weird-things-happen-after-typing-source-zshrc
