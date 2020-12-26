@@ -1,0 +1,17 @@
+#!/usr/bin/env zsh
+
+echo 'import:'
+echo "  - ${HOME}/.config/alacritty/main.yml"
+
+case $(hostname) in
+  'Ryans-MBP13.local')
+    echo 'font:'
+    echo '  size: 13.0'
+
+    # Thin stroke font rendering (macOS only)
+    # Thin strokes are suitable for retina displays, but for non-retina screens
+    # it is recommended to set `use_thin_strokes` to `false`.
+    echo '  use_thin_strokes: true'
+  ;;
+esac
+
