@@ -1,5 +1,6 @@
-#!/usr/bin/env zsh
-set -e
+#!/usr/bin/env bash
+set -euo pipefail
+IFS=$'\n\t'
 
 cd "$(dirname "$0")"
 
