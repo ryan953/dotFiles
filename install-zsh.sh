@@ -43,9 +43,7 @@ ensure_repo () {
 }
 
 ensure_brew () {
-  local name=$1
-
-  brew upgrade $name || brew install $name
+  brew upgrade ${1} ${2:-} || brew install ${1} ${2:-}
 }
 
 ensure_font () {
@@ -59,7 +57,7 @@ ensure_font () {
 }
 
 file_exists_indicator () {
-  file="$1:-"
+  file="${1:-}"
 
   if [[ -f "$file" ]]; then
     printf "\033[1;32m✔\033[0m"
@@ -83,19 +81,19 @@ init () {
       ensure_brew universal-ctags/universal-ctags/universal-ctags || brew install --HEAD universal-ctags/universal-ctags/universal-ctags
 
       # Keep homebrew up to date
-      brew upgrade terminal-notifier || brew install terminal-notifier
+      ensure_brew terminal-notifier
       brew tap domt4/autoupdate
       brew autoupdate --start --enable-notification || true
 
       # NerdFonts
       brew tap homebrew/cask-fonts
-      brew install --cask font-meslo-lg-nerd-font || true
+      ensure_brew --cask font-meslo-lg-nerd-font
 
       # UI Programs
-      brew install --cask alacritty || true
-      brew install --cask bitwarden || true
-      brew install --cask google-chrome || true
-      brew install --cask slack || true
+      ensure_brew --cask alacritty || true
+      ensure_brew --cask bitwarden || true
+      ensure_brew --cask google-chrome || true
+      ensure_brew --cask slack || true
 
       # OSX Settings
       ./install-osx.sh
