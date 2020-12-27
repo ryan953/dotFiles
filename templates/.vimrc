@@ -1,5 +1,6 @@
 """""""""""""""""""""""""""""""
 " Open/Close folds with: `za` "
+" Reload with `:so $MYVIMRC`
 """""""""""""""""""""""""""""""
 
 " Map leader key.
@@ -34,15 +35,18 @@ Plugin 'tmux-plugins/vim-tmux'
 Plugin 'roxma/vim-tmux-clipboard'
 
 Plugin 'liuchengxu/vim-which-key'
-Plugin 'ryanoasis/vim-devicons'
+
 Plugin 'airblade/vim-gitgutter'
+Plugin 'junegunn/fzf'
+Plugin 'junegunn/fzf.vim'
+Plugin 'preservim/nerdcommenter'
 
 " Plugin 'weynhamz/vim-plugin-minibufexpl'
-
-Plugin 'https://github.com/ctrlpvim/ctrlp.vim.git'
 " Plugin 'tpope/vim-vinegar'
 " Plugin 'preservim/tagbar'
-" Plugin 'preservim/nerdcommenter'
+
+" Must be after Airline, CtrlP, etc.
+Plugin 'ryanoasis/vim-devicons'
 
 """
 " After adding a new plugin, run `:PluginInstall`
@@ -230,22 +234,30 @@ nnoremap <C-A><S-Right> <C-w>5> " Make split wider:
 
 """ Plugins
 
+""" Which Key -------------------------- {{{
+
+" TODO
+
+" }}}
+
 """ GitGutter ------------------------- {{{
 
 let g:gitgutter_map_keys = 0
 
 " }}}
 
-""" CtrlP ----------------------------- {{{
+""" FZF ------------------------------- {{{
 
-""" window on the bottom, show matches top to bottom
-" let g:ctrlp_match_window = 'bottom,order:ttb'
-""" always use a new buffer
-" let g:ctrlp_switch_buffer = 0
-""" ctrlp uses vim's working directory
-" let g:ctrlp_working_path_mode = 0
-""" use ag to search => `g:ctrlp_show_hidden` and `g:ctrlp_custom_ignore` do not work
-let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""'
+"search project files
+nnoremap <leader>p :FZF<cr>
+"search project files by lines of code
+nnoremap <leader>o :Lines<cr>
+"search project files by tags (requirs ctags to be installed)
+nnoremap <leader>t :Tags<cr>
+"search all open files/buffers
+nnoremap <leader>r :Buffers<cr>
+
+let g:fzf_layout = { 'down': '40%' }
 
 " }}}
 
@@ -257,10 +269,11 @@ vmap <C-z> <Plug>NERDCommenterToggle
 
 " }}}
 
-"""NetRW ------------------------------ {{{
+""" NetRW ------------------------------ {{{
 
 let g:netrw_banner = 0
 let g:netrw_liststyle = 3
+" 0 - open file in the same window
 " 1 - open files in a new horizontal split
 " 2 - open files in a new vertical split
 " 3 - open files in a new tab
@@ -270,10 +283,14 @@ let g:netrw_browse_split = 0
 let g:netrw_altv = 1
 let g:netrw_winsize = 83
 
-nnoremap <Leader>] <C-]>            " Jump to ctags tag definition.
-nnoremap <Leader>p :CtrlP<cr>       " Fuzzy complete for files.
-nnoremap <Leader>t :CtrlPTag<cr>    " Fuzzy complete for tags.
+" }}}
+
+""" Devicons --------------------------- {{{
+
+let g:webdevicons_enable_ctrlp = 1
 
 " }}}
+
+nnoremap <Leader>] <C-]>            " Jump to ctags tag definition.
 
 " vim:foldmethod=marker:foldlevel=0

@@ -39,6 +39,8 @@ fi
 
 [[ -f ~/.fzf.zsh ]] && source ~/.fzf.zsh
 
+export FZF_DEFAULT_COMMAND='ag -l --nogroup  --nocolor --hidden -g ""'
+
 # When you start typing a command and then hit the up key, rather than just replacing
 # what you already typed with the previous command, the shell will instead search
 # for the latest command in the history starting with what you already typed.
