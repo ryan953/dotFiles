@@ -16,14 +16,8 @@ echo_path () {
 }
 export PATH=$HOME/bin:$PATH
 
-# Use fzf with: The Silver Searcher
-# export FZF_DEFAULT_COMMAND='ag -l --hidden -g ""'
-# Use fzf with: ripgrep
-export FZF_DEFAULT_COMMAND='rg --files --hidden'
-export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --inline-info'
-
 if which brew > /dev/null; then
-	alias ctags="$(brew --prefix)/bin/ctags"
+  alias ctags="$(brew --prefix)/bin/ctags"
 fi
 
 # `curl -L git.io/antigen > dotFiles/templates/.antigen.zsh`
@@ -39,19 +33,67 @@ fi
 
 [[ -f ~/.fzf.zsh ]] && source ~/.fzf.zsh
 
-export FZF_DEFAULT_COMMAND='ag -l --nogroup  --nocolor --hidden -g ""'
-
 # When you start typing a command and then hit the up key, rather than just replacing
 # what you already typed with the previous command, the shell will instead search
 # for the latest command in the history starting with what you already typed.
 bindkey '^[[A' up-line-or-search # up arrow
 bindkey '^[[B' down-line-or-search # down arrow
 
+### FZF {{{
+# `fd` config via: https://medium.com/better-programming/boost-your-command-line-productivity-with-fuzzy-finder-985aa162ba5d#6480
+
+FZF_PREVIEW_FILES="([[ -f {} ]] && (bat --style=numbers --color=always {} || cat {}))"
+FZF_PREVIEW_DIRS="([[ -d {} ]] && (exa --tree --level 3 {} --color=always --all))"
+FZF_PREVIEW="--preview '$FZF_PREVIEW_FILES || $FZF_PREVIEW_DIRS || echo {} 2> /dev/null | head -200'"
+FZF_LAYOUT='--height 40% --inline-info'
+FZF_OPTS="--preview-window=:hidden --bind '?:toggle-preview'"
+
+if command -v fd &> /dev/null; then
+  export FZF_DEFAULT_COMMAND="fd --hidden --follow --exclude .git"
+  export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+  export FZF_ALT_C_COMMAND="$FZF_DEFAULT_COMMAND --type d"
+
+  _fzf_compgen_path() {
+    fd --hidden --follow --exclude .git . "$1"
+  }
+  _fzf_compgen_dir() {
+    fd --hidden --follow --exclude .git --type d . "$1"
+  }
+elif command -v rg &> /dev/null; then
+    export FZF_DEFAULT_COMMAND='rg --sort-files --files --hidden -g "!.git/"'
+elif command -v ag &> /dev/null; then
+    export FZF_DEFAULT_COMMAND='ag -l --hidden -g ""'
+fi
+export FZF_DEFAULT_OPTS="$FZF_PREVIEW"
+
+#export FZF_CTRL_T_COMMAND=""
+export FZF_CTRL_T_OPTS="$FZF_PREVIEW $FZF_LAYOUT $FZF_OPTS"
+#export FZF_ALT_C_COMMAND=""
+export FZF_ALT_C_OPTS="$FZF_PREVIEW $FZF_LAYOUT $FZF_OPTS"
+
+# }}}
+
+### Z with FZF {{{
+# Via: https://medium.com/better-programming/boost-your-command-line-productivity-with-fuzzy-finder-985aa162ba5d
+# like normal z when used with arguments but displays an fzf prompt when used without.
+unalias z 2> /dev/null
+z() {
+    [ $# -gt 0 ] && _z "$*" && return
+    cd "$(_z -l 2>&1 | fzf --height 40% --nth 2.. --reverse --inline-info +s --tac --query "${*##-* }" | sed 's/^[0-9,.]* *//')"
+}
+
+# }}}
+
+### SSH Socket {{{
+
 # Predictable SSH authentication socket location.
 SOCK="/tmp/ssh-agent-$USER-screen"
 if test $SSH_AUTH_SOCK && [ $SSH_AUTH_SOCK != $SOCK ]; then
-	rm -f /tmp/ssh-agent-$USER-screen
-	ln -sf $SSH_AUTH_SOCK $SOCK
-	export SSH_AUTH_SOCK=$SOCK
+    rm -f /tmp/ssh-agent-$USER-screen
+    ln -sf $SSH_AUTH_SOCK $SOCK
+    export SSH_AUTH_SOCK=$SOCK
 fi
 
+# }}}
+
+# vim:foldmethod=marker:foldlevel=0

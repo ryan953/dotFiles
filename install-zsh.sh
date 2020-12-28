@@ -75,11 +75,14 @@ init () {
       xcode-select --install || true
 
       echo "###### Installing OSX Dependencies"
+      ensure_brew bat
+      ensure_brew exa
+      ensure_brew fd
       ensure_brew ripgrep
       ensure_brew the_silver_searcher
       ensure_brew tmux
+      ensure_brew --HEAD universal-ctags/universal-ctags/universal-ctags
       ensure_brew vim
-      ensure_brew universal-ctags/universal-ctags/universal-ctags || brew install --HEAD universal-ctags/universal-ctags/universal-ctags
 
       # Keep homebrew up to date
       ensure_brew terminal-notifier

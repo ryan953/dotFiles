@@ -1,7 +1,8 @@
-"""""""""""""""""""""""""""""""
-" Open/Close folds with: `za` "
-" Reload with `:so $MYVIMRC`
-"""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""
+" Edit vimrc with:    `<Leader>ve`"
+" Reload vimrc with:  `<Leader>vr`"
+" Open/Close folds with:      `za`"
+"""""""""""""""""""""""""""""""""""
 
 " Map leader key.
 let mapleader = "\\"
@@ -42,7 +43,6 @@ Plugin 'junegunn/fzf.vim'
 Plugin 'preservim/nerdcommenter'
 
 " Plugin 'weynhamz/vim-plugin-minibufexpl'
-" Plugin 'tpope/vim-vinegar'
 " Plugin 'preservim/tagbar'
 
 " Must be after Airline, CtrlP, etc.
