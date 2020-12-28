@@ -7,17 +7,17 @@ export TERM=xterm-256color
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+    source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
 # See the path with:
 echo_path () {
-  echo $PATH  | tr ':' '\n'
+    echo $PATH  | tr ':' '\n'
 }
 export PATH=$HOME/bin:$PATH
 
 if which brew > /dev/null; then
-  alias ctags="$(brew --prefix)/bin/ctags"
+    alias ctags="$(brew --prefix)/bin/ctags"
 fi
 
 # `curl -L git.io/antigen > dotFiles/templates/.antigen.zsh`
@@ -49,16 +49,16 @@ FZF_LAYOUT='--height 40% --inline-info'
 FZF_OPTS="--preview-window=:hidden --bind '?:toggle-preview'"
 
 if command -v fd &> /dev/null; then
-  export FZF_DEFAULT_COMMAND="fd --hidden --follow --exclude .git"
-  export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-  export FZF_ALT_C_COMMAND="$FZF_DEFAULT_COMMAND --type d"
+    export FZF_DEFAULT_COMMAND="fd --hidden --follow --exclude .git"
+    export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+    export FZF_ALT_C_COMMAND="$FZF_DEFAULT_COMMAND --type d"
 
-  _fzf_compgen_path() {
-    fd --hidden --follow --exclude .git . "$1"
-  }
-  _fzf_compgen_dir() {
+    _fzf_compgen_path() {
+        fd --hidden --follow --exclude .git . "$1"
+    }
+_fzf_compgen_dir() {
     fd --hidden --follow --exclude .git --type d . "$1"
-  }
+}
 elif command -v rg &> /dev/null; then
     export FZF_DEFAULT_COMMAND='rg --sort-files --files --hidden -g "!.git/"'
 elif command -v ag &> /dev/null; then
@@ -75,6 +75,7 @@ export FZF_ALT_C_OPTS="$FZF_PREVIEW $FZF_LAYOUT $FZF_OPTS"
 
 ### Z with FZF {{{
 # Via: https://medium.com/better-programming/boost-your-command-line-productivity-with-fuzzy-finder-985aa162ba5d
+
 # like normal z when used with arguments but displays an fzf prompt when used without.
 unalias z 2> /dev/null
 z() {
