@@ -48,6 +48,17 @@ Plugin 'preservim/nerdcommenter'
 " Must be after Airline, CtrlP, etc.
 Plugin 'ryanoasis/vim-devicons'
 
+" Defined before `vim-buffet` is loaded:
+function! g:BuffetSetCustomColors()
+  hi! BuffetCurrentBuffer cterm=none ctermbg=7 ctermfg=0 guibg=#000000
+  hi! BuffetActiveBuffer cterm=none ctermbg=0 ctermfg=7
+  hi! BuffetBuffer cterm=none ctermbg=0 ctermfg=7
+  hi! BuffetTrunc cterm=none ctermbg=0 ctermfg=8
+  hi! BuffetTab cterm=none ctermbg=0 ctermfg=7
+endfunction
+" Must be after vim-devicons
+Plugin 'bagrat/vim-buffet'
+
 """
 " After adding a new plugin, run `:PluginInstall`
 """
@@ -111,7 +122,7 @@ set autoread
 """ Colors & Airline Settings --------- {{{
 let g:airline_powerline_fonts = 0
 let g:airline_theme = 'onedark'
-let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#enabled = 0
 let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
 
 "Use 24-bit (true-color) mode in Vim/Neovim when outside tmux.
@@ -183,6 +194,8 @@ endfunc
 " :n[nore]map => normal mode
 " :v[nore]map => visual + select
 " :o[nore]map => operator-pending
+
+nnoremap <Leader>] <C-]>            " Jump to ctags tag definition.
 
 " }}}
 
@@ -291,6 +304,27 @@ let g:webdevicons_enable_ctrlp = 1
 
 " }}}
 
-nnoremap <Leader>] <C-]>            " Jump to ctags tag definition.
+""" Buffet ----------------------------- {{{
+
+let g:buffet_powerline_separators = 0
+
+nmap <leader>1 <Plug>BuffetSwitch(1)
+nmap <leader>2 <Plug>BuffetSwitch(2)
+nmap <leader>3 <Plug>BuffetSwitch(3)
+nmap <leader>4 <Plug>BuffetSwitch(4)
+nmap <leader>5 <Plug>BuffetSwitch(5)
+nmap <leader>6 <Plug>BuffetSwitch(6)
+nmap <leader>7 <Plug>BuffetSwitch(7)
+nmap <leader>8 <Plug>BuffetSwitch(8)
+nmap <leader>9 <Plug>BuffetSwitch(9)
+nmap <leader>0 <Plug>BuffetSwitch(10)
+
+noremap <Tab> :bn<CR>
+noremap <S-Tab> :bp<CR>
+noremap <Leader><Tab> :Bw<CR>
+noremap <Leader><S-Tab> :Bw!<CR>
+noremap <C-t> :tabnew split<CR>
+
+" }}}
 
 " vim:foldmethod=marker:foldlevel=0
