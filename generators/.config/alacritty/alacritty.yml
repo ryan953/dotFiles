@@ -9,13 +9,12 @@ echo "  - ${HOME}/.config/alacritty/main.yml"
 
 host=$(echo -n hostname | openssl sha1 -binary | base64)
 case $host in
-  'hGGjvsmJw+Exer0tSTYXWYgZIl0=')
+  'cJOB6XDS1mnuHRtIRKbd6dm2PHc=') # personal
     echo 'font:'
     echo '  size: 13.0'
-
     echo '  use_thin_strokes: true'
   ;;
-  'cJOB6XDS1mnuHRtIRKbd6dm2PHc=')
+  'hGGjvsmJw+Exer0tSTYXWYgZIl0=') # work
     echo 'font:'
     echo '  size: 14.0'
     echo '  use_thin_strokes: true'
