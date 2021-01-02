@@ -78,6 +78,7 @@ init () {
       ensure_brew bat
       ensure_brew exa
       ensure_brew fd
+      ensure_brew jq
       ensure_brew ripgrep
       ensure_brew the_silver_searcher
       ensure_brew tmux
