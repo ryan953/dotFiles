@@ -143,6 +143,7 @@ init () {
         vim
 
       (cd /tmp && curl -LO https://github.com/ogham/exa/releases/download/v0.9.0/exa-linux-x86_64-0.9.0.zip && unzip exa-linux-x86_64-0.9.0.zip -d ~/bin)
+      ln -s exa-linux-x86_64 exa
 
       # NerdFonts
       echo "### Download fonts"
