@@ -43,9 +43,14 @@ bindkey '^[[B' down-line-or-search # down arrow
 
 export TIME_STYLE=long-iso
 alias cat='bat'
+
 alias ll='exa -l --group --git'
 alias la='exa -l --group --git --all'
 alias tree='exa -l --group --git --all --tree --level=2'
+
+alias ag='ag --hidden'
+alias rg='rg --hidden'
+
 alias top='htop'
 
 # }}}
