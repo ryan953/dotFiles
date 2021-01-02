@@ -96,6 +96,7 @@ init () {
       ensure_brew exa
       ensure_brew fd
       ensure_brew git
+      ensure_brew git-delta
       ensure_brew htop
       ensure_brew jq
       ensure_brew ripgrep
@@ -127,6 +128,8 @@ init () {
       local Sudo=$(sudo_cmd)
 
       install_dpkg https://github.com/sharkdp/bat/releases/download/v0.17.1/bat_0.17.1_amd64.deb
+
+      install_dpkg https://github.com/dandavison/delta/releases/download/0.5.0/git-delta_0.5.0_amd64.deb 
 
       install_dpkg https://github.com/sharkdp/fd/releases/download/v8.2.1/fd_8.2.1_amd64.deb
 

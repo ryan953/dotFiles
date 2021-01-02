@@ -18,12 +18,29 @@
 [core]
   editor = vim
   excludesfile = ~/.gitignore
-  pager = diff-so-fancy | less --tabs=4 -RFX
+  pager = delta
 
 [color]
   branch = auto
   diff = auto
   status = auto
+
+[interactive]
+    diffFilter = delta --color-only
+
+[delta]
+    features = line-numbers
+    whitespace-error-style = 22 reverse
+    syntax-theme = TwoDark
+    navigate = true
+    tabs = 2
+    file-style = bold purple
+    file-decoration-style = purple box
+    hunk-header-style = syntax file line-number
+    hunk-header-decoration-style = purple ul
+    line-numbers-left-format = {nm:^4}
+    line-numbers-right-format = {np:^4}
+    plus-style = syntax 22 bold
 
 [branch]
   # rebase during `git pull` instead of making merge commits
@@ -40,9 +57,6 @@
   ; mnemonicprefix = true
   # Beta heuristic to make add/remove boundaries try to start at blank lines
   compactionHeuristic = true
-
-[interactive]
-  diffFilter = diff-highlight
 
 [alias]
   st = status
