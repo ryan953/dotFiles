@@ -35,8 +35,6 @@ Plugin 'tmux-plugins/vim-tmux-focus-events'
 Plugin 'tmux-plugins/vim-tmux'
 Plugin 'roxma/vim-tmux-clipboard'
 
-Plugin 'liuchengxu/vim-which-key'
-
 Plugin 'airblade/vim-gitgutter'
 Plugin 'junegunn/fzf'
 Plugin 'junegunn/fzf.vim'
@@ -246,12 +244,6 @@ nnoremap <C-A><S-Right> <C-w>5> " Make split wider:
 " }}}
 
 """ Plugins
-
-""" Which Key -------------------------- {{{
-
-" TODO
-
-" }}}
 
 """ GitGutter ------------------------- {{{
 
