@@ -3,14 +3,29 @@
 echo 'import:'
 echo "  - ${HOME}/.config/alacritty/main.yml"
 
-case $(hostname) in
-  'Ryans-MBP13.local')
+# Thin stroke font rendering (macOS only)
+# Thin strokes are suitable for retina displays, but for non-retina screens
+# it is recommended to set `use_thin_strokes` to `false`.
+
+host=$(echo -n hostname | openssl sha1 -binary | base64)
+case $host in
+  'hGGjvsmJw+Exer0tSTYXWYgZIl0=')
     echo 'font:'
     echo '  size: 13.0'
 
-    # Thin stroke font rendering (macOS only)
-    # Thin strokes are suitable for retina displays, but for non-retina screens
-    # it is recommended to set `use_thin_strokes` to `false`.
+    echo '  use_thin_strokes: true'
+  ;;
+  'cJOB6XDS1mnuHRtIRKbd6dm2PHc=')
+    echo 'font:'
+    echo '  size: 14.0'
+    echo '  use_thin_strokes: true'
+  *)
+    echo '### No hash for hostname found'
+    echo '# Get the has by running:'
+    echo '#   echo -n hostname | openssl sha1 -binary | base64'
+    echo ''
+    echo 'font:'
+    echo '  size: 13.0'
     echo '  use_thin_strokes: true'
   ;;
 esac
