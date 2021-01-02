@@ -95,6 +95,7 @@ init () {
       ensure_brew bat
       ensure_brew exa
       ensure_brew fd
+      ensure_brew git
       ensure_brew htop
       ensure_brew jq
       ensure_brew ripgrep
@@ -134,6 +135,7 @@ init () {
       $Sudo apt-get install -y \
         bat \
         fd \
+        git \
         htop \
         jq \
         ripgrep \
