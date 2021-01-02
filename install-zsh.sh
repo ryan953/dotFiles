@@ -70,7 +70,7 @@ install_dpkg () {
   local filename=$(basename ${url})
   local Sudo=$(sudo_cmd)
 
-  (cd /tmp && curl -L0 "${url}")
+  (cd /tmp && curl -LO "${url}")
   $Sudo dpkg -i "/tmp/${filename}"
 }
 
@@ -127,6 +127,8 @@ init () {
 
       install_dpkg https://github.com/sharkdp/bat/releases/download/v0.17.1/bat_0.17.1_amd64.deb
 
+      install_dpkg https://github.com/sharkdp/fd/releases/download/v8.2.1/fd_8.2.1_amd64.deb
+
       install_dpkg https://github.com/BurntSushi/ripgrep/releases/download/12.1.1/ripgrep_12.1.1_amd64.deb
 
       $Sudo apt-get install -y \
@@ -140,8 +142,7 @@ init () {
         unzip \
         vim
 
-      (cd /tmp && curl -L0 https://github.com/ogham/exa/releases/download/v0.9.0/exa-linux-x86_64-0.9.0.zip)
-      unzip exa-linux-x86_64-0.9.0.zip -d ~/bin
+      (cd /tmp && curl -LO https://github.com/ogham/exa/releases/download/v0.9.0/exa-linux-x86_64-0.9.0.zip && unzip exa-linux-x86_64-0.9.0.zip -d ~/bin)
 
       # NerdFonts
       echo "### Download fonts"
