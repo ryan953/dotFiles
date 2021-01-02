@@ -41,7 +41,11 @@ bindkey '^[[B' down-line-or-search # down arrow
 
 ### Aliases {{{
 
+export TIME_STYLE=long-iso
 alias cat='bat'
+alias ll='exa -l --group --git'
+alias la='exa -l --group --git --all'
+alias tree='exa -l --group --git --all --tree --level=2'
 alias top='htop'
 
 # }}}
