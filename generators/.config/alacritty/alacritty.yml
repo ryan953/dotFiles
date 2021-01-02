@@ -19,6 +19,7 @@ case $host in
     echo 'font:'
     echo '  size: 14.0'
     echo '  use_thin_strokes: true'
+  ;;
   *)
     echo '### No hash for hostname found'
     echo '# Get the has by running:'
