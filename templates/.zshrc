@@ -39,6 +39,13 @@ fi
 bindkey '^[[A' up-line-or-search # up arrow
 bindkey '^[[B' down-line-or-search # down arrow
 
+### Aliases {{{
+
+alias cat='bat'
+alias top='htop'
+
+# }}}
+
 ### FZF {{{
 # `fd` config via: https://medium.com/better-programming/boost-your-command-line-productivity-with-fuzzy-finder-985aa162ba5d#6480
 

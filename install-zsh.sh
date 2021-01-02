@@ -57,6 +57,23 @@ ensure_font () {
   unzip -o /tmp/${name}.zip -d ~/.local/share/fonts
 }
 
+sudo_cmd () {
+  if [ "`id -u`" = "0" ]; then
+    echo ''
+  elif which sudo; then
+    echo 'sudo'
+  fi
+}
+
+install_dpkg () {
+  local url="${1}"
+  local filename=$(basename ${url})
+  local Sudo=$(sudo_cmd)
+
+  (cd /tmp && curl -L0 "${url}")
+  $Sudo dpkg -i "/tmp/${filename}"
+}
+
 file_exists_indicator () {
   file="${1:-}"
 
@@ -78,6 +95,7 @@ init () {
       ensure_brew bat
       ensure_brew exa
       ensure_brew fd
+      ensure_brew htop
       ensure_brew jq
       ensure_brew ripgrep
       ensure_brew the_silver_searcher
@@ -105,23 +123,25 @@ init () {
     ;;
     Linux)
       echo "###### Installing Linux Dependencies"
-      if [ "`id -u`" = "0" ]; then
-        Sudo=''
-      elif which sudo; then
-        Sudo='sudo'
-      fi
+      local Sudo=$(sudo_cmd)
 
-      if dpkg --compare-versions $(lsb_release -sr) 'le' '18.04' ; then
-        (cd /tmp && curl -LO https://github.com/BurntSushi/ripgrep/releases/download/12.1.1/ripgrep_12.1.1_amd64.deb)
-        $Sudo dpkg -i /tmp/ripgrep_12.1.1_amd64.deb
-      fi
+      install_dpkg https://github.com/sharkdp/bat/releases/download/v0.17.1/bat_0.17.1_amd64.deb
+
+      install_dpkg https://github.com/BurntSushi/ripgrep/releases/download/12.1.1/ripgrep_12.1.1_amd64.deb
 
       $Sudo apt-get install -y \
+        bat \
+        fd \
+        htop \
+        jq \
         ripgrep \
         silversearcher-ag \
         tmux \
         unzip \
         vim
+
+      (cd /tmp && curl -L0 https://github.com/ogham/exa/releases/download/v0.9.0/exa-linux-x86_64-0.9.0.zip)
+      unzip exa-linux-x86_64-0.9.0.zip -d ~/bin
 
       # NerdFonts
       echo "### Download fonts"
