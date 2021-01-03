@@ -102,7 +102,6 @@ init () {
       ensure_brew ripgrep
       ensure_brew the_silver_searcher
       ensure_brew tmux
-      ensure_brew --HEAD universal-ctags/universal-ctags/universal-ctags
       ensure_brew vim
 
       # Keep homebrew up to date

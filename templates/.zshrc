@@ -74,9 +74,9 @@ if command -v fd &> /dev/null; then
     _fzf_compgen_path() {
         fd --hidden --follow --exclude .git . "$1"
     }
-_fzf_compgen_dir() {
-    fd --hidden --follow --exclude .git --type d . "$1"
-}
+    _fzf_compgen_dir() {
+        fd --hidden --follow --exclude .git --type d . "$1"
+    }
 elif command -v rg &> /dev/null; then
     export FZF_DEFAULT_COMMAND='rg --sort-files --files --hidden -g "!.git/"'
 elif command -v ag &> /dev/null; then

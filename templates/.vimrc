@@ -37,6 +37,7 @@ Plugin 'roxma/vim-tmux-clipboard'
 
 Plugin 'sheerun/vim-polyglot'
 Plugin 'airblade/vim-gitgutter'
+Plugin 'ludovicchabant/vim-gutentags'
 Plugin 'junegunn/fzf'
 Plugin 'junegunn/fzf.vim'
 Plugin 'preservim/nerdcommenter'
