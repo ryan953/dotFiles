@@ -16,7 +16,7 @@ echo_path () {
 }
 export PATH=$HOME/bin:$PATH
 
-if which brew > /dev/null; then
+if command -v brew > /dev/null; then
     alias ctags="$(brew --prefix)/bin/ctags"
 fi
 
@@ -33,6 +33,8 @@ fi
 
 [[ -f ~/.fzf.zsh ]] && source ~/.fzf.zsh
 
+export EDITOR=$(command -v vim)
+export VISUAL=$(command -v vim)
 export BAT_THEME="TwoDark"
 
 # When you start typing a command and then hit the up key, rather than just replacing

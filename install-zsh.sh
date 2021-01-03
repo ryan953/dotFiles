@@ -60,7 +60,7 @@ ensure_font () {
 sudo_cmd () {
   if [ "`id -u`" = "0" ]; then
     echo ''
-  elif which sudo; then
+  elif command -v sudo; then
     echo 'sudo'
   fi
 }
@@ -158,7 +158,7 @@ init () {
       # NerdFonts
       echo "### Download fonts"
       # ensure_font "v2.1.0" "Meslo"
-      if which fc-cache > /dev/null; then
+      if command -v fc-cache > /dev/null; then
         fc-cache -fv
       fi
     ;;
@@ -204,11 +204,12 @@ init () {
   # Allow zsh, then change the default
   case $OS in
     Darwin)
-      if [[ $(dscl . -read ~/ UserShell | sed 's/UserShell: //') == $(which zsh) ]]; then
-        echo "Shell set to $(which zsh)"
+      zsh_path=$(command -v zsh)
+      if [[ $(dscl . -read ~/ UserShell | sed 's/UserShell: //') == $zsh_path ]]; then
+        echo "Shell set to $zsh_path"
       else
-        sudo sh -c "echo $(which zsh) >> /etc/shells"
-        chsh -s $(which zsh)
+        sudo sh -c "echo $zsh_path >> /etc/shells"
+        chsh -s $zsh_path
       fi
     ;;
     Linux)
@@ -224,7 +225,7 @@ init () {
 
   echo ""
   # https://github.com/romkatv/powerlevel10k/blob/master/README.md#weird-things-happen-after-typing-source-zshrc
-  echo "Start a new zsh session to load changes. (new tab, or run $(which zsh))"
+  echo "Start a new zsh session to load changes. (new tab, or run $(command -v zsh))"
 }
 
 init

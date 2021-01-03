@@ -34,13 +34,17 @@
     syntax-theme = TwoDark
     navigate = true
     tabs = 2
+    diff-so-fancy = true
     file-style = bold purple
-    file-decoration-style = purple box
+    file-decoration-style = purple ul
     hunk-header-style = syntax file line-number
-    hunk-header-decoration-style = purple ul
+    hunk-header-decoration-style = purple
     line-numbers-left-format = {nm:^4}
     line-numbers-right-format = {np:^4}
-    plus-style = syntax 22 bold
+    # plus-style = normal bold
+    # plus-emph-style = normal 22 bold
+    # minus-style = normal
+    # minus-emph-style = normal auto
 
 [branch]
   # rebase during `git pull` instead of making merge commits
