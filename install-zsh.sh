@@ -144,10 +144,19 @@ init () {
         jq \
         ripgrep \
         silversearcher-ag \
-        tmux \
         unzip \
         vim
 
+      if dpkg --compare-versions $(lsb_release -sr) 'le' '18.04' ; then
+        (
+          cd ~/bin \
+          && curl -LO https://github.com/nelsonenzo/tmux-appimage/releases/download/3.0a-appimage0.2.0/tmux-3.0a-x86_64.AppImage
+        )
+        ln -sf ~/bin/tmux-3.0a-x86_64.AppImage ~/bin/tmux
+      else
+        $Sudo apt-get install -y tmux
+      fi
+      
       (
         cd /tmp \
         && curl -LO https://github.com/ogham/exa/releases/download/v0.9.0/exa-linux-x86_64-0.9.0.zip \
