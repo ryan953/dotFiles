@@ -26,25 +26,25 @@
   status = auto
 
 [interactive]
-    diffFilter = delta --color-only
+  diffFilter = delta --color-only
 
 [delta]
-    features = line-numbers
-    whitespace-error-style = 22 reverse
-    syntax-theme = TwoDark
-    navigate = true
-    tabs = 2
-    diff-so-fancy = true
-    file-style = bold purple
-    file-decoration-style = purple ul
-    hunk-header-style = syntax file line-number
-    hunk-header-decoration-style = purple
-    line-numbers-left-format = {nm:^4}
-    line-numbers-right-format = {np:^4}
-    # plus-style = normal bold
-    # plus-emph-style = normal 22 bold
-    # minus-style = normal
-    # minus-emph-style = normal auto
+  features = line-numbers
+  whitespace-error-style = 22 reverse
+  syntax-theme = TwoDark
+  navigate = true
+  tabs = 2
+  diff-so-fancy = true
+  file-style = bold purple
+  file-decoration-style = purple ul
+  hunk-header-style = syntax file line-number
+  hunk-header-decoration-style = purple
+  line-numbers-left-format = {nm:^4}
+  line-numbers-right-format = {np:^4}
+  # plus-style = normal bold
+  # plus-emph-style = normal 22 bold
+  # minus-style = normal
+  # minus-emph-style = normal auto
 
 [branch]
   # rebase during `git pull` instead of making merge commits
@@ -69,7 +69,7 @@
   reauthor = commit --amend --reset-author --no-edit
   # reauthor = !sh -c 'eval `git log --reverse --topo-order --pretty=format:\"git cherry-pick %H &&  git commit --amend -C %H --author=\\\"%aN <%aE>\\\" && \" $0 ` "echo success" '
   review = !GIT_CURRENT_BRANCH=$(git name-rev --name-only HEAD) && git log -p origin/$GIT_CURRENT_BRANCH..$GIT_CURRENT_BRANCH
-  tree = log --all --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%C(bold blue)<%an>%Creset'
+  tree = !GIT_PAGER='less -FX' git log --all --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%C(bold blue)<%an>%Creset'
   files = diff-tree --no-commit-id --name-only -r HEAD
 [pull]
 	rebase = false
