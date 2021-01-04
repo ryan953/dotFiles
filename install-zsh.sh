@@ -128,6 +128,8 @@ init () {
 
       install_dpkg https://github.com/sharkdp/bat/releases/download/v0.17.1/bat_0.17.1_amd64.deb
 
+      # libgcc-s1 >= 4.2 is needed for delta on 18.04
+      $Sudo apt-get install -y libgcc-s1
       install_dpkg https://github.com/dandavison/delta/releases/download/0.5.0/git-delta_0.5.0_amd64.deb 
 
       install_dpkg https://github.com/sharkdp/fd/releases/download/v8.2.1/fd_8.2.1_amd64.deb
