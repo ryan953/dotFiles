@@ -164,7 +164,7 @@ colorscheme onedark
 """ Functions ------------------------- {{{
 
 " Trim trailing whitespace in the file.
-command TrimWhitespace %s/\s\+$//e
+command! TrimWhitespace %s/\s\+$//e
 
 " strips trailing whitespace at the end of files. this
 " is called on buffer write in the autogroup above.
@@ -200,10 +200,6 @@ endfunc
 
 nnoremap <Leader>] <C-]>            " Jump to ctags tag definition.
 
-" }}}
-
-""" Within a pane --------------------- {{{
-
 nnoremap <Leader>ve :e $MYVIMRC<cr>  " Edit .vimrc file
 nnoremap <Leader>vr :so $MYVIMRC<cr> " Reload .vimrc file
 nnoremap <Leader>rr :redraw!<cr>     " Redraw screen to fix visual problems
@@ -217,7 +213,7 @@ nnoremap k gk
 
 """ Buffers & Splits ------------------ {{{
 nnoremap <leader>T :enew<cr> " To open a new empty buffer
-nnoremap <leader>bq :bp <BAR> bd #<CR> " Close buffer and move to previous
+nnoremap <leader>bq :bp<bar>sp<bar>bn<bar>bd<CR> " Close buffer and move to previos
 
 set splitbelow
 set splitright
@@ -253,6 +249,12 @@ nnoremap <C-A><S-Right> <C-w>5> " Make split wider:
 """ GitGutter ------------------------- {{{
 
 let g:gitgutter_map_keys = 0
+
+" }}}
+
+""" GutenTags ------------------------- {{{
+
+let g:gutentags_ctags_exclude = ["*.min.js", "*.min.css", "build", "vendor", ".git", "node_modules", "*.vim/bundle/*"]
 
 " }}}
 
