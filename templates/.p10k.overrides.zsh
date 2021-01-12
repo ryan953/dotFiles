@@ -1,8 +1,6 @@
 () {
   # Formatter for Git status.
   #
-  # Example output: master ⇣42⇡42 *42 merge ~42 +42 !42 ?42.
-  #
   # You can edit the function to customize how Git status looks.
   #
   # VCS_STATUS_* parameters are set by gitstatus plugin. See reference:
@@ -48,6 +46,7 @@
     # Display the current Git commit if there is no branch or tag.
     # Tip: To always display the current Git commit, remove `[[ -z $where ]] &&` from the next line.
     [[ -z $where ]] && res+="${meta}@${clean}${VCS_STATUS_COMMIT[1,8]}"
+    [[ -n $VCS_STATUS_ACTION ]] && res+=" ${my_branch_color}(${VCS_STATUS_ACTION})"
 
     typeset -g ryans_git_format=$res
   }
@@ -56,46 +55,6 @@
 
   typeset -g POWERLEVEL9K_VCS_CONTENT_EXPANSION='${$((ryans_git_formatter(1)))+${ryans_git_format}}'
   typeset -g POWERLEVEL9K_VCS_LOADING_CONTENT_EXPANSION='${$((ryans_git_formatter(0)))+${ryans_git_format}}'
-
-  function prompt_dotfile_repo_state() {
-    pushd ~/.dotFiles &> /dev/null
-    git fetch origin
-    __GIT_PROMPT_DIR=~/.antigen/bundles/robbyrussell/oh-my-zsh/plugins/git-prompt
-    local gitstatus="$__GIT_PROMPT_DIR/gitstatus.py"
-    popd &> /dev/null
-
-    _GIT_STATUS=$(python ${gitstatus} 2>/dev/null)
-    __CURRENT_GIT_STATUS=("${(@s: :)_GIT_STATUS}")
-    GIT_BRANCH=$__CURRENT_GIT_STATUS[1]
-    GIT_AHEAD=$__CURRENT_GIT_STATUS[2]
-    GIT_BEHIND=$__CURRENT_GIT_STATUS[3]
-    GIT_STAGED=$__CURRENT_GIT_STATUS[4]
-    GIT_CONFLICTS=$__CURRENT_GIT_STATUS[5]
-    GIT_CHANGED=$__CURRENT_GIT_STATUS[6]
-    GIT_UNTRACKED=$__CURRENT_GIT_STATUS[7]
-
-    DIRTY=''
-    if [ "$GIT_AHEAD" -ne "0" ]; then
-      DIRTY='%B%1FdotFiles ✘'
-    fi
-    if [ "$GIT_BEHIND" -ne "0" ]; then
-      DIRTY='%B%1FdotFiles ✘'
-    fi
-    if [ "$GIT_STAGED" -ne "0" ]; then
-      DIRTY='%B%1FdotFiles ✘'
-    fi
-    if [ "$GIT_CONFLICTS" -ne "0" ]; then
-      DIRTY='%B%1FdotFiles ✘'
-    fi
-    if [ "$GIT_CHANGED" -ne "0" ]; then
-      DIRTY='%B%1FdotFiles ✘'
-    fi
-    if [ "$GIT_UNTRACKED" -ne "0" ]; then
-      DIRTY='%B%1FdotFiles ✘'
-    fi
-
-    p10k segment -f 240 -t "${DIRTY}"
-  }
 
   (( ! $+functions[p10k] )) || p10k reload
 }
