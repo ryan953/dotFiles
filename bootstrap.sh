@@ -38,8 +38,9 @@ install_osx_dependencies () {
     echo "######## Installing homebrew"
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
   fi
-  brew list git > /dev/null || brew install git
-  brew list zsh > /dev/null || brew install zsh
+  
+  /opt/homebrew/bin/brew list git > /dev/null || /opt/homebrew/bin/brew install git
+  /opt/homebrew/bin/brew list zsh > /dev/null || /opt/homebrew/bin/brew install zsh
 }
 
 install_linux_dependencies () {

@@ -91,6 +91,8 @@ init () {
       echo "##### Install Apple Command Line Tools"
       xcode-select --install || true
 
+      eval "$(/opt/homebrew/bin/brew shellenv)"
+
       echo "###### Installing OSX Dependencies"
       ensure_brew bat
       ensure_brew exa
@@ -111,6 +113,7 @@ init () {
 
       # NerdFonts
       brew tap homebrew/cask-fonts
+      brew tap homebrew/cask-drivers
       ensure_brew --cask font-meslo-lg-nerd-font
 
       # UI Programs
@@ -118,7 +121,8 @@ init () {
       ensure_brew --cask bitwarden || true
       ensure_brew --cask google-chrome || true
       ensure_brew --cask slack || true
-
+      ensure_brew --cask spotify || true
+      ensure_brew --cask sonos || true
       # OSX Settings
       ./install-osx.sh
     ;;
