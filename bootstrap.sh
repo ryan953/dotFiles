@@ -23,6 +23,7 @@ install_osx_dependencies () {
   echo "###### Installing dependencies for macOS"
 
   softwareupdate --all --install --force
+  softwareupdate --install-rosetta --agree-to-license
   echo "######## Done running software update"
 
   if which brew > /dev/null; then

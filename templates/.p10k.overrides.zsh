@@ -56,5 +56,12 @@
   typeset -g POWERLEVEL9K_VCS_CONTENT_EXPANSION='${$((ryans_git_formatter(1)))+${ryans_git_format}}'
   typeset -g POWERLEVEL9K_VCS_LOADING_CONTENT_EXPANSION='${$((ryans_git_formatter(0)))+${ryans_git_format}}'
 
+  function prompt_arch() {
+    p10k segment -f 208 -t "$(arch)"
+  }
+  typeset -g POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(
+    "$POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS[@]" arch
+  )
+
   (( ! $+functions[p10k] )) || p10k reload
 }

@@ -1,3 +1,22 @@
 ### Fill this in with a token from https://github.com/settings/tokens
 # export HOMEBREW_GITHUB_API_TOKEN=''
 
+OS="$(uname)"
+case $OS in
+  Darwin)
+    arch_name="$(uname -m)"
+    if [ "${arch_name}" = "x86_64" ]; then
+      if [ "$(sysctl -in sysctl.proc_translated)" = "1" ]; then
+        # Running on Rosetta 2
+      else
+        # Running on Native Intel
+        eval "$(/usr/local/bin/brew shellenv)"
+      fi
+    elif [ "${arch_name}" = "arm64" ]; then
+      # Running on Arm
+      eval "$(/opt/homebrew/bin/brew shellenv)"
+    else
+      # Running on another architecture
+    fi
+  ;;
+esac
