@@ -91,7 +91,12 @@ init () {
       arch_name="$(uname -m)"
       if [ "${arch_name}" = "x86_64" ]; then
         if [ "$(sysctl -in sysctl.proc_translated)" = "1" ]; then
-          echo "Running on Rosetta 2"
+          echo "ERROR: Running on Rosetta 2"
+          echo ""
+          echo "Re-run this as:"
+          echo "   arch -arm64 $0"
+          echo ""
+          exit 1
         else
           echo "Running on native Intel"
         fi
