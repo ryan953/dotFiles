@@ -51,7 +51,7 @@ Plugin 'ryanoasis/vim-devicons'
 
 " Defined before `vim-buffet` is loaded:
 function! g:BuffetSetCustomColors()
-  hi! BuffetCurrentBuffer cterm=none ctermbg=7 ctermfg=0 guibg=#000000
+  hi! BuffetCurrentBuffer cterm=none ctermbg=7 ctermfg=1 
   hi! BuffetActiveBuffer cterm=none ctermbg=0 ctermfg=7
   hi! BuffetBuffer cterm=none ctermbg=0 ctermfg=7
   hi! BuffetTrunc cterm=none ctermbg=0 ctermfg=8
@@ -213,7 +213,7 @@ nnoremap k gk
 
 """ Buffers & Splits ------------------ {{{
 nnoremap <leader>T :enew<cr> " To open a new empty buffer
-nnoremap <leader>bq :bp<bar>sp<bar>bn<bar>bd<CR> " Close buffer and move to previos
+nnoremap <leader>bq :bp<bar>sp<bar>bn<bar>bd<CR> " Close buffer and move to previous
 
 set splitbelow
 set splitright
@@ -306,6 +306,9 @@ let g:webdevicons_enable_ctrlp = 1
 """ Buffet ----------------------------- {{{
 
 let g:buffet_powerline_separators = 0
+let g:buffet_tab_icon = "\uf00a "
+let g:buffet_left_trunc_icon = "\uf0a8"
+let g:buffet_right_trunc_icon = "\uf0a9"
 
 nmap <leader>1 <Plug>BuffetSwitch(1)
 nmap <leader>2 <Plug>BuffetSwitch(2)
@@ -318,12 +321,14 @@ nmap <leader>8 <Plug>BuffetSwitch(8)
 nmap <leader>9 <Plug>BuffetSwitch(9)
 nmap <leader>0 <Plug>BuffetSwitch(10)
 
-noremap <Tab> :bn<CR>
+noremap <Tab>   :bn<CR>
 noremap <S-Tab> :bp<CR>
-noremap <Leader><Tab> :Bw<CR>
+noremap <Leader><Tab>   :Bw<CR>
 noremap <Leader><S-Tab> :Bw!<CR>
-noremap <C-t> :tabnew split<CR>
 
+noremap <C-t>     :tabnew<CR>
+noremap :t<CR>    :tabnew<CR>
+noremap :t<Space> :tabnew<Space>
 " }}}
 
 " vim:foldmethod=marker:foldlevel=0
