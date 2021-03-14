@@ -91,7 +91,12 @@ init () {
       echo "##### Install Apple Command Line Tools"
       xcode-select --install || true
 
-      eval "$(/opt/homebrew/bin/brew shellenv)"
+      if [[ -f /usr/local/bin/brew ]]; then
+        eval "$(/usr/local/bin/brew shellenv)"
+      fi
+      if [[ -f /opt/homebrew/bin/brew ]]; then
+        eval "$(/opt/homebrew/bin/brew shellenv)"
+      fi
 
       echo "###### Installing OSX Dependencies"
       ensure_brew bat

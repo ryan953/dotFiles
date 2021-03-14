@@ -36,11 +36,17 @@ install_osx_dependencies () {
     brew update
   else
     echo "######## Installing homebrew"
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
   fi
-  
-  /opt/homebrew/bin/brew list git > /dev/null || /opt/homebrew/bin/brew install git
-  /opt/homebrew/bin/brew list zsh > /dev/null || /opt/homebrew/bin/brew install zsh
+
+  if [[ -f /usr/local/bin/brew ]]; then
+    brew_prefix='/usr/local'
+  fi
+  if [[ -f /opt/homebrew/bin/brew ]]; then
+    brew_prefix='/opt/homebrew'
+  fi
+  ${brew_prefix}/bin/brew list git > /dev/null || ${brew_prefix}/bin/brew install git
+  ${brew_prefix}/bin/brew list zsh > /dev/null || ${brew_prefix}/bin/brew install zsh
 }
 
 install_linux_dependencies () {
