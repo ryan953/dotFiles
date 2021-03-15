@@ -142,10 +142,16 @@ init () {
       # UI Programs
       ensure_brew --cask alacritty || true
       ensure_brew --cask bitwarden || true
+      ensure_brew bitwarden-cli || true
+      ensure_brew --cask cyberduck || true
+      ensure_brew --cask dropbox || true
       ensure_brew --cask google-chrome || true
       ensure_brew --cask slack || true
       ensure_brew --cask spotify || true
       ensure_brew --cask sonos || true
+      ensure_brew --cask tunnelblick || true
+      ensure_brew --cask vlc || true
+
       # OSX Settings
       ./install-osx.sh
     ;;
