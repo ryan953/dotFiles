@@ -215,6 +215,7 @@ init () {
   copy_file "$(pwd)/templates/.tmux/version_1.9_down.conf" "$HOME/.tmux/version_1.9_down.conf"
   copy_file "$(pwd)/templates/.tmux/version_1.9_to_2.1.conf" "$HOME/.tmux/version_1.9_to_2.1.conf"
   copy_file "$(pwd)/templates/.tmux/version_2.1_up.conf" "$HOME/.tmux/version_2.1_up.conf"
+  copy_file "$(pwd)/templates/.tmux/version_2.3_up.conf" "$HOME/.tmux/version_2.3_up.conf"
 
   echo "###### Generating config files"
   for source in $(find $(pwd)/generators -type f | sort -nr); do
