@@ -18,5 +18,7 @@ case $OS in
     else
       # Running on another architecture
     fi
+
+    export HOMEBREW_CASK_OPTS=--no-quarantine
   ;;
 esac
