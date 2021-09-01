@@ -1,0 +1,22 @@
+#!/usr/bin/env zsh
+set -eu
+IFS=$'\n\t'
+
+found=$(ssh-add -L | wc -l)
+expected=$(ls ~/.ssh/id_*.pub | wc -l)
+if [ $found -lt $expected ]; then
+    export BW_SESSION=$(bw unlock --raw)
+    for filename in ~/.ssh/id_*.pub; do
+        filename="${filename/.pub/}"
+
+        note="$(basename $filename)@$(hostname)"
+        install -m700 =(echo "bw get notes --session $BW_SESSION $note") "/tmp/echo_pass"
+        SSH_ASKPASS="/tmp/echo_pass" ssh-add -K "${filename}"
+        rm -f /tmp/echo_pass
+    done
+    bw lock
+else
+    echo "Nothing to do: All keys are in the Keychain"
+    echo 'Run `ssh-add -D` to remove all keys and try again'
+fi
+
