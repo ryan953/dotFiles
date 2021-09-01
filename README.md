@@ -15,7 +15,7 @@ curl https://raw.githubusercontent.com/one-dark/iterm-one-dark-theme/master/One%
 Then import via the iTerm Settings->Profile->Colors panel
 
 # Update Antigen
-$ curl -L git.io/antigen > dotFiles/templates/antigen.zsh
+$ curl -L git.io/antigen > ~/.dotFiles/templates/.antigen.zsh
 $ antigen update
 
 
