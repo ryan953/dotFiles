@@ -118,6 +118,7 @@ init () {
 
       echo "###### Installing OSX Dependencies"
       ensure_brew bat
+      ensure_brew docker
       ensure_brew exa
       ensure_brew fd
       ensure_brew git
