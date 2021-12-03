@@ -22,3 +22,18 @@ case $OS in
     export HOMEBREW_CASK_OPTS=--no-quarantine
   ;;
 esac
+
+# export NVM_DIR="$HOME/.nvm"
+# [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+
+# source ~/code/pinboard-env/bin/activate
+
+## Needed for tbgs/pfa
+# echo "Logging into pcloud..."
+# pcloud oauth login
+
+## Make hologram work when SSH_AUTH_SOCK is a symlink: SECGEN-15773
+# function hologram() {
+#   SSH_AUTH_SOCK=$(readlink --canonicalize $(echo $SSH_AUTH_SOCK))
+#   source hologram $@
+# }
