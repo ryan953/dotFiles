@@ -152,6 +152,7 @@ init () {
       ensure_brew --cask sonos || true
       ensure_brew --cask tunnelblick || true
       ensure_brew --cask vlc || true
+      ensure_brew --cask zoom || true
 
       # OSX Settings
       ./install-osx.sh
