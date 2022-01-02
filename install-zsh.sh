@@ -125,6 +125,7 @@ init () {
       ensure_brew git-delta
       ensure_brew htop
       ensure_brew jq
+      ensure_brew maestral
       ensure_brew ripgrep
       ensure_brew the_silver_searcher
       ensure_brew tmux
@@ -145,7 +146,6 @@ init () {
       ensure_brew --cask bitwarden || true
       ensure_brew bitwarden-cli || true
       ensure_brew --cask cyberduck || true
-      ensure_brew --cask dropbox || true
       ensure_brew --cask google-chrome || true
       ensure_brew --cask slack || true
       ensure_brew --cask spotify || true
