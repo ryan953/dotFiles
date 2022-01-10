@@ -1,0 +1,158 @@
+#!/usr/bin/env bash
+
+
+
+function print_help {
+  echo ''
+  echo '#################'
+  echo '## git-bgclone ##'
+  echo '#################'
+  echo ''
+  echo 'Creates a shallow-clone of a repo, and then recursivly calls itself to extend'
+  echo 'the depth of the checkout.'
+  echo ''
+  echo 'Usage:'
+  echo "  $0 --help"
+  echo '      Show this help and exit'
+  echo ''
+  echo "  $0 <REPO> <DIR>"
+  echo '      Clone any repo url into dir.'
+  echo ''
+  echo "  $0 deepen <REPO> <DIR>"
+  echo '      Used internally by git-bgclone.'
+  echo '      Recursively deepen an existing git repo. Disowns child git-clone'
+  echo '      child processes to unblock the console and work in the background.'
+  echo ''
+  echo 'Tested with git v1.9.1 and above'
+}
+
+##########################
+# Begin Defaults Section #
+##########################
+
+background=true
+incr=1000
+default_repo=
+default_dest=$(pwd)
+
+########################
+# End Defaults Section #
+########################
+
+deepen=false
+init_folder=$(pwd)
+
+if [[ $1 == '-h' ]]; then
+  print_help
+  exit 0
+fi
+
+if [[ $1 == 'deepen' ]]; then
+  deepen=true
+  repo=$2
+  dest=$3
+else
+  repo=$1
+  dest=$2
+fi
+
+if [[ -z $dest ]]; then
+  dest=$default_dest
+fi
+
+echo "Repo is ${repo}"
+echo "Dir is ${dest}"
+
+if [ -d "$dest" ]; then
+  echo "Found existing folder ${dest}"
+  echo ""
+  echo "Running checks..."
+
+  cd "$dest"
+  remotes=false
+  shallow=false
+  remotes=$(git remote -v | grep "$repo" | wc -l)
+  if [[ $remotes -gt 0 ]]; then
+    echo "- matching remote urls"
+    remotes=true
+  else
+    echo "- different remote urls"
+  fi
+
+  if [[ -f "${dest}/.git/shallow" ]]; then
+    echo "- is shallow clone"
+    shallow=true
+  else
+    echo "- is full clone"
+  fi
+
+  if [[ $remotes == 'true' ]] && [[ $shallow == 'true' ]]; then
+    if [[ -f .git/bgclone-depth ]]; then
+      depth=$(cat .git/bgclone-depth)
+      echo "Found repo with shallow depth of ${depth}."
+    else
+      echo "1" > .git/bgclone-depth
+      echo "Unable to read .git/bgclone-depth. Assuming depth of 1."
+    fi
+  else
+    rm -f .git/bgclone-depth
+    if [[ $remotes == 'true' ]]; then
+      echo "Full clone complete. Exiting."
+      exit 0
+    elif [[ $shallow == 'true' ]]; then
+      echo "Incorrect remote url specified."
+      echo "To deepen this repo run again with matching url and folder params."
+      exit 1
+    else
+      echo "It looks like ${dest} is not a git folder."
+      exit 1
+    fi
+  fi
+else
+  echo "No existing folder found..."
+  echo "Starting with a shallow clone."
+  echo "The initial depth will be ${incr} commits. It should take < 1 minute."
+  echo ""
+
+  time git clone --depth=10 "$repo" "$dest"
+  clone_exit=$?
+
+  if [[ $clone_exit == 0 ]]; then
+    cd "$dest"
+    echo "$incr" > .git/bgclone-depth
+    echo ""
+    echo "Shallow clone successful!"
+    echo "You should be able to start using most git commands now."
+    echo "Happy hacking!"
+    echo ""
+  else
+    echo "An error occured!"
+    exit $clone_exit
+  fi
+fi
+
+if [[ $deepen == 'true' ]]; then
+  depth=$(cat .git/bgclone-depth)
+  depth=$(expr ${depth:-0} + $incr)
+  echo "Cloning to depth of: ${depth}"
+  git fetch --depth="$depth"
+  echo "$depth" > .git/bgclone-depth
+fi
+
+echo "Deepening shallow clone in the background... This may take a while depending on the repo"
+echo ""
+echo "You you can check the current depth by running:"
+echo "  cat ${dest}/.git/bgclone-depth"
+echo ""
+echo "If that file is missing then the repo is fully cloned."
+echo ""
+echo "To stop the background process, move or delete .git/shallow:"
+echo "  mv ${dest}/.git/shallow ${dest}/.git/shallow.bak"
+
+cd "$init_folder"
+cmd="${0} deepen ${repo} ${dest}"
+if [[ $background == 'true' ]]; then
+  eval "bash ${cmd}" &>/dev/null &disown;
+else
+  eval "bash ${cmd}";
+fi
