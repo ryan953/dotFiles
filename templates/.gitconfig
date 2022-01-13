@@ -71,5 +71,6 @@
   review = !GIT_CURRENT_BRANCH=$(git name-rev --name-only HEAD) && git log -p origin/$GIT_CURRENT_BRANCH..$GIT_CURRENT_BRANCH
   tree = !GIT_PAGER='less -FX' git log --all --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%C(bold blue)<%an>%Creset'
   files = diff-tree --no-commit-id --name-only -r HEAD
+	count-lines = "! git log --author=\"$1\" --pretty=tformat: --numstat | awk '{ add += $1; subs += $2; loc += $1 - $2 } END { printf \"added lines: %s, removed lines: %s, total lines: %s\\n\", add, subs, loc }' #"
 [pull]
 	rebase = false
