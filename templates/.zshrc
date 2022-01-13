@@ -57,6 +57,10 @@ alias rg='rg --hidden'
 
 alias top='htop'
 
+pbcopy () {
+    cat $@ | command pbcopy;
+}
+
 # }}}
 
 ### FZF {{{
