@@ -39,7 +39,7 @@ esac
 # }
 
 # function dev() {
-#   clear && bw get password 'Pinterest LDAP' | pbcopy && engcert && clear && ssh dev-ryanalbrecht
+#   clear && bw get password 'pinterest.okta.com' | pbcopy && engcert && clear && ssh dev-ryanalbrecht
 # }
 
 # alias cert_login="gironde login ryanalbrecht"
@@ -50,7 +50,7 @@ esac
 # function engcert() {
 #   hologram use infra
 #   hologram use engineer
-#   if cert_login: then
+#   if cert_login; then
 #     eng_cert dev-ryanalbrecht 1d
 #     eng_cert engineering 30d
 #     eng_cert infra 30d
