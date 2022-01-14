@@ -20,12 +20,6 @@ check_version () {
 }
 
 install_osx_dependencies () {
-  echo "###### Installing dependencies for macOS"
-
-  softwareupdate --all --install --force
-  softwareupdate --install-rosetta --agree-to-license
-  echo "######## Done running software update"
-
   if which brew > /dev/null; then
     echo "######## Found homebrew"
     if $(git rev-parse --is-shallow-repository); then
@@ -108,9 +102,18 @@ init () {
           exit 1
         else
           echo "Running on native Intel"
+
+          echo "###### Installing dependencies for macOS"
+          softwareupdate --all --install --force
+          echo "######## Done running software update"
         fi
       elif [ "${arch_name}" = "arm64" ]; then
         echo "Running on ARM"
+
+        echo "###### Installing dependencies for macOS"
+        softwareupdate --all --install --force
+        softwareupdate --install-rosetta --agree-to-license
+        echo "######## Done running software update"
       else
         echo "Unknown architecture: ${arch_name}"
       fi
