@@ -80,7 +80,7 @@ defaults write NSNavPanelExpandedStateForSaveMode -bool true
 defaults write NSNavPanelExpandedStateForSaveMode2 -bool true
 
 # Print, expand print panel by default 
-defaults write PMPrintingExpandedStateForPrint -bool true and
+defaults write PMPrintingExpandedStateForPrint -bool true
 defaults write PMPrintingExpandedStateForPrint2 -bool true
 
 # }}}
