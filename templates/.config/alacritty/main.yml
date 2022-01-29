@@ -720,6 +720,7 @@ hints:
 # If the same trigger is assigned to multiple actions, all of them are executed
 # in the order they were defined in.
 key_bindings:
+  - { key: N,              mods: Command,            action: CreateNewWindow  }
   - { key: Q,              mods: Command,            action: ReceiveChar      }
   - { key: W,              mods: Command,            action: ReceiveChar      }
   #- { key: Paste,                                       action: Paste          }
