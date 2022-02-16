@@ -3,16 +3,23 @@
 set -eu
 IFS=$'\n\t'
 
+# export APPLE_SSH_ADD_BEHAVIOR=openssh
+export SSH_ASKPASS_REQUIRE=force
+
 found=$(ssh-add -L | wc -l)
 expected=$(ls ~/.ssh/id_*.pub | wc -l)
 if [ $found -lt $expected ]; then
     export BW_SESSION=$(bw unlock --raw)
+    if [ -z $BW_SESSION ]; then
+        echo 'Missing \$BW_SESSION, run `bw login` first.'
+        exit 1
+    fi
     for filename in ~/.ssh/id_*.pub; do
         filename="${filename/.pub/}"
 
         note="$(basename $filename)@$(hostname)"
         install -m700 =(echo "bw get notes --session $BW_SESSION $note") "/tmp/echo_pass"
-        SSH_ASKPASS="/tmp/echo_pass" ssh-add -K "${filename}"
+        SSH_ASKPASS="/tmp/echo_pass" ssh-add "${filename}"
         rm -f /tmp/echo_pass
     done
     bw lock
