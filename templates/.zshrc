@@ -128,4 +128,39 @@ export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || pr
 
 # }}}
 
+### Homebrew on x86 or ARM {{{
+
+OS="$(uname)"
+case $OS in
+  Darwin)
+    arch_name="$(uname -m)"
+    if [ "${arch_name}" = "x86_64" ]; then
+      if [ "$(sysctl -in sysctl.proc_translated)" = "1" ]; then
+        # Running on Rosetta 2
+      else
+        # Running on Native Intel
+        eval "$(/usr/local/bin/brew shellenv)"
+      fi
+    elif [ "${arch_name}" = "arm64" ]; then
+      # Running on Arm
+      eval "$(/opt/homebrew/bin/brew shellenv)"
+    else
+      # Running on another architecture
+    fi
+
+    export HOMEBREW_CASK_OPTS=--no-quarantine
+  ;;
+esac
+
+# }}}
+
+### Volta {{{
+
+if [ -d "$HOME/.volta" ]; then
+  export VOLTA_HOME="$HOME/.volta"
+  export PATH="$VOLTA_HOME/bin:$PATH"
+fi
+
+# }}}
+
 # vim:foldmethod=marker:foldlevel=0
