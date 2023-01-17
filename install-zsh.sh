@@ -161,15 +161,15 @@ init () {
       echo "###### Installing Linux Dependencies"
       local Sudo=$(sudo_cmd)
 
-      install_dpkg https://github.com/sharkdp/bat/releases/download/v0.17.1/bat_0.17.1_amd64.deb
+      install_dpkg https://github.com/sharkdp/bat/releases/download/v0.22.1/bat_0.22.1_amd64.deb
 
       # libgcc-s1 >= 4.2 is needed for delta on 18.04
       $Sudo apt-get install -y libgcc-s1
-      install_dpkg https://github.com/dandavison/delta/releases/download/0.5.0/git-delta_0.5.0_amd64.deb 
+      install_dpkg https://github.com/dandavison/delta/releases/download/0.15.1/git-delta_0.15.1_amd64.deb 
 
-      install_dpkg https://github.com/sharkdp/fd/releases/download/v8.2.1/fd_8.2.1_amd64.deb
+      install_dpkg https://github.com/sharkdp/fd/releases/download/v8.6.0/fd_8.6.0_amd64.deb
 
-      install_dpkg https://github.com/BurntSushi/ripgrep/releases/download/12.1.1/ripgrep_12.1.1_amd64.deb
+      install_dpkg https://github.com/BurntSushi/ripgrep/releases/download/13.0.0/ripgrep_13.0.0_amd64.deb
 
       $Sudo apt-get install -y \
         bat \
@@ -197,8 +197,8 @@ init () {
 
       (
         cd /tmp \
-        && curl -LO https://github.com/ogham/exa/releases/download/v0.9.0/exa-linux-x86_64-0.9.0.zip \
-        && unzip -o exa-linux-x86_64-0.9.0.zip -d ~/bin
+        && curl -LO https://github.com/ogham/exa/releases/download/v0.10.1/exa-linux-x86_64-v0.10.1.zip \
+        && unzip -o exa-linux-x86_64-v0.10.1.zip -d ~/bin
       )
       ln -sf ~/bin/exa-linux-x86_64 ~/bin/exa
 

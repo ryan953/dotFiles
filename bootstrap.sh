@@ -130,7 +130,7 @@ init () {
   else
     echo "###### Cloning ryan953/dotFiles ${BRANCH:-master}"
     # Using https transport because we havn't setup ssh keys yet!
-    git clone -b ${BRANCH:-master} https://github.com/ryan953/dotFiles.git "$HOME/.dotFiles"
+    git clone -b ${BRANCH:-main} https://github.com/ryan953/dotFiles.git "$HOME/.dotFiles"
   fi
 
   "$HOME/.dotFiles/install-zsh.sh"
