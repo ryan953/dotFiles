@@ -41,6 +41,6 @@ comment="${USER}@${hostname}"
 ssh-keygen -t ed25519 -C "$comment" -f "$filename" -N "$password"
 
 install -m700 =(echo 'echo $KEY_PASS') "/tmp/echo_pass"
-KEY_PASS=$password DISPLAY=1 SSH_ASKPASS="/tmp/echo_pass" ssh-add -K "$filename" < /dev/null
+KEY_PASS=$password DISPLAY=1 SSH_ASKPASS="/tmp/echo_pass" ssh-add --apple-use-keychain "$filename" < /dev/null
 rm -f /tmp/echo_pass
 
