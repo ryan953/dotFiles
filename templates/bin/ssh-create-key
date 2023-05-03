@@ -1,0 +1,46 @@
+#!/usr/bin/env zsh
+
+set -eu
+IFS=$'\n\t'
+
+if [[ -z ${1:-} ]]; then
+  echo "Usage:"
+  echo ""
+  echo "  $0 <key-name>"
+  echo ""
+  exit 1
+fi
+
+id=$1
+filename=~/.ssh/${id}
+echo "Creating:"
+echo "  $filename"
+echo ""
+
+bw_status=$(bw status | jq .status)
+if [[ $bw_status == "unauthenticated" ]]; then
+  echo "Logging in first"
+  bw login
+fi
+echo "Enter Bitwarden password to unlock:"
+export BW_SESSION=$(bw unlock --raw)
+
+password=$(bw generate -p --words 5)
+
+# Note name is `$TARGET@$HOST`
+# where host is the host that owns the private key
+note="$(basename $filename)@$(hostname)"
+bw get template item \
+  | jq ".type=2 | .secureNote.type=0" \
+  | jq ".name=\"$note\" | .notes=\"$password\"" \
+  | bw encode \
+  | bw create item
+
+hostname=$(hostname -s | tr '[:upper:]' '[:lower:]')
+comment="${USER}@${hostname}"
+ssh-keygen -t ed25519 -C "$comment" -f "$filename" -N "$password"
+
+install -m700 =(echo 'echo $KEY_PASS') "/tmp/echo_pass"
+KEY_PASS=$password DISPLAY=1 SSH_ASKPASS="/tmp/echo_pass" ssh-add --apple-use-keychain "$filename" < /dev/null
+rm -f /tmp/echo_pass
+
