@@ -118,6 +118,7 @@ init () {
 
       echo "###### Installing OSX Dependencies"
       ensure_brew bat
+      ensure_brew direnv
       ensure_brew docker
       ensure_brew exa
       ensure_brew fd
@@ -126,6 +127,7 @@ init () {
       ensure_brew htop
       ensure_brew jq
       ensure_brew maestral
+      ensure_brew pyenv
       ensure_brew ripgrep
       ensure_brew the_silver_searcher
       ensure_brew tmux
@@ -173,6 +175,7 @@ init () {
 
       $Sudo apt-get install -y \
         bat \
+        direnv \
         fd \
         git \
         htop \

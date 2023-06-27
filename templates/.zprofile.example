@@ -4,52 +4,7 @@
 # export NVM_DIR="$HOME/.nvm"
 # [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
 
-# source ~/code/pinboard-env/bin/activate
+# eval "$(/opt/homebrew/bin/brew shellenv)"
 
-## Needed for tbgs/pfa
-# echo "Logging into pcloud..."
-# pcloud oauth login
-
-## Make hologram work when SSH_AUTH_SOCK is a symlink: SECGEN-15773
-# function hologram() {
-#   SSH_AUTH_SOCK=$(readlink --canonicalize $(echo $SSH_AUTH_SOCK))
-#   source hologram $@
-# }
-
-# function dev() {
-#   clear && bw get password 'pinterest.okta.com' | pbcopy && engcert && clear && ssh dev-ryanalbrecht
-# }
-
-# alias cert_login="gironde login ryanalbrecht"
-
-# function eng_cert() {
-#   gironde sign --ca $1 --user ryanalbrecht --valid-duration ${2:-30d}
-# }
-# function engcert() {
-#   hologram use infra
-#   hologram use engineer
-#   if cert_login; then
-#     eng_cert dev-ryanalbrecht 1d
-#     eng_cert engineering 30d
-#     eng_cert infra 30d
-#   fi
-# }
-
-# function fix_hologram() {
-#   echo "Running with sudo..."
-#   sudo route delete 169.254.169.254
-#   sudo route -n add -host 169.254.169.254 -interface lo0
-#   sudo launchctl load -w /Library/LaunchDaemons/com.adroll.hologram.plist
-#   hologram use engineer
-# }
-# echo 'Run `engcert` to setup gironde and hologram, fix_hologram for those cases.'
-
-#########
-
-# sgo() {
-#   open "https://go-links-poft2js5bq-uc.a.run.app/$1"
-# }
-
-# # It is assumed that pyenv is installed via Brew, so this is all we need to do. 
 # eval "$(pyenv init --path)"
 # eval "$(direnv hook zsh)"
