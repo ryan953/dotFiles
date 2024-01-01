@@ -166,16 +166,34 @@ init () {
       local Sudo
       Sudo=$(sudo_cmd)
 
-      install_dpkg https://github.com/sharkdp/bat/releases/download/v0.22.1/bat_0.22.1_amd64.deb
+      arch_name="$(uname -m)"
+      if [ "$arch_name" = "x86_64" ]; then
+        echo "Running on x86"
+        install_dpkg https://github.com/sharkdp/bat/releases/download/v0.22.1/bat_0.22.1_amd64.deb
 
-      # libgcc-s1 >= 4.2 is needed for delta on 18.04
-      $Sudo apt-get install -y libgcc-s1
-      install_dpkg https://github.com/dandavison/delta/releases/download/0.15.1/git-delta_0.15.1_amd64.deb 
+        # libgcc-s1 >= 4.2 is needed for delta on 18.04
+        $Sudo apt-get install -y libgcc-s1
+        install_dpkg https://github.com/dandavison/delta/releases/download/0.15.1/git-delta_0.15.1_amd64.deb 
 
-      install_dpkg https://github.com/sharkdp/fd/releases/download/v8.6.0/fd_8.6.0_amd64.deb
+        install_dpkg https://github.com/sharkdp/fd/releases/download/v8.6.0/fd_8.6.0_amd64.deb
 
-      install_dpkg https://github.com/BurntSushi/ripgrep/releases/download/13.0.0/ripgrep_13.0.0_amd64.deb
+        install_dpkg https://github.com/BurntSushi/ripgrep/releases/download/13.0.0/ripgrep_13.0.0_amd64.deb
 
+      elif [ "$arch_name" = "aarch64" ]; then
+        echo "Running on ARM"
+
+        install_dpkg https://github.com/sharkdp/bat/releases/download/v0.22.1/bat_0.22.1_arm64.deb
+
+        # libgcc-s1 >= 4.2 is needed for delta on 18.04
+        $Sudo apt-get install -y libgcc-s1
+        install_dpkg https://github.com/dandavison/delta/releases/download/0.15.1/git-delta_0.15.1_arm64.deb
+
+        install_dpkg https://github.com/sharkdp/fd/releases/download/v8.6.0/fd_8.6.0_arm64.deb
+
+      else
+        echo "Unknown architecture: ${arch_name}"
+      fi
+      
       $Sudo apt-get install -y \
         bat \
         direnv \
@@ -187,6 +205,8 @@ init () {
         silversearcher-ag \
         unzip \
         vim
+
+      mkdir -p ~/bin
 
       if dpkg --compare-versions "$(lsb_release -sr)" 'le' '18.04' ; then
         filename=tmux-3.0a-x86_64.AppImage
