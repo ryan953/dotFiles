@@ -9,7 +9,7 @@ backup_file () {
   # regular file and not a symlink
   # https://tldp.org/LDP/abs/html/fto.html
   if [ -f "$file" ] && [ ! -h "$file" ]; then
-    mv "$file" $file.bak
+    mv "$file" "$file.bak"
     echo "   --- Backed up: $file"
   fi
 }
@@ -17,7 +17,7 @@ backup_file () {
 link_file () {
   local source="$1"
   local dest="$2"
-  mkdir -p $(dirname "$dest")
+  mkdir -p "$(dirname "$dest")"
   ln -sf "$source" "$dest"
   echo "   --- Linked: $source to $dest"
 }
@@ -25,7 +25,7 @@ link_file () {
 copy_file () {
   local source="$1"
   local dest="$2"
-  mkdir -p $(dirname "$dest")
+  mkdir -p "$(dirname "$dest")"
   cp -f "$source" "$dest"
   echo "   --- Copied: $source to $dest"
 }
@@ -44,7 +44,7 @@ ensure_repo () {
 }
 
 ensure_brew () {
-  brew upgrade ${1} ${2:-} --no-quarantine || brew install ${1} ${2:-} --no-quarantine
+  brew upgrade "$1" "${2:-}" --no-quarantine || brew install "$1" "${2:-}" --no-quarantine
 }
 
 ensure_font () {
@@ -52,13 +52,13 @@ ensure_font () {
   local name=$2
 
   wget \
-    --output-document /tmp/${name}.zip \
-    https://github.com/ryanoasis/nerd-fonts/releases/download/${release}/${name}.zip
-  unzip -o /tmp/${name}.zip -d ~/.local/share/fonts
+    --output-document "/tmp/${name}.zip" \
+    "https://github.com/ryanoasis/nerd-fonts/releases/download/${release}/${name}.zip"
+  unzip -o "/tmp/${name}.zip" -d ~/.local/share/fonts
 }
 
 sudo_cmd () {
-  if [ "`id -u`" = "0" ]; then
+  if [ "$(id -u)" = "0" ]; then
     echo ''
   elif command -v sudo; then
     echo 'sudo'
@@ -67,10 +67,12 @@ sudo_cmd () {
 
 install_dpkg () {
   local url="${1}"
-  local filename=$(basename ${url})
-  local Sudo=$(sudo_cmd)
+  local filename
+  filename=$(basename "$url")
+  local Sudo
+  Sudo=$(sudo_cmd)
 
-  (cd /tmp && curl -LO "${url}")
+  (cd /tmp && curl -LO "$url")
   $Sudo dpkg -i "/tmp/${filename}"
 }
 
@@ -89,7 +91,7 @@ init () {
   case $OS in
     Darwin)
       arch_name="$(uname -m)"
-      if [ "${arch_name}" = "x86_64" ]; then
+      if [ "$arch_name" = "x86_64" ]; then
         if [ "$(sysctl -in sysctl.proc_translated)" = "1" ]; then
           echo "ERROR: Running on Rosetta 2"
           echo ""
@@ -100,7 +102,7 @@ init () {
         else
           echo "Running on native Intel"
         fi
-      elif [ "${arch_name}" = "arm64" ]; then
+      elif [ "$arch_name" = "arm64" ]; then
         echo "Running on ARM"
       else
         echo "Unknown architecture: ${arch_name}"
@@ -160,18 +162,37 @@ init () {
     ;;
     Linux)
       echo "###### Installing Linux Dependencies"
-      local Sudo=$(sudo_cmd)
+      local Sudo
+      Sudo=$(sudo_cmd)
 
-      install_dpkg https://github.com/sharkdp/bat/releases/download/v0.22.1/bat_0.22.1_amd64.deb
+      arch_name="$(uname -m)"
+      if [ "$arch_name" = "x86_64" ]; then
+        echo "Running on x86"
+        install_dpkg https://github.com/sharkdp/bat/releases/download/v0.22.1/bat_0.22.1_amd64.deb
 
-      # libgcc-s1 >= 4.2 is needed for delta on 18.04
-      $Sudo apt-get install -y libgcc-s1
-      install_dpkg https://github.com/dandavison/delta/releases/download/0.15.1/git-delta_0.15.1_amd64.deb 
+        # libgcc-s1 >= 4.2 is needed for delta on 18.04
+        $Sudo apt-get install -y libgcc-s1
+        install_dpkg https://github.com/dandavison/delta/releases/download/0.15.1/git-delta_0.15.1_amd64.deb 
 
-      install_dpkg https://github.com/sharkdp/fd/releases/download/v8.6.0/fd_8.6.0_amd64.deb
+        install_dpkg https://github.com/sharkdp/fd/releases/download/v8.6.0/fd_8.6.0_amd64.deb
 
-      install_dpkg https://github.com/BurntSushi/ripgrep/releases/download/13.0.0/ripgrep_13.0.0_amd64.deb
+        install_dpkg https://github.com/BurntSushi/ripgrep/releases/download/13.0.0/ripgrep_13.0.0_amd64.deb
 
+      elif [ "$arch_name" = "aarch64" ]; then
+        echo "Running on ARM"
+
+        install_dpkg https://github.com/sharkdp/bat/releases/download/v0.22.1/bat_0.22.1_arm64.deb
+
+        # libgcc-s1 >= 4.2 is needed for delta on 18.04
+        $Sudo apt-get install -y libgcc-s1
+        install_dpkg https://github.com/dandavison/delta/releases/download/0.15.1/git-delta_0.15.1_arm64.deb
+
+        install_dpkg https://github.com/sharkdp/fd/releases/download/v8.6.0/fd_8.6.0_arm64.deb
+
+      else
+        echo "Unknown architecture: ${arch_name}"
+      fi
+      
       $Sudo apt-get install -y \
         bat \
         direnv \
@@ -184,7 +205,9 @@ init () {
         unzip \
         vim
 
-      if dpkg --compare-versions $(lsb_release -sr) 'le' '18.04' ; then
+      mkdir -p ~/bin
+
+      if dpkg --compare-versions "$(lsb_release -sr)" 'le' '18.04' ; then
         filename=tmux-3.0a-x86_64.AppImage
         if [ -f $filename ]; then
           (
@@ -228,7 +251,7 @@ init () {
   copy_file "$(pwd)/templates/.tmux/version_2.3_up.conf" "$HOME/.tmux/version_2.3_up.conf"
 
   echo "###### Generating config files"
-  for source in $(find $(pwd)/generators -type f | sort -nr); do
+  for source in $(find "$(pwd)/generators" -type f | sort -nr); do
     dest="${source//$(pwd)\/generators/$HOME}"
     backup_file "$dest"
     eval "$source" > "$dest"
@@ -259,7 +282,7 @@ init () {
         echo "Shell set to $zsh_path"
       else
         sudo sh -c "echo $zsh_path >> /etc/shells"
-        chsh -s $zsh_path
+        chsh -s "$zsh_path"
       fi
     ;;
     Linux)
