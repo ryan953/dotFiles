@@ -136,11 +136,10 @@ init () {
       # Keep homebrew up to date
       ensure_brew terminal-notifier
       brew tap domt4/autoupdate
-      brew autoupdate --start --enable-notification || true
+      brew autoupdate --start || true
 
       # NerdFonts
       brew tap homebrew/cask-fonts
-      brew tap homebrew/cask-drivers
       ensure_brew --cask font-meslo-lg-nerd-font
 
       # UI Programs

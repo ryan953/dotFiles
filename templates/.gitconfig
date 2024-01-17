@@ -51,15 +51,15 @@
 
 [branch]
   # rebase during `git pull` instead of making merge commits
-  autosetuprebase = always
+	autosetuprebase = always
   # setup tracking by automaticall implying `--track` for `git checkout -b` and `git branch`
-  autosetupmerge = always
+	autosetupmerge = always
 
 [pull]
-  rebase = false
+	rebase = false
 
 [push]
-  default = current
+	default = current
 
 [rebase]
 	updateRefs = true

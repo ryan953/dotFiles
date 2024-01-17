@@ -1,0 +1,46 @@
+[font]
+save_to_clipboard = true
+
+[font.normal]
+family = "MesloLGS Nerd Font"
+style = "Regular"
+
+[[hints.enabled]]
+command = "open"
+post_processing = true
+regex = "(ipfs:|ipns:|magnet:|mailto:|gemini:|gopher:|https:|http:|news:|file:|git:|ssh:|ftp:)[^\u0000-\u001F\u007F-<>\"\\s{-}\\^⟨⟩`]+"
+
+[hints.enabled.binding]
+key = "U"
+mods = "Control|Shift"
+
+[hints.enabled.mouse]
+enabled = true
+mods = "None"
+
+[[keyboard.bindings]]
+action = "CreateNewWindow"
+key = "N"
+mods = "Command"
+
+[[keyboard.bindings]]
+action = "ReceiveChar"
+key = "Q"
+mods = "Command"
+
+[[keyboard.bindings]]
+action = "ReceiveChar"
+key = "W"
+mods = "Command"
+
+[scrolling]
+history = 10000
+
+[window]
+decorations = "full"
+dynamic_padding = false
+dynamic_title = true
+
+[window.padding]
+x = 6
+y = 0
