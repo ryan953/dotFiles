@@ -44,7 +44,7 @@ ensure_repo () {
 }
 
 ensure_brew () {
-  brew upgrade "$1" "${2:-}" --no-quarantine || brew install "$1" "${2:-}" --no-quarantine
+  brew upgrade $1 ${2:-} --no-quarantine || brew install $1 ${2:-} --no-quarantine
 }
 
 ensure_font () {
