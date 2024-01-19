@@ -122,7 +122,7 @@ init () {
       ensure_brew bat
       ensure_brew direnv
       ensure_brew docker
-      ensure_brew exa
+      ensure_brew eza
       ensure_brew fd
       ensure_brew git
       ensure_brew git-delta
