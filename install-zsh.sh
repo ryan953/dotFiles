@@ -148,6 +148,7 @@ init () {
       ensure_brew --cask alacritty || true
       ensure_brew --cask bitwarden || true
       ensure_brew bitwarden-cli || true
+      ensure_brew --cask boop || true
       ensure_brew --cask cyberduck || true
       ensure_brew --cask google-chrome || true
       ensure_brew --cask slack || true

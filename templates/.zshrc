@@ -43,6 +43,11 @@ export BAT_THEME="TwoDark"
 bindkey '^[[A' up-line-or-search # up arrow
 bindkey '^[[B' down-line-or-search # down arrow
 
+####################################
+# Open/Close folds with:      `za` #
+# Map leader key is:          `\`  #
+####################################
+
 ### Aliases {{{
 
 export TIME_STYLE=long-iso
