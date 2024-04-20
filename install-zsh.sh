@@ -134,6 +134,7 @@ init () {
       ensure_brew the_silver_searcher
       ensure_brew tmux
       ensure_brew vim
+      ensure_brew zx
 
       # Keep homebrew up to date
       ensure_brew terminal-notifier
