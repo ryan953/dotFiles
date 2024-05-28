@@ -130,6 +130,7 @@ init () {
       ensure_brew jq
       ensure_brew maestral
       ensure_brew pyenv
+      ensure_brew rnr
       ensure_brew ripgrep
       ensure_brew the_silver_searcher
       ensure_brew tmux
