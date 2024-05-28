@@ -43,14 +43,19 @@ export BAT_THEME="TwoDark"
 bindkey '^[[A' up-line-or-search # up arrow
 bindkey '^[[B' down-line-or-search # down arrow
 
+####################################
+# Open/Close folds with:      `za` #
+# Map leader key is:          `\`  #
+####################################
+
 ### Aliases {{{
 
 export TIME_STYLE=long-iso
 alias cat='bat'
 
-alias ll='exa -l --group --git'
-alias la='exa -l --group --git --all'
-alias tree='exa -l --group --git --all --tree --level=2'
+alias ll='eza -l --group --git'
+alias la='eza -l --group --git --all'
+alias tree='eza -l --group --git --all --tree --level=2'
 
 alias ag='ag --hidden'
 alias rg='rg --hidden'
@@ -67,7 +72,7 @@ pbcopy () {
 # `fd` config via: https://medium.com/better-programming/boost-your-command-line-productivity-with-fuzzy-finder-985aa162ba5d#6480
 
 FZF_PREVIEW_FILES="([[ -f {} ]] && (bat --style=numbers --color=always {} || cat {}))"
-FZF_PREVIEW_DIRS="([[ -d {} ]] && (exa --tree --level 3 {} --color=always --all))"
+FZF_PREVIEW_DIRS="([[ -d {} ]] && (eza --tree --level 3 {} --color=always --all))"
 FZF_PREVIEW="--preview '$FZF_PREVIEW_FILES || $FZF_PREVIEW_DIRS || echo {} 2> /dev/null | head -200'"
 FZF_LAYOUT='--height 40% --inline-info'
 FZF_OPTS="--preview-window=:hidden --bind '?:toggle-preview'"
