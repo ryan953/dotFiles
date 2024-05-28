@@ -26,7 +26,7 @@
   status = auto
 
 [init]
-	defaultBranch = main
+  defaultBranch = main
 
 [interactive]
   diffFilter = delta --color-only
@@ -49,20 +49,25 @@
   # minus-style = normal
   # minus-emph-style = normal auto
 
+[merge]
+  conflictstyle = zdiff3
+
 [branch]
   # rebase during `git pull` instead of making merge commits
-	autosetuprebase = always
+  autosetuprebase = always
   # setup tracking by automaticall implying `--track` for `git checkout -b` and `git branch`
-	autosetupmerge = always
+  autosetupmerge = always
+  sort = -committerdate
 
 [pull]
-	rebase = false
+  rebase = false
 
 [push]
-	default = current
+  default = current
+  autosetupremote = true
 
 [rebase]
-	updateRefs = true
+  updateRefs = true
 
 [diff]
   noprefix = true
