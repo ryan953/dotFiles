@@ -143,7 +143,6 @@ init () {
       brew autoupdate --start || true
 
       # NerdFonts
-      brew tap homebrew/cask-fonts
       ensure_brew --cask font-meslo-lg-nerd-font
 
       # UI Programs
