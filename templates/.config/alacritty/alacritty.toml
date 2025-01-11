@@ -1,5 +1,5 @@
+[general]
 import = ["${HOME}/.config/alacritty/main.toml"]
 
 [font]
 size =  13.0
-
