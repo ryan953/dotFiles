@@ -124,6 +124,7 @@ init () {
       ensure_brew docker
       ensure_brew eza
       ensure_brew fd
+      ensure_brew fx
       ensure_brew git
       ensure_brew git-delta
       ensure_brew htop
