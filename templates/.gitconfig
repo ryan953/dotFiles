@@ -13,7 +13,7 @@
   path = ~/.gitconfig.local
 
 [help]
-  autocorrect = 1
+  autocorrect = immediate # https://blog.gitbutler.com/why-is-git-autocorrect-too-fast-for-formula-one-drivers/
 
 [core]
   editor = vim
@@ -59,20 +59,41 @@
   autosetupmerge = always
   sort = -committerdate
 
+[tag]
+  sort = version:refname
+
+[column]
+  ui = auto
+
+[fetch]
+  prune = true # Delete local branches if the server deleted it
+  pruneTags = true
+  all = true # looking at all remotes
+
 [pull]
-  rebase = false
+  rebase = true
 
 [push]
-  default = current
-  autosetupremote = true
+  default = simple # (default since 2.0)
+  autosetupremote = true # Stop seeing messages to run "git push --set-upstream origin my-branch-name"
+  followTags = true # push all tags to server if they're no pushed already
 
 [rebase]
   updateRefs = true
+  autoSquash = true
+  autoStash = true
+
+[rerere]
+  # https://blog.gitbutler.com/git-tips-1-theres-a-git-config-for-that/#reuse-recorded-resolution
+  enabled = true # remember rebase resolutions
+  autoupdate = true # auto-apply rebase resolutions again
 
 [diff]
-  noprefix = true
-  algorithm = patience
-  ; mnemonicprefix = true
+  colorMoved = plain # use different colors for moved lines (purple/blue instead of red/green)
+  renames = true # slightly slower, but detects file renames
+  mnemonicPrefix = true # replace a/ and b/ in diffs with i/ (index) and w/ (workspace)
+  noprefix = true # I'm just disabling prefixes, delta takes care of things
+  algorithm = histogram # slightly improved over patience
   # Beta heuristic to make add/remove boundaries try to start at blank lines
   compactionHeuristic = true
 
