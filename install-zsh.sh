@@ -152,7 +152,10 @@ init () {
       ensure_brew --cask bitwarden || true
       ensure_brew bitwarden-cli || true
       ensure_brew --cask boop || true
+      ensure_brew --cask cursor || true
       ensure_brew --cask cyberduck || true
+      ensure_brew --cash obsidian || true
+      ensure_brew --cask shottr || true
       ensure_brew --cask slack || true
       ensure_brew --cask spotify || true
       ensure_brew --cask sonos || true
