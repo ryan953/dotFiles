@@ -148,14 +148,14 @@ init () {
 
       # UI Programs
       ensure_brew --cask alacritty || true
-      ensure_brew --cash anki || true
+      ensure_brew --cask anki || true
       ensure_brew --cask brave-browser || true
       ensure_brew --cask bitwarden || true
       ensure_brew bitwarden-cli || true
       ensure_brew --cask boop || true
       ensure_brew --cask cursor || true
       ensure_brew --cask cyberduck || true
-      ensure_brew --cash obsidian || true
+      ensure_brew --cask obsidian || true
       ensure_brew --cask shottr || true
       ensure_brew --cask slack || true
       ensure_brew --cask spotify || true
