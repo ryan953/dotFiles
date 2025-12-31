@@ -1,10 +1,6 @@
 ### Fill this in with a token from https://github.com/settings/tokens
 # export HOMEBREW_GITHUB_API_TOKEN=''
 
-# export NVM_DIR="$HOME/.nvm"
-# [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
-
 # eval "$(/opt/homebrew/bin/brew shellenv)"
 
 # eval "$(pyenv init --path)"
-# eval "$(direnv hook zsh)"

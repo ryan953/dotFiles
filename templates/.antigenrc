@@ -16,6 +16,11 @@ antigen bundles <<EOBUNDLES
 
   # Must be after zsh-syntax-highlighting
   history-substring-search
+
+  # Requires "export NVM_COMPLETION=true" be set earlier in .zshrc
+  lukechilds/zsh-nvm # https://github.com/lukechilds/zsh-nvm
+
+  lukechilds/zsh-better-npm-completion # https://github.com/lukechilds/zsh-better-npm-completion
 EOBUNDLES
 
 antigen theme romkatv/powerlevel10k

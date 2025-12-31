@@ -20,6 +20,13 @@ if command -v brew > /dev/null; then
     alias ctags="$(brew --prefix)/bin/ctags"
 fi
 
+# NVM env vars must be set before zsh-nvm plugin is loaded
+# https://github.com/lukechilds/zsh-nvm
+export NVM_AUTO_LOAD=true
+export NVM_AUTO_USE=true
+export NVM_COMPLETION=true
+export NVM_LAZY_LOAD=true
+
 # `curl -L git.io/antigen > dotFiles/templates/.antigen.zsh`
 [[ -f ~/.antigen.zsh ]] && source ~/.antigen.zsh
 [[ -f ~/.antigenrc ]] && antigen init ~/.antigenrc
@@ -126,14 +133,6 @@ fi
 
 # }}}
 
-### NVM {{{
-
-export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-# }}}
-
 ### Volta {{{
 
 if [ -d "$HOME/.volta" ]; then
@@ -176,3 +175,4 @@ eval "$(direnv hook zsh)"
 # }}}
 
 # vim:foldmethod=marker:foldlevel=0
+
