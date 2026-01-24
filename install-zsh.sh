@@ -303,6 +303,8 @@ init () {
   echo " $(file_exists_indicator "$HOME/.zprofile") ~/.zprofile then start a new zsh session"
   echo " $(file_exists_indicator "$HOME/.gitconfig.local") ~/.gitconfig.local"
   echo " $(file_exists_indicator "$HOME/.ssh/config.local") ~/.ssh/config.local"
+  echo ""
+  echo "Install gcloud CLI with: curl https://sdk.cloud.google.com | bash"
 
   echo ""
   # https://github.com/romkatv/powerlevel10k/blob/master/README.md#weird-things-happen-after-typing-source-zshrc
