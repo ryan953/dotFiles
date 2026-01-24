@@ -43,10 +43,6 @@ ensure_repo () {
   fi
 }
 
-ensure_brew () {
-  brew upgrade $1 ${2:-} || brew install $1 ${2:-}
-}
-
 ensure_font () {
   local release=$1
   local name=$2
@@ -119,50 +115,12 @@ init () {
       fi
 
       echo "###### Installing OSX Dependencies"
-      ensure_brew bat
-      ensure_brew direnv
-      ensure_brew docker
-      ensure_brew eza
-      ensure_brew fd
-      ensure_brew fx
-      ensure_brew git
-      ensure_brew git-delta
-      ensure_brew htop
-      ensure_brew jq
-      ensure_brew maestral
-      ensure_brew pyenv
-      ensure_brew rnr
-      ensure_brew ripgrep
-      ensure_brew the_silver_searcher
-      ensure_brew tmux
-      ensure_brew vim
-      ensure_brew zx
+      brew bundle
 
       # Keep homebrew up to date
-      ensure_brew terminal-notifier
-      brew tap domt4/autoupdate
       brew autoupdate --start || true
 
-      # NerdFonts
-      ensure_brew --cask font-meslo-lg-nerd-font
-
-      # UI Programs
-      ensure_brew --cask alacritty || true
-      ensure_brew --cask anki || true
-      ensure_brew --cask brave-browser || true
-      ensure_brew --cask bitwarden || true
-      ensure_brew bitwarden-cli || true
-      ensure_brew --cask boop || true
-      ensure_brew --cask cursor || true
-      ensure_brew --cask cyberduck || true
-      ensure_brew --cask obsidian || true
-      ensure_brew --cask shottr || true
-      ensure_brew --cask slack || true
-      ensure_brew --cask spotify || true
-      ensure_brew --cask sonos || true
-      ensure_brew --cask tunnelblick || true
-      ensure_brew --cask vlc || true
-      ensure_brew --cask zoom || true
+      ./templates/bin/check-brew-drift.sh
 
       # OSX Settings
       ./install-osx.sh
