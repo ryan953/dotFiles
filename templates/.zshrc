@@ -26,6 +26,9 @@ export NVM_AUTO_LOAD=true
 export NVM_AUTO_USE=true
 export NVM_COMPLETION=true
 export NVM_LAZY_LOAD=true
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 
 # `curl -L git.io/antigen > dotFiles/templates/.antigen.zsh`
 [[ -f ~/.antigen.zsh ]] && source ~/.antigen.zsh
@@ -174,5 +177,18 @@ eval "$(direnv hook zsh)"
 
 # }}}
 
-# vim:foldmethod=marker:foldlevel=0
+### GCloud CLI {{{
 
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/ryan953/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/ryan953/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/ryan953/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/ryan953/google-cloud-sdk/completion.zsh.inc'; fi
+
+# }}}
+
+if command -v ngrok &>/dev/null; then
+    eval "$(ngrok completion)"
+fi
+
+# vim:foldmethod=marker:foldlevel=0
