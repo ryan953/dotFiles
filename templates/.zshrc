@@ -72,6 +72,8 @@ alias rg='rg --hidden'
 
 alias top='htop'
 
+alias claude='brew upgrade -q claude-code && claude'
+
 pbcopy () {
     cat $@ | command pbcopy;
 }

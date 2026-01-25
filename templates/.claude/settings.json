@@ -1,50 +1,10 @@
 {
-  "hooks": {
-    "Notification": [
-      {
-        "matcher": "permission_prompt",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.dotFiles/templates/.claude/notify.sh 'Claude Code' 'Permission Required'"
-          }
-        ]
-      },
-      {
-        "matcher": "idle_prompt",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.dotFiles/templates/.claude/notify.sh 'Claude Code' 'Claude is waiting'"
-          }
-        ]
-      }
-    ],
-    "PermissionRequest": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.dotFiles/templates/.claude/notify.sh 'Claude Code' 'Permission Requested'"
-          }
-        ]
-      }
-    ],
-    "Stop": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.dotFiles/templates/.claude/notify.sh 'Claude Code' 'Execution Stopped'"
-          }
-        ]
-      }
-    ]
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+   "attribution": {
+    "commit": "",
+    "pr": ""
   },
-  "statusLine": {
-    "type": "command",
-    "command": "npx -y @owloops/claude-powerline@latest"
-  },
+  "includeCoAuthoredBy": false,
   "enabledPlugins": {
     "code-review@claude-plugins-official": false,
     "dex@dex": true,
@@ -56,5 +16,155 @@
     "sentry@claude-plugins-official": true,
     "slack@claude-plugins-official": false,
     "typescript-lsp@claude-plugins-official": true
+  },
+  "env": {
+    "CLAUDE_CODE_ENABLE_TELEMETRY": "1"
+  },
+  "hooks": {
+    "Notification": [
+      {
+        "matcher": "permission_prompt",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/notify.sh 'Claude Code' 'Permission Required'"
+          }
+        ]
+      },
+      {
+        "matcher": "idle_prompt",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/notify.sh 'Claude Code' 'Claude is waiting'"
+          }
+        ]
+      }
+    ],
+    "PermissionRequest": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/notify.sh 'Claude Code' 'Permission Requested'"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/notify.sh 'Claude Code' 'Execution Stopped'"
+          }
+        ]
+      }
+    ]
+  },
+  "permissions": {
+    "allow": [
+      "Bash(cat:*)",
+      "Bash(docker --version:*)",
+      "Bash(docker compose config:*)",
+      "Bash(docker compose ps:*)",
+      "Bash(docker images:*)",
+      "Bash(docker inspect:*)",
+      "Bash(docker logs:*)",
+      "Bash(docker network:*)",
+      "Bash(docker ps:*)",
+      "Bash(file:*)",
+      "Bash(find:*)",
+      "Bash(gh api:*)",
+      "Bash(gh issue list:*)",
+      "Bash(gh issue view:*)",
+      "Bash(gh pr checks:*)",
+      "Bash(gh pr create:*)",
+      "Bash(gh pr diff:*)",
+      "Bash(gh pr list:*)",
+      "Bash(gh pr view:*)",
+      "Bash(gh repo view:*)",
+      "Bash(gh run list:*)",
+      "Bash(gh run logs:*)",
+      "Bash(gh run view:*)",
+      "Bash(git add:*)",
+      "Bash(git branch:*)",
+      "Bash(git branch:*)",
+      "Bash(git checkout:*)",
+      "Bash(git commit:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git push:*)",
+      "Bash(git remote:*)",
+      "Bash(git rev-parse:*)",
+      "Bash(git show:*)",
+      "Bash(git stash list:*)",
+      "Bash(git stash:*)",
+      "Bash(git status:*)",
+      "Bash(git tag:*)",
+      "Bash(grep:*)",
+      "Bash(head:*)",
+      "Bash(ls:*)",
+      "Bash(mypy:*)",
+      "Bash(node --version:*)",
+      "Bash(pnpm build:*)",
+      "Bash(pnpm fix:*)",
+      "Bash(pnpm knip:*)",
+      "Bash(pnpm knip:prod:*)",
+      "Bash(pnpm lint:*)",
+      "Bash(pnpm lint:code:*)",
+      "Bash(pnpm lint:types:*)",
+      "Bash(pnpm list:*)",
+      "Bash(pnpm test-ci:*)",
+      "Bash(pnpm test:*)",
+      "Bash(pnpm typecheck:*)",
+      "Bash(pnpm typecheck:*)",
+      "Bash(pnpm why:*)",
+      "Bash(pre-commit run:*)",
+      "Bash(pwd:*)",
+      "Bash(pytest:*)",
+      "Bash(python --version:*)",
+      "Bash(python3 --version:*)",
+      "Bash(stat:*)",
+      "Bash(tail:*)",
+      "Bash(tree:*)",
+      "Bash(tsc --version:*)",
+      "Bash(uv pip list:*)",
+      "Bash(uv tree:*)",
+      "Bash(wc:*)",
+      "mcp__sentry__analyze_issue_with_seer",
+      "mcp__sentry__find_organizations",
+      "mcp__sentry__find_projects",
+      "mcp__sentry__find_teams",
+      "mcp__sentry__get_doc",
+      "mcp__sentry__get_issue_details",
+      "mcp__sentry__search_docs",
+      "mcp__sentry__search_events",
+      "mcp__sentry__search_issues",
+      "Skill(gh-pr)",
+      "Skill(sentry-skills:claude-settings-audit)",
+      "Skill(sentry-skills:code-review)",
+      "Skill(sentry-skills:commit)",
+      "Skill(sentry-skills:create-pr)",
+      "Skill(sentry-skills:deslop)",
+      "Skill(sentry-skills:find-bugs)",
+      "Skill(sentry-skills:iterate-pr)",
+      "WebFetch(domain:cli.github.com)",
+      "WebFetch(domain:develop.sentry.dev)",
+      "WebFetch(domain:docs.anthropic.com)",
+      "WebFetch(domain:docs.djangoproject.com)",
+      "WebFetch(domain:docs.docker.com)",
+      "WebFetch(domain:docs.github.com)",
+      "WebFetch(domain:docs.sentry.io)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:mcp.sentry.dev)",
+      "WebFetch(domain:modelcontextprotocol.io)",
+      "WebFetch(domain:npmjs.com)",
+      "WebFetch(domain:react.dev)"
+    ]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "npx -y @owloops/claude-powerline@latest"
   }
 }
