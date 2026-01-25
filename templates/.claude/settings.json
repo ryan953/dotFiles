@@ -1,8 +1,4 @@
 {
-  "statusLine": {
-    "type": "command",
-    "command": "npx -y @owloops/claude-powerline@latest"
-  },
   "hooks": {
     "Notification": [
       {
@@ -45,8 +41,13 @@
       }
     ]
   },
+  "statusLine": {
+    "type": "command",
+    "command": "npx -y @owloops/claude-powerline@latest"
+  },
   "enabledPlugins": {
     "code-review@claude-plugins-official": false,
+    "dex@dex": true,
     "frontend-design@claude-plugins-official": true,
     "linear@claude-plugins-official": false,
     "playwright@claude-plugins-official": true,
