@@ -17,7 +17,7 @@ echo_path () {
 export PATH=$HOME/bin:$PATH
 
 if command -v brew > /dev/null; then
-    alias ctags="$(brew --prefix)/bin/ctags"
+  alias ctags="$(brew --prefix)/bin/ctags"
 fi
 
 # NVM env vars must be set before zsh-nvm plugin is loaded
@@ -28,20 +28,6 @@ export NVM_COMPLETION=true
 export NVM_LAZY_LOAD=true
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
-
-# `curl -L git.io/antigen > dotFiles/templates/.antigen.zsh`
-[[ -f ~/.antigen.zsh ]] && source ~/.antigen.zsh
-[[ -f ~/.antigenrc ]] && antigen init ~/.antigenrc
-
-# https://github.com/romkatv/powerlevel10k
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh
-
-# Override the generated .p10k.zsh file
-[[ -f ~/.p10k.overrides.zsh ]] && source ~/.p10k.overrides.zsh
-
-[[ -f ~/.fzf.zsh ]] && source ~/.fzf.zsh
 
 export EDITOR=$(command -v vim)
 export VISUAL=$(command -v vim)
@@ -73,6 +59,9 @@ alias rg='rg --hidden'
 alias top='htop'
 
 alias claude='brew upgrade -q claude-code && claude'
+export CLAUDE_POWERLINE_THEME=tokyo-night
+export CLAUDE_POWERLINE_STYLE=powerline
+export CLAUDE_POWERLINE_DEBUG=0
 
 pbcopy () {
     cat $@ | command pbcopy;
@@ -149,6 +138,7 @@ fi
 
 ### Homebrew on x86 or ARM {{{
 
+# Must be loaded before antigen to ensure brew completions are in fpath
 OS="$(uname)"
 case $OS in
   Darwin)
@@ -173,6 +163,7 @@ esac
 
 # }}}
 
+
 ### Direnv {{{
 
 eval "$(direnv hook zsh)"
@@ -182,15 +173,54 @@ eval "$(direnv hook zsh)"
 ### GCloud CLI {{{
 
 # The next line updates PATH for the Google Cloud SDK.
-if [ -f '/Users/ryan953/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/ryan953/google-cloud-sdk/path.zsh.inc'; fi
+if [ -f "$HOME/google-cloud-sdk/path.zsh.inc" ]; then 
+  source "$HOME/google-cloud-sdk/path.zsh.inc"
+fi
 
 # The next line enables shell command completion for gcloud.
-if [ -f '/Users/ryan953/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/ryan953/google-cloud-sdk/completion.zsh.inc'; fi
+if [ -f "$HOME/google-cloud-sdk/completion.zsh.inc" ]; then 
+  source "$HOME/google-cloud-sdk/completion.zsh.inc"
+fi
 
 # }}}
 
+### ngrok {{{
+
 if command -v ngrok &>/dev/null; then
-    eval "$(ngrok completion)"
+  eval "$(ngrok completion)"
 fi
+
+# }}}
+
+### Dex Tasks tooling {{{
+
+# claude plugin marketplace add dcramer/dex
+# claude plugin install dex@dex
+# npx skills add dcramer/dex
+# npm install -g @zeeg/dex
+
+if command -v dex &>/dev/null; then
+  eval "$(dex completion zsh)"
+fi
+# }}}
+
+### Antigen {{{
+
+# ANTIGEN_LOG=~/antigen.log
+
+# `curl -L git.io/antigen > dotFiles/templates/.antigen.zsh`
+[[ -f ~/.antigen.zsh ]] && source ~/.antigen.zsh
+[[ -f ~/.antigenrc ]] && antigen init ~/.antigenrc
+
+# https://github.com/romkatv/powerlevel10k
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh
+
+# Override the generated .p10k.zsh file
+[[ -f ~/.p10k.overrides.zsh ]] && source ~/.p10k.overrides.zsh
+
+[[ -f ~/.fzf.zsh ]] && source ~/.fzf.zsh
+
+# }}}
 
 # vim:foldmethod=marker:foldlevel=0
