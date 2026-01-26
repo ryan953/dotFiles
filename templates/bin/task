@@ -1,0 +1,566 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Script to create a git worktree for a task and open it in a new tmux window
+
+TASKS_BASE="$HOME/tasks"
+
+# Track start time for elapsed time calculations
+START_TIME=$(perl -MTime::HiRes=time -e 'printf "%.3f", time()')
+
+# Helper: Print elapsed time since start (in seconds with milliseconds)
+timestamp() {
+    local current=$(perl -MTime::HiRes=time -e 'printf "%.3f", time()')
+    local elapsed=$(perl -e "printf '%.3f', $current - $START_TIME")
+    echo "+${elapsed}s"
+}
+
+usage() {
+    cat <<EOF
+Usage:
+    task <repo-name> <task-name>     Create a new task worktree
+    task cleanup                     Clean up merged task worktrees
+    task list                        List all active task worktrees
+
+Create a new task:
+    task <repo-name> <task-name>
+
+    Creates a git worktree for working on a task in isolation.
+    The worktree will be created at ~/tasks/<repo-name>-<task-name>
+    with branch name \$USER/<task-name>.
+    A new tmux window will be created and switched to automatically.
+
+    Examples:
+        task my-project fix-login-bug
+        task frontend add-dark-mode
+
+Cleanup merged tasks:
+    task cleanup [task-directory-name]
+
+    Without arguments: Scans ~/tasks for worktrees and automatically removes
+    worktrees with merged or closed PRs. Keeps worktrees with open PRs or no
+    PR found. Requires 'gh' CLI to be installed and authenticated.
+
+    With task-directory-name: Removes the specific task worktree immediately
+    without checking PR status. Use the full directory name (e.g., 'my-project-fix-bug').
+
+List active tasks:
+    task list
+
+    Shows all active task worktrees with their branch status.
+
+Manual cleanup:
+    git -C ~/code/<repo-name> worktree remove ~/tasks/<repo-name>-<task-name>
+EOF
+    exit 1
+}
+
+# Helper: Parse repo name from task directory name (everything before first dash)
+parse_repo_name() {
+    local task_dir=$1
+    local task_name=$(basename "$task_dir")
+    echo "${task_name%%-*}"
+}
+
+# Helper: Get GitHub remote repo in owner/repo format
+get_github_remote() {
+    local repo_path=$1
+    local repo_remote=$(git -C "$repo_path" config --get remote.origin.url 2>/dev/null | sed -E 's/.*[:/]([^/]+\/[^/]+)(\.git)?$/\1/' | sed 's/\.git$//')
+
+    # Validate format (should be owner/repo)
+    if [[ -n "$repo_remote" ]] && [[ ! "$repo_remote" =~ ^[^/]+/[^/]+$ ]]; then
+        echo ""
+        return 1
+    fi
+
+    echo "$repo_remote"
+}
+
+# Helper: Get PR state for a branch
+get_pr_state() {
+    local repo_path=$1
+    local branch=$2
+    local repo_remote=$(get_github_remote "$repo_path")
+
+    if [ -n "$repo_remote" ]; then
+        gh pr list -R "$repo_remote" --head "$branch" --json state --jq '.[0].state' 2>/dev/null || echo ""
+    else
+        echo ""
+    fi
+}
+
+# Helper: Get branch sync status (ahead/behind counts)
+get_branch_status() {
+    local repo_path=$1
+    local branch=$2
+
+    if git -C "$repo_path" rev-parse --abbrev-ref "$branch@{upstream}" &>/dev/null; then
+        local ahead=$(git -C "$repo_path" rev-list --count "$branch@{upstream}..$branch" 2>/dev/null || echo "?")
+        local behind=$(git -C "$repo_path" rev-list --count "$branch..$branch@{upstream}" 2>/dev/null || echo "?")
+        echo "↑$ahead ↓$behind"
+    else
+        echo "no upstream"
+    fi
+}
+
+# Helper: Safely remove a worktree directory
+safe_remove_dir() {
+    local dir=$1
+
+    # Safety check before rm -rf
+    if [ -z "$dir" ] || [ "$dir" = "/" ] || [ "$dir" = "$HOME" ]; then
+        echo "   ❌ Error: Refusing to delete dangerous path: '$dir'"
+        return 1
+    fi
+
+    rm -rf "$dir"
+}
+
+# Helper: Remove worktree and optionally delete branch
+remove_worktree() {
+    local repo_path=$1
+    local task_dir=$2
+    local branch=$3
+
+    # Remove the worktree
+    if ! git -C "$repo_path" worktree remove "$task_dir" --force 2>/dev/null; then
+        safe_remove_dir "$task_dir"
+    fi
+
+    # Delete the local branch if it exists
+    if git -C "$repo_path" show-ref --verify --quiet "refs/heads/$branch"; then
+        git -C "$repo_path" branch -D "$branch" 2>/dev/null
+        echo "   🗑️  Removed worktree and deleted branch"
+    else
+        echo "   🗑️  Removed worktree (branch already deleted)"
+    fi
+}
+
+# List all active task worktrees
+list_tasks() {
+    echo "🔍 Active task worktrees:"
+    echo ""
+
+    if [ ! -d "$TASKS_BASE" ] || [ -z "$(ls -A "$TASKS_BASE" 2>/dev/null)" ]; then
+        echo "  No active tasks found in $TASKS_BASE"
+        exit 0
+    fi
+
+    while read -r task_dir; do
+        local repo_name=$(parse_repo_name "$task_dir")
+        local repo_path="$HOME/code/$repo_name"
+        local task_name=$(basename "$task_dir")
+
+        if [ -d "$repo_path" ]; then
+            local branch=$(git -C "$task_dir" branch --show-current 2>/dev/null || echo "unknown")
+            local status=$(get_branch_status "$repo_path" "$branch")
+
+            echo "  📁 $task_name"
+            echo "     Branch: $branch ($status)"
+            echo "     Path: $task_dir"
+            echo ""
+        fi
+    done < <(find "$TASKS_BASE" -maxdepth 1 -mindepth 1 -type d 2>/dev/null)
+}
+
+# Clean up merged/closed task worktrees, or a specific task by name
+cleanup_tasks() {
+    local specific_task=$1
+
+    # Ignore help flags
+    if [[ "$specific_task" =~ ^(-h|--help|help)$ ]]; then
+        specific_task=""
+    fi
+
+    # If specific task provided, delete it directly without PR checks
+    if [ -n "$specific_task" ]; then
+        local task_dir="$TASKS_BASE/$specific_task"
+
+        if [ ! -d "$task_dir" ]; then
+            echo "❌ Error: Task directory not found: $task_dir"
+            echo ""
+            echo "Available tasks:"
+            find "$TASKS_BASE" -maxdepth 1 -mindepth 1 -type d -exec basename {} \; 2>/dev/null || echo "  (no tasks found)"
+            exit 1
+        fi
+
+        local repo_name=$(parse_repo_name "$task_dir")
+        local repo_path="$HOME/code/$repo_name"
+
+        if [ ! -d "$repo_path" ]; then
+            echo "⚠️  Warning: Repo not found at $repo_path"
+            echo "   Removing task directory only..."
+            safe_remove_dir "$task_dir"
+            echo "✅ Removed task: $specific_task"
+            exit 0
+        fi
+
+        local branch=$(git -C "$task_dir" branch --show-current 2>/dev/null)
+
+        echo "🗑️  Removing task: $specific_task"
+        if [ -n "$branch" ]; then
+            echo "   Branch: $branch"
+            remove_worktree "$repo_path" "$task_dir" "$branch"
+        else
+            echo "   Could not determine branch, removing directory only"
+            safe_remove_dir "$task_dir"
+            echo "   🗑️  Removed worktree"
+        fi
+
+        echo "✅ Done!"
+        exit 0
+    fi
+
+    # No specific task - scan for merged/closed PRs
+    echo "🧹 Scanning for merged tasks..."
+    echo ""
+
+    # Check if gh is installed
+    if ! command -v gh &>/dev/null; then
+        echo "❌ Error: 'gh' CLI is required for cleanup"
+        echo "   Install with: brew install gh"
+        exit 1
+    fi
+
+    # Check if gh is authenticated
+    if ! gh auth status &>/dev/null; then
+        echo "❌ Error: 'gh' is not authenticated"
+        echo "   Run: gh auth login"
+        exit 1
+    fi
+
+    if [ ! -d "$TASKS_BASE" ] || [ -z "$(ls -A "$TASKS_BASE" 2>/dev/null)" ]; then
+        echo "✨ No tasks found in $TASKS_BASE"
+        exit 0
+    fi
+
+    local removed_count=0
+    local skipped_count=0
+
+    # Store task directories in an array to avoid file descriptor issues
+    local task_dirs=()
+    while IFS= read -r task_dir; do
+        task_dirs+=("$task_dir")
+    done < <(find "$TASKS_BASE" -maxdepth 1 -mindepth 1 -type d 2>/dev/null)
+
+    # Process each task directory
+    for task_dir in "${task_dirs[@]}"; do
+        local task_name=$(basename "$task_dir")
+        local repo_name=$(parse_repo_name "$task_dir")
+        local repo_path="$HOME/code/$repo_name"
+
+        if [ ! -d "$repo_path" ]; then
+            echo "⚠️  Skipping $task_name - repo not found at $repo_path"
+            echo ""
+            continue
+        fi
+
+        local branch=$(git -C "$task_dir" branch --show-current 2>/dev/null)
+
+        if [ -z "$branch" ]; then
+            echo "⚠️  Skipping $task_name - could not determine branch"
+            echo ""
+            continue
+        fi
+
+        echo "🔍 Checking $task_name (branch: $branch)..."
+
+        local pr_state=$(get_pr_state "$repo_path" "$branch")
+
+        if [ "$pr_state" = "MERGED" ] || [ "$pr_state" = "CLOSED" ]; then
+            if [ "$pr_state" = "MERGED" ]; then
+                echo "   ✅ PR is merged - removing worktree"
+            else
+                echo "   ⚠️  PR was closed without merging - removing worktree"
+            fi
+
+            remove_worktree "$repo_path" "$task_dir" "$branch"
+            removed_count=$((removed_count + 1))
+        elif [ "$pr_state" = "OPEN" ]; then
+            echo "   📝 PR is still open - keeping worktree"
+            skipped_count=$((skipped_count + 1))
+        else
+            echo "   ℹ️  No PR found - keeping worktree"
+            skipped_count=$((skipped_count + 1))
+        fi
+
+        echo ""
+    done
+
+    echo "✨ Cleanup complete!"
+}
+
+# Validate input arguments
+validate_inputs() {
+    local repo_name=$1
+    local task_name=$2
+
+    # Validate repo name (alphanumeric, dash, underscore only)
+    if [[ ! "$repo_name" =~ ^[a-zA-Z0-9_-]+$ ]]; then
+        echo "❌ Error: Invalid repo name '$repo_name'"
+        echo "   Use only letters, numbers, dash, and underscore"
+        exit 1
+    fi
+
+    # Validate task name (alphanumeric, dash only)
+    if [[ ! "$task_name" =~ ^[a-zA-Z0-9-]+$ ]]; then
+        echo "❌ Error: Invalid task name '$task_name'"
+        echo "   Use only letters, numbers, and dash"
+        exit 1
+    fi
+}
+
+# Detect default branch (main or master)
+get_default_branch() {
+    local repo_path=$1
+
+    if git -C "$repo_path" show-ref --verify --quiet refs/heads/main; then
+        echo "main"
+    elif git -C "$repo_path" show-ref --verify --quiet refs/heads/master; then
+        echo "master"
+    else
+        # Try to detect from remote
+        git -C "$repo_path" symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's@^refs/remotes/origin/@@' || echo "main"
+    fi
+}
+
+# Generate setup script to run in tmux pane
+generate_setup_script() {
+    local repo_path=$1
+    local worktree_path=$2
+
+    cat <<SETUP_EOF
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Use parent script's start time to show full elapsed time
+START_TIME=$START_TIME
+
+# Helper: Print elapsed time since start (in seconds with milliseconds)
+timestamp() {
+    local current=\$(perl -MTime::HiRes=time -e 'printf "%.3f", time()')
+    local elapsed=\$(perl -e "printf '%.3f', \$current - \$START_TIME")
+    echo "+\${elapsed}s"
+}
+
+echo "[\$(timestamp)] 🔧 Setting up worktree environment..."
+SETUP_EOF
+
+    cat <<SETUP_EOF
+echo ""
+
+# Copy .env files
+repo_path="$repo_path"
+worktree_path="$worktree_path"
+
+echo "[\$(timestamp)] 📄 Copying .env files..."
+env_files_copied=0
+for env_file in .env .env.local .env.development .env.production .env.test; do
+    if [ -f "\$repo_path/\$env_file" ]; then
+        cp "\$repo_path/\$env_file" "\$worktree_path/"
+        echo "[\$(timestamp)] ✓ Copied \$env_file"
+        env_files_copied=\$((env_files_copied + 1))
+    fi
+done
+
+if [ "\$env_files_copied" -eq 0 ]; then
+    echo "[\$(timestamp)] ℹ️  No .env files found"
+fi
+echo ""
+
+# Install dependencies
+if [ -f "\$worktree_path/package.json" ]; then
+    cd "\$worktree_path"
+
+    if [ -f "pnpm-lock.yaml" ]; then
+        echo "[\$(timestamp)] 📦 Installing dependencies with pnpm..."
+        pnpm install
+        echo "[\$(timestamp)] ✓ pnpm install complete"
+    elif [ -f "yarn.lock" ]; then
+        echo "[\$(timestamp)] 📦 Installing dependencies with yarn..."
+        yarn install
+        echo "[\$(timestamp)] ✓ yarn install complete"
+    elif [ -f "bun.lockb" ]; then
+        echo "[\$(timestamp)] 📦 Installing dependencies with bun..."
+        bun install
+        echo "[\$(timestamp)] ✓ bun install complete"
+    elif [ -f "package-lock.json" ]; then
+        echo "[\$(timestamp)] 📦 Installing dependencies with npm..."
+        npm install
+        echo "[\$(timestamp)] ✓ npm install complete"
+    else
+        echo "[\$(timestamp)] 📦 Installing dependencies with npm (no lockfile found)..."
+        npm install
+        echo "[\$(timestamp)] ✓ npm install complete"
+    fi
+    echo ""
+else
+    echo "[\$(timestamp)] ℹ️  No package.json found, skipping dependency installation"
+    echo ""
+fi
+SETUP_EOF
+
+    if command -v direnv &>/dev/null; then
+        cat <<SETUP_EOF
+
+# Allow direnv
+if [ -f "\$worktree_path/.envrc" ]; then
+    echo "[\$(timestamp)] 🔐 Allowing direnv..."
+    direnv allow "\$worktree_path"
+    echo "[\$(timestamp)] ✓ direnv allowed"
+    echo ""
+fi
+SETUP_EOF
+    fi
+
+    cat <<SETUP_EOF
+
+echo "[\$(timestamp)] ✅ Setup complete!"
+SETUP_EOF
+}
+
+# Create tmux window with split panes and run setup in first pane
+create_tmux_window_and_setup() {
+    local window_name=$1
+    local worktree_path=$2
+    local repo_path=$3
+
+    # Create setup script
+    local setup_script="$worktree_path/.task-setup.sh"
+    generate_setup_script "$repo_path" "$worktree_path" > "$setup_script"
+    chmod +x "$setup_script"
+
+    if [ -z "${TMUX:-}" ]; then
+        # Not in tmux, create a new session in detached mode
+        echo "[$(timestamp)] 🖥️  Creating new tmux session: $window_name"
+        tmux new-session -d -s "$window_name" -c "$worktree_path" \; \
+            split-window -h -p 50 -c "$worktree_path" \; \
+            select-pane -L \; \
+            split-window -v -p 50 -c "$worktree_path" \; \
+            select-pane -U
+
+        # Send setup commands to first pane
+        tmux send-keys -t "$window_name:0.0" "bash '$setup_script' && rm '$setup_script'" Enter
+
+        # Attach to the session
+        echo "[$(timestamp)] ✅ Done! Attaching to tmux session..."
+        echo ""
+        exec tmux attach-session -t "$window_name"
+    else
+        # In tmux, create new window
+        echo "[$(timestamp)] 🪟 Creating tmux window: $window_name"
+        tmux new-window -n "$window_name" -c "$worktree_path" \; \
+            split-window -h -p 50 -c "$worktree_path" \; \
+            select-pane -L \; \
+            split-window -v -p 50 -c "$worktree_path" \; \
+            select-pane -U
+
+        # Wait briefly for window to be fully created
+        sleep 0.1
+
+        # Send setup commands to first pane of the new window
+        # Target the top-left pane (which is selected after split commands)
+        tmux send-keys -t ":$window_name" "bash '$setup_script' && rm '$setup_script'" Enter
+
+        echo ""
+        echo "[$(timestamp)] ✅ Done! Setup running in top-left pane."
+    fi
+}
+
+# Main task creation flow
+create_task() {
+    local repo_name=$1
+    local task_name=$2
+
+    validate_inputs "$repo_name" "$task_name"
+
+    local branch_name="$USER/$task_name"
+    local repo_path="$HOME/code/$repo_name"
+    local worktree_path="$TASKS_BASE/$repo_name-$task_name"
+
+    # Validate repo exists
+    if [ ! -d "$repo_path" ]; then
+        echo "❌ Error: Repository not found at $repo_path"
+        echo ""
+        echo "Available repositories in ~/code:"
+        find "$HOME/code" -maxdepth 1 -mindepth 1 -type d -exec basename {} \; 2>/dev/null | head -10 || echo "  (no repositories found)"
+        exit 1
+    fi
+
+    # Check if it's a git repo
+    if [ ! -d "$repo_path/.git" ]; then
+        echo "❌ Error: $repo_path is not a git repository"
+        exit 1
+    fi
+
+    # Check if worktree already exists
+    mkdir -p "$TASKS_BASE"
+
+    if [ -d "$worktree_path" ]; then
+        echo "❌ Error: Worktree already exists at $worktree_path"
+        echo ""
+        echo "To remove it, run:"
+        echo "  task cleanup $repo_name-$task_name"
+        exit 1
+    fi
+
+    # Detect and fetch default branch
+    echo "[$(timestamp)] 🔍 Detecting default branch..."
+    local main_branch=$(get_default_branch "$repo_path")
+    echo "[$(timestamp)] 📌 Default branch: $main_branch"
+    echo ""
+
+    echo "[$(timestamp)] ⬇️  Fetching latest $main_branch from origin..."
+    if ! git -C "$repo_path" fetch origin "$main_branch:$main_branch" 2>/dev/null; then
+        echo "[$(timestamp)] ⚠️  Warning: Could not fetch $main_branch from remote. Continuing with local version..."
+    fi
+    echo "[$(timestamp)] ✓ Fetch complete"
+    echo ""
+
+    # Create the worktree
+    echo "[$(timestamp)] 🌳 Creating worktree at $worktree_path"
+
+    if git -C "$repo_path" show-ref --verify --quiet "refs/heads/$branch_name"; then
+        echo "[$(timestamp)] ⚠️  Branch $branch_name already exists, checking out existing branch..."
+        git -C "$repo_path" worktree add "$worktree_path" "$branch_name"
+    else
+        echo "[$(timestamp)] ✨ Creating new branch: $branch_name"
+        git -C "$repo_path" worktree add -b "$branch_name" "$worktree_path" "$main_branch"
+    fi
+    echo "[$(timestamp)] ✓ Worktree created"
+    echo ""
+
+    # Create tmux window and run setup inside it
+    echo "[$(timestamp)] 🖥️  Setting up tmux environment..."
+    create_tmux_window_and_setup "$repo_name-$task_name" "$worktree_path" "$repo_path"
+}
+
+# Main script entry point
+main() {
+    # Check arguments
+    if [ $# -eq 0 ]; then
+        usage
+    fi
+
+    # Handle subcommands
+    case "$1" in
+        cleanup)
+            cleanup_tasks "${2:-}"
+            ;;
+        list)
+            list_tasks
+            ;;
+        -h|--help|help)
+            usage
+            ;;
+        *)
+            # Normal task creation
+            if [ $# -ne 2 ]; then
+                usage
+            fi
+            create_task "$1" "$2"
+            ;;
+    esac
+}
+
+main "$@"
