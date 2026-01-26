@@ -165,28 +165,44 @@ esac
 
 ### Direnv {{{
 
-eval "$(direnv hook zsh)"
+# Lazy-load direnv to speed up shell startup
+if command -v direnv &>/dev/null; then
+  direnv() {
+    unset -f direnv
+    eval "$(command direnv hook zsh)"
+    direnv "$@"
+  }
+fi
 
 # }}}
 
 ### GCloud CLI {{{
 
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f "$HOME/google-cloud-sdk/path.zsh.inc" ]; then 
+# Load PATH immediately (lightweight)
+if [ -f "$HOME/google-cloud-sdk/path.zsh.inc" ]; then
   source "$HOME/google-cloud-sdk/path.zsh.inc"
 fi
 
-# The next line enables shell command completion for gcloud.
-if [ -f "$HOME/google-cloud-sdk/completion.zsh.inc" ]; then 
-  source "$HOME/google-cloud-sdk/completion.zsh.inc"
+# Lazy-load gcloud completions (heavier)
+if [ -f "$HOME/google-cloud-sdk/completion.zsh.inc" ]; then
+  gcloud() {
+    unset -f gcloud
+    source "$HOME/google-cloud-sdk/completion.zsh.inc"
+    gcloud "$@"
+  }
 fi
 
 # }}}
 
 ### ngrok {{{
 
+# Lazy-load ngrok completions
 if command -v ngrok &>/dev/null; then
-  eval "$(ngrok completion)"
+  ngrok() {
+    unset -f ngrok
+    eval "$(command ngrok completion)"
+    ngrok "$@"
+  }
 fi
 
 # }}}
@@ -198,8 +214,13 @@ fi
 # npx skills add dcramer/dex
 # npm install -g @zeeg/dex
 
+# Lazy-load dex completions
 if command -v dex &>/dev/null; then
-  eval "$(dex completion zsh)"
+  dex() {
+    unset -f dex
+    eval "$(command dex completion zsh)"
+    dex "$@"
+  }
 fi
 # }}}
 
