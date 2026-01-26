@@ -7,12 +7,12 @@ export TERM=xterm-256color
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-    source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
 # See the path with:
 echo_path () {
-    echo $PATH  | tr ':' '\n'
+  echo $PATH  | tr ':' '\n'
 }
 export PATH=$HOME/bin:$PATH
 
@@ -78,20 +78,20 @@ FZF_LAYOUT='--height 40% --inline-info'
 FZF_OPTS="--preview-window=:hidden --bind '?:toggle-preview'"
 
 if command -v fd &> /dev/null; then
-    export FZF_DEFAULT_COMMAND="fd --hidden --follow --exclude .git"
-    export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-    export FZF_ALT_C_COMMAND="$FZF_DEFAULT_COMMAND --type d"
+  export FZF_DEFAULT_COMMAND="fd --hidden --follow --exclude .git"
+  export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+  export FZF_ALT_C_COMMAND="$FZF_DEFAULT_COMMAND --type d"
 
-    _fzf_compgen_path() {
-        fd --hidden --follow --exclude .git . "$1"
-    }
-    _fzf_compgen_dir() {
-        fd --hidden --follow --exclude .git --type d . "$1"
-    }
+  _fzf_compgen_path() {
+    fd --hidden --follow --exclude .git . "$1"
+  }
+  _fzf_compgen_dir() {
+    fd --hidden --follow --exclude .git --type d . "$1"
+  }
 elif command -v rg &> /dev/null; then
-    export FZF_DEFAULT_COMMAND='rg --sort-files --files --hidden -g "!.git/"'
+  export FZF_DEFAULT_COMMAND='rg --sort-files --files --hidden -g "!.git/"'
 elif command -v ag &> /dev/null; then
-    export FZF_DEFAULT_COMMAND='ag -l --hidden -g ""'
+  export FZF_DEFAULT_COMMAND='ag -l --hidden -g ""'
 fi
 export FZF_DEFAULT_OPTS="$FZF_PREVIEW"
 
@@ -108,8 +108,8 @@ export FZF_ALT_C_OPTS="$FZF_PREVIEW $FZF_LAYOUT $FZF_OPTS"
 # like normal z when used with arguments but displays an fzf prompt when used without.
 unalias z 2> /dev/null
 z() {
-    [ $# -gt 0 ] && _z "$*" && return
-    cd "$(_z -l 2>&1 | fzf --height 40% --nth 2.. --inline-info +s --tac --query "${*##-* }" | sed 's/^[0-9,.]* *//')"
+  [ $# -gt 0 ] && _z "$*" && return
+  cd "$(_z -l 2>&1 | fzf --height 40% --nth 2.. --inline-info +s --tac --query "${*##-* }" | sed 's/^[0-9,.]* *//')"
 }
 
 # }}}
@@ -119,9 +119,9 @@ z() {
 # Predictable SSH authentication socket location.
 SOCK="/tmp/ssh-agent-$USER-screen"
 if test $SSH_AUTH_SOCK && [ $SSH_AUTH_SOCK != $SOCK ]; then
-    rm -f /tmp/ssh-agent-$USER-screen
-    ln -sf $SSH_AUTH_SOCK $SOCK
-    export SSH_AUTH_SOCK=$SOCK
+  rm -f /tmp/ssh-agent-$USER-screen
+  ln -sf $SSH_AUTH_SOCK $SOCK
+  export SSH_AUTH_SOCK=$SOCK
 fi
 
 # }}}
@@ -137,7 +137,7 @@ fi
 
 ### Homebrew on x86 or ARM {{{
 
-# Must be loaded before antigen to ensure brew completions are in fpath
+# Must be loaded before zinit to ensure brew completions are in fpath
 OS="$(uname)"
 case $OS in
   Darwin)
@@ -224,13 +224,57 @@ if command -v dex &>/dev/null; then
 fi
 # }}}
 
-### Antigen {{{
+### Zinit Plugin Manager {{{
 
-# ANTIGEN_LOG=~/antigen.log
+# Initialize Zinit
+if [[ ! -f $HOME/.local/share/zinit/zinit.git/zinit.zsh ]]; then
+  print -P "%F{33} %F{220}Installing %F{33}ZDHARMA-CONTINUUM%F{220} Initiative Plugin Manager (%F{33}zdharma-continuum/zinit%F{220})…%f"
+  command mkdir -p "$HOME/.local/share/zinit" && command chmod g-rwX "$HOME/.local/share/zinit"
+  command git clone https://github.com/zdharma-continuum/zinit "$HOME/.local/share/zinit/zinit.git" && \
+    print -P "%F{33} %F{34}Installation successful.%f%b" || \
+    print -P "%F{160} The clone has failed.%f%b"
+fi
 
-# `curl -L git.io/antigen > dotFiles/templates/.antigen.zsh`
-[[ -f ~/.antigen.zsh ]] && source ~/.antigen.zsh
-[[ -f ~/.antigenrc ]] && antigen init ~/.antigenrc
+source "$HOME/.local/share/zinit/zinit.git/zinit.zsh"
+autoload -Uz _zinit
+(( ${+_comps} )) && _comps[zinit]=_zinit
+
+# Initialize completions immediately (prevents "no tags registered" error)
+zicompinit
+
+# Load powerlevel10k theme (no turbo mode for instant prompt)
+zinit ice depth=1
+zinit light romkatv/powerlevel10k
+
+# Oh-My-Zsh library and plugins (turbo mode)
+zinit wait lucid for \
+  OMZL::git.zsh \
+  OMZP::colored-man-pages \
+  OMZP::command-not-found \
+  OMZP::safe-paste \
+  OMZP::z
+
+# Other plugins (turbo mode)
+zinit wait lucid for \
+  changyuheng/fz \
+  lukechilds/zsh-nvm \
+  lukechilds/zsh-better-npm-completion
+
+# Completions - load in turbo mode and replay
+zinit wait lucid atload"zicdreplay" for \
+  zsh-users/zsh-completions
+
+# Autosuggestions - load in turbo mode
+zinit wait lucid atload"_zsh_autosuggest_start" for \
+  zsh-users/zsh-autosuggestions
+
+# Syntax highlighting - must load before history-substring-search
+zinit wait lucid for \
+  zsh-users/zsh-syntax-highlighting
+
+# History substring search - must load after syntax highlighting
+zinit wait lucid for \
+  zsh-users/zsh-history-substring-search
 
 # https://github.com/romkatv/powerlevel10k
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
@@ -239,8 +283,8 @@ fi
 # Override the generated .p10k.zsh file
 [[ -f ~/.p10k.overrides.zsh ]] && source ~/.p10k.overrides.zsh
 
-[[ -f ~/.fzf.zsh ]] && source ~/.fzf.zsh
+[[ -f "${XDG_CONFIG_HOME:-$HOME/.config}"/fzf/fzf.zsh ]] && source "${XDG_CONFIG_HOME:-$HOME/.config}"/fzf/fzf.zsh
 
 # }}}
 
-# vim:foldmethod=marker:foldlevel=0
+# vim: set ts=2 sw=2 et foldmethod=marker foldlevel=0:

@@ -21,9 +21,9 @@ curl https://raw.githubusercontent.com/ryan953/dotFiles/main/iterm/ryan953.iterm
 
 Then import via the iTerm Settings->Profile->Colors panel
 
-# Update Antigen
+# Update Zinit
 ```bash
-$ curl -L git.io/antigen > ~/.dotFiles/templates/.antigen.zsh
-$ antigen update
+$ zinit self-update
+$ zinit update --all
 ```
 

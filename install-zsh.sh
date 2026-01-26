@@ -237,7 +237,7 @@ init () {
   ensure_repo "Vundle" https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
   vim +PluginInstall +qall
 
-  # File dependency for `z` antigen plugin (see .antigenrc)
+  # File dependency for `z` Oh-My-Zsh plugin (loaded via zinit)
   touch ~/.z
 
   # Allow zsh, then change the default
