@@ -4,6 +4,7 @@ set -euo pipefail
 # Script to create a git worktree for a task and open it in a new tmux window
 
 TASKS_BASE="$HOME/tasks"
+UPDATE_CHECK_FILE="/tmp/claude-code-update-check"
 
 # Track start time for elapsed time calculations
 START_TIME=$(perl -MTime::HiRes=time -e 'printf "%.3f", time()')
@@ -13,6 +14,31 @@ timestamp() {
     local current=$(perl -MTime::HiRes=time -e 'printf "%.3f", time()')
     local elapsed=$(perl -e "printf '%.3f', $current - $START_TIME")
     echo "+${elapsed}s"
+}
+
+# Helper: Check for Claude Code updates (once per day)
+check_claude_updates() {
+    local now=$(date +%s)
+
+    # Check if update check file exists and is less than 24 hours old
+    if [ -f "$UPDATE_CHECK_FILE" ]; then
+        local last_check=$(cat "$UPDATE_CHECK_FILE" 2>/dev/null || echo "0")
+        local age=$((now - last_check))
+
+        # 86400 seconds = 24 hours
+        if [ "$age" -lt 86400 ]; then
+            return 0
+        fi
+    fi
+
+    # Check for updates if claude command exists
+    if command -v claude &>/dev/null; then
+        echo "[$(timestamp)] 🔍 Checking for Claude Code updates..."
+        claude update check 2>/dev/null || true
+    fi
+
+    # Update the timestamp
+    echo "$now" > "$UPDATE_CHECK_FILE"
 }
 
 usage() {
@@ -353,65 +379,129 @@ echo ""
 repo_path="$repo_path"
 worktree_path="$worktree_path"
 
-echo "[\$(timestamp)] 📄 Copying .env files..."
-env_files_copied=0
+echo "[\$(timestamp)] 🔗 Symlinking .env files..."
+env_files_linked=0
 for env_file in .env .env.local .env.development .env.production .env.test; do
     if [ -f "\$repo_path/\$env_file" ]; then
-        cp "\$repo_path/\$env_file" "\$worktree_path/"
-        echo "[\$(timestamp)] ✓ Copied \$env_file"
-        env_files_copied=\$((env_files_copied + 1))
+        ln -s "\$repo_path/\$env_file" "\$worktree_path/\$env_file"
+        echo "[\$(timestamp)] ✓ Linked \$env_file"
+        env_files_linked=\$((env_files_linked + 1))
     fi
 done
 
-if [ "\$env_files_copied" -eq 0 ]; then
+if [ "\$env_files_linked" -eq 0 ]; then
     echo "[\$(timestamp)] ℹ️  No .env files found"
 fi
 echo ""
 
-# Install dependencies
-if [ -f "\$worktree_path/package.json" ]; then
-    cd "\$worktree_path"
-
-    if [ -f "pnpm-lock.yaml" ]; then
-        echo "[\$(timestamp)] 📦 Installing dependencies with pnpm..."
-        pnpm install
-        echo "[\$(timestamp)] ✓ pnpm install complete"
-    elif [ -f "yarn.lock" ]; then
-        echo "[\$(timestamp)] 📦 Installing dependencies with yarn..."
-        yarn install
-        echo "[\$(timestamp)] ✓ yarn install complete"
-    elif [ -f "bun.lockb" ]; then
-        echo "[\$(timestamp)] 📦 Installing dependencies with bun..."
-        bun install
-        echo "[\$(timestamp)] ✓ bun install complete"
-    elif [ -f "package-lock.json" ]; then
-        echo "[\$(timestamp)] 📦 Installing dependencies with npm..."
-        npm install
-        echo "[\$(timestamp)] ✓ npm install complete"
-    else
-        echo "[\$(timestamp)] 📦 Installing dependencies with npm (no lockfile found)..."
-        npm install
-        echo "[\$(timestamp)] ✓ npm install complete"
-    fi
+# Symlink .claude/settings.local.json
+if [ -f "\$repo_path/.claude/settings.local.json" ]; then
+    echo "[\$(timestamp)] ⚙️  Symlinking .claude settings..."
+    mkdir -p "\$worktree_path/.claude"
+    ln -s "\$repo_path/.claude/settings.local.json" "\$worktree_path/.claude/settings.local.json"
+    echo "[\$(timestamp)] ✓ Linked .claude/settings.local.json"
     echo ""
 else
-    echo "[\$(timestamp)] ℹ️  No package.json found, skipping dependency installation"
+    echo "[\$(timestamp)] ℹ️  No .claude/settings.local.json found"
     echo ""
 fi
-SETUP_EOF
 
-    if command -v direnv &>/dev/null; then
-        cat <<SETUP_EOF
+# Symlink .devenv directory
+if [ -d "\$repo_path/.devenv" ]; then
+    echo "[\$(timestamp)] 🔗 Symlinking .devenv directory..."
+    ln -s "\$repo_path/.devenv" "\$worktree_path/.devenv"
+    echo "[\$(timestamp)] ✓ Linked .devenv"
+    echo ""
+else
+    echo "[\$(timestamp)] ℹ️  No .devenv directory found"
+    echo ""
+fi
 
-# Allow direnv
-if [ -f "\$worktree_path/.envrc" ]; then
+# Allow direnv before running any commands
+if command -v direnv &>/dev/null && [ -f "\$worktree_path/.envrc" ]; then
     echo "[\$(timestamp)] 🔐 Allowing direnv..."
     direnv allow "\$worktree_path"
     echo "[\$(timestamp)] ✓ direnv allowed"
     echo ""
 fi
-SETUP_EOF
+
+# Check for devenv and use it if available
+if [ -d "\$worktree_path/.devenv" ] && command -v devenv &>/dev/null; then
+    cd "\$worktree_path"
+    echo "[\$(timestamp)] 🔧 Found .devenv, using devenv to sync dependencies..."
+    devenv sync
+    echo "[\$(timestamp)] ✓ devenv sync complete"
+    echo ""
+else
+    # Install dependencies manually if devenv is not available
+
+    # Install Node.js dependencies
+    if [ -f "\$worktree_path/package.json" ]; then
+        cd "\$worktree_path"
+
+        if [ -f "pnpm-lock.yaml" ]; then
+            echo "[\$(timestamp)] 📦 Installing dependencies with pnpm..."
+            pnpm install
+            echo "[\$(timestamp)] ✓ pnpm install complete"
+        elif [ -f "yarn.lock" ]; then
+            echo "[\$(timestamp)] 📦 Installing dependencies with yarn..."
+            yarn install
+            echo "[\$(timestamp)] ✓ yarn install complete"
+        elif [ -f "bun.lockb" ]; then
+            echo "[\$(timestamp)] 📦 Installing dependencies with bun..."
+            bun install
+            echo "[\$(timestamp)] ✓ bun install complete"
+        elif [ -f "package-lock.json" ]; then
+            echo "[\$(timestamp)] 📦 Installing dependencies with npm..."
+            npm install
+            echo "[\$(timestamp)] ✓ npm install complete"
+        else
+            echo "[\$(timestamp)] 📦 Installing dependencies with npm (no lockfile found)..."
+            npm install
+            echo "[\$(timestamp)] ✓ npm install complete"
+        fi
+        echo ""
+    else
+        echo "[\$(timestamp)] ℹ️  No package.json found, skipping dependency installation"
+        echo ""
     fi
+
+    # Setup Python virtual environment
+    if [ -f "\$worktree_path/requirements.txt" ] || [ -f "\$worktree_path/pyproject.toml" ] || [ -f "\$worktree_path/setup.py" ]; then
+        cd "\$worktree_path"
+
+        if command -v python3 &>/dev/null; then
+            echo "[\$(timestamp)] 🐍 Setting up Python virtual environment..."
+            python3 -m venv .venv
+            echo "[\$(timestamp)] ✓ Created .venv"
+
+            # Activate and install dependencies
+            source .venv/bin/activate
+
+            if [ -f "requirements.txt" ]; then
+                echo "[\$(timestamp)] 📦 Installing Python dependencies from requirements.txt..."
+                pip install -r requirements.txt
+                echo "[\$(timestamp)] ✓ pip install complete"
+            fi
+
+            if [ -f "pyproject.toml" ]; then
+                echo "[\$(timestamp)] 📦 Installing Python dependencies from pyproject.toml..."
+                pip install -e .
+                echo "[\$(timestamp)] ✓ pip install complete"
+            fi
+
+            echo ""
+        else
+            echo "[\$(timestamp)] ℹ️  python3 not found, skipping virtual environment setup"
+            echo ""
+        fi
+    else
+        echo "[\$(timestamp)] ℹ️  No Python project files found, skipping virtual environment setup"
+        echo ""
+    fi
+
+fi  # End of devenv check - manual installation block
+SETUP_EOF
 
     cat <<SETUP_EOF
 
@@ -537,6 +627,9 @@ create_task() {
 
 # Main script entry point
 main() {
+    # Check for Claude Code updates (once per day)
+    check_claude_updates
+
     # Check arguments
     if [ $# -eq 0 ]; then
         usage
