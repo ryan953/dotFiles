@@ -417,14 +417,6 @@ else
     echo ""
 fi
 
-# Allow direnv before running any commands
-if command -v direnv &>/dev/null && [ -f "\$worktree_path/.envrc" ]; then
-    echo "[\$(timestamp)] 🔐 Allowing direnv..."
-    direnv allow "\$worktree_path"
-    echo "[\$(timestamp)] ✓ direnv allowed"
-    echo ""
-fi
-
 # Check for devenv and use it if available
 if [ -d "\$worktree_path/.devenv" ] && command -v devenv &>/dev/null; then
     cd "\$worktree_path"
@@ -619,6 +611,14 @@ create_task() {
     fi
     echo "[$(timestamp)] ✓ Worktree created"
     echo ""
+
+    # Allow direnv before spawning tmux
+    if command -v direnv &>/dev/null && [ -f "$worktree_path/.envrc" ]; then
+        echo "[$(timestamp)] 🔐 Allowing direnv..."
+        direnv allow "$worktree_path"
+        echo "[$(timestamp)] ✓ direnv allowed"
+        echo ""
+    fi
 
     # Create tmux window and run setup inside it
     echo "[$(timestamp)] 🖥️  Setting up tmux environment..."
