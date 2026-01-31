@@ -250,6 +250,8 @@ init () {
         sudo sh -c "echo $zsh_path >> /etc/shells"
         chsh -s "$zsh_path"
       fi
+
+      npm install -g @playwright/cli@latest
     ;;
     Linux)
     ;;

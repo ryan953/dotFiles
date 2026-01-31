@@ -288,3 +288,7 @@ zinit wait lucid for \
 # }}}
 
 # vim: set ts=2 sw=2 et foldmethod=marker foldlevel=0:
+
+
+eval "$(direnv hook zsh)"
+
