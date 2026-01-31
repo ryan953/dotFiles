@@ -2,4 +2,9 @@
 import = ["${HOME}/.config/alacritty/main.toml"]
 
 [font]
-size =  13.0
+size = 13.0
+
+[[keyboard.bindings]]
+key = "Return"
+mods = "Shift"
+chars = "\n"
