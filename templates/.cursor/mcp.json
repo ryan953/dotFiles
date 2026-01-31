@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "Sentry": {
+      "url": "https://mcp.sentry.dev/mcp"
+    },
+    "Linear": {
+      "url": "https://mcp.linear.app/mcp"
+    }
+  }
+}

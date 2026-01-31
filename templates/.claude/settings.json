@@ -155,6 +155,15 @@
     "type": "command",
     "command": "npx -y @owloops/claude-powerline@latest"
   },
+  "mcpServers": {
+    "Sentry": {
+      "url": "https://mcp.sentry.dev/mcp"
+    },
+    "Linear": {
+      "url": "https://mcp.linear.app/mcp",
+      "headers": {}
+    }
+  },
   "enabledPlugins": {
     "code-review@claude-plugins-official": true,
     "dex@dex": true,
