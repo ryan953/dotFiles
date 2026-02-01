@@ -48,6 +48,17 @@ trigger: "Use when user asks to..."
 ---
 ```
 
+## Global vs. Project Settings
+
+**Global settings and skills** (apply to all projects):
+- Location: `~/.dotFiles/templates/.claude/`
+- Use for: Universal workflow skills, global settings, cross-project configurations
+- Examples: `start-task`, `wrap-up-task`, `learning-mode`
+
+**Project-specific settings** (apply to current project only):
+- Location: `.claude/` in project root
+- Use for: Project-specific skills, repository-specific configurations
+
 ## Testing Philosophy
 - Write tests for React components using React Testing Library
 - Focus on user behavior over implementation
