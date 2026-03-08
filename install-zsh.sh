@@ -122,6 +122,14 @@ init () {
 
       ./templates/bin/check-brew-drift.sh
 
+      echo "###### Installing Alacritty"
+      ALACRITTY_VERSION="v0.16.1"
+      curl -LO https://github.com/alacritty/alacritty/releases/download/${ALACRITTY_VERSION}/Alacritty-${ALACRITTY_VERSION}.dmg
+      hdiutil attach Alacritty-${ALACRITTY_VERSION}.dmg
+      cp -r /Volumes/Alacritty/Alacritty.app /Applications/Alacritty.app
+      hdiutil detach /Volumes/Alacritty
+      rm Alacritty-${ALACRITTY_VERSION}.dmg
+
       # OSX Settings
       ./install-osx.sh
     ;;
