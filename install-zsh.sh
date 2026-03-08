@@ -132,6 +132,8 @@ init () {
 
       # OSX Settings
       ./install-osx.sh
+
+      npx @sentry/dotagents --user install
     ;;
     Linux)
       echo "###### Installing Linux Dependencies"
