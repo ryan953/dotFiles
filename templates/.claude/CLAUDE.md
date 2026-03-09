@@ -13,9 +13,11 @@ Check `dex --help` for available commands.
 
 ## Browser automation
 
-Use `playwright-cli` to automate browser testing.
-Check playwright-cli --help for available commands.
-Use `--headed` whenever I need to manually test something
+Use `rodney` for interacting with websites: taking screenshots, making assertions, and navigating pages.
+Check `rodney --help` for available commands.
+Prefer `rodney` over `playwright-cli` for website interaction — it has simpler, more direct commands for screenshots and assertions.
+Use `playwright-cli` only for lower-level automation not covered by rodney.
+Use `--headed` whenever I need to manually test something.
 
 ## Workflow Automation Strategy
 
