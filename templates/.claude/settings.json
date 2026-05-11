@@ -109,8 +109,10 @@
       "WebFetch(domain:modelcontextprotocol.io)",
       "WebFetch(domain:npmjs.com)",
       "WebFetch(domain:react.dev)"
-    ]
+    ],
+    "defaultMode": "auto"
   },
+  "model": "claude-opus-4-6",
   "hooks": {
     "Notification": [
       {
@@ -118,7 +120,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.claude/notify.sh 'Claude Code' 'Permission Required'"
+            "command": "~/.claude/notify.ts 'Claude Code' 'Permission Required'"
           }
         ]
       },
@@ -127,7 +129,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.claude/notify.sh 'Claude Code' 'Claude is waiting'"
+            "command": "~/.claude/notify.ts 'Claude Code' 'Claude is waiting'"
           }
         ]
       }
@@ -137,7 +139,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.claude/notify.sh 'Claude Code' 'Permission Requested'"
+            "command": "~/.claude/notify.ts 'Claude Code' 'Permission Requested'"
           }
         ]
       }
@@ -158,7 +160,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.claude/notify.sh 'Claude Code' 'Execution Stopped'"
+            "command": "~/.claude/notify.ts 'Claude Code' 'Execution Stopped'"
           }
         ]
       }
@@ -181,5 +183,7 @@
     "claude-md-management@claude-plugins-official": true
   },
   "effortLevel": "medium",
-  "skipDangerousModePermissionPrompt": true
+  "skipDangerousModePermissionPrompt": true,
+  "skipAutoPermissionPrompt": true,
+  "agentPushNotifEnabled": true
 }
