@@ -1,0 +1,13 @@
+font-family = MesloLGS Nerd Font
+font-size = 12
+font-thicken = true
+
+theme = Atom One Dark
+background = #171717
+
+keybind = super+t=unbind
+
+# For oh-my-pi: https://github.com/can1357/oh-my-pi#installation
+# Pi uses the Kitty keyboard protocol for reliable modifier key detection. Most modern terminals support this protocol, but some require configuration.
+keybind = alt+backspace=text:\x1b\x7f
+keybind = shift+enter=text:\n
