@@ -35,7 +35,13 @@ const fullMessage = `📁 ${shortCwd}\n${message}`;
 
 try {
   execSync("command -v terminal-notifier", { stdio: "ignore" });
+  const safeTitle = JSON.stringify(title);
+  const safeMsg = JSON.stringify(fullMessage)
+    .replace(/\\n/g, "\n");
   execSync(
-    `terminal-notifier -title ${JSON.stringify(title)} -message ${JSON.stringify(fullMessage)} -sound default`
+    `terminal-notifier` +
+      ` -title ${safeTitle}` +
+      ` -message ${safeMsg}` +
+      ` -sound default`
   );
 } catch {}
