@@ -2,8 +2,9 @@
 #
 # PostToolUse hook script for auto-linting changed files
 # Tries linting strategies in order:
-# 1. pre-commit (if .pre-commit-config.yaml exists and pre-commit is available)
-# 2. eslint/prettier via package.json (using pnpm, yarn, or npm)
+# 1. prek (if .venv/bin/prek exists)
+# 2. pre-commit (if .pre-commit-config.yaml exists and pre-commit is available)
+# 3. eslint/prettier via package.json (using pnpm, yarn, or npm)
 #
 
 set -euo pipefail
@@ -71,6 +72,60 @@ detect_package_manager() {
     echo "bun"
   else
     echo "npm"
+  fi
+}
+
+# Check if prek is available
+has_prek() {
+  local project_root="$1"
+
+  for venv in "$project_root/.venv" "$project_root/venv" "$project_root/.virtualenv"; do
+    if [[ -x "$venv/bin/prek" ]]; then
+      return 0
+    fi
+  done
+
+  command -v prek &>/dev/null && return 0
+
+  return 1
+}
+
+# Get prek command
+get_prek_cmd() {
+  local project_root="$1"
+
+  for venv in "$project_root/.venv" "$project_root/venv" "$project_root/.virtualenv"; do
+    if [[ -x "$venv/bin/prek" ]]; then
+      echo "$venv/bin/prek"
+      return 0
+    fi
+  done
+
+  if command -v prek &>/dev/null; then
+    echo "prek"
+    return 0
+  fi
+
+  return 1
+}
+
+# Run prek on the file
+run_prek() {
+  local project_root="$1"
+  local file_path="$2"
+  local prek_cmd
+
+  prek_cmd=$(get_prek_cmd "$project_root") || return 1
+
+  local relative_path
+  relative_path=$(get_relative_path "$project_root" "$file_path")
+
+  cd "$project_root"
+
+  if $prek_cmd run --files "$relative_path" 2>&1; then
+    return 0
+  else
+    return 0
   fi
 }
 
@@ -229,13 +284,19 @@ main() {
   local project_root
   project_root=$(find_project_root "$(dirname "$FILE_PATH")") || exit 0
   
-  # Strategy 1: Try pre-commit
+  # Strategy 1: Try prek
+  if has_prek "$project_root"; then
+    run_prek "$project_root" "$FILE_PATH"
+    exit 0
+  fi
+
+  # Strategy 2: Try pre-commit
   if has_precommit "$project_root"; then
     run_precommit "$project_root" "$FILE_PATH"
     exit 0
   fi
-  
-  # Strategy 2: Try JS linters (eslint/prettier)
+
+  # Strategy 3: Try JS linters (eslint/prettier)
   if has_js_linters "$project_root"; then
     local pm
     pm=$(detect_package_manager "$project_root")
