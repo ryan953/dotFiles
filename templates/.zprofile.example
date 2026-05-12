@@ -2,3 +2,6 @@
 # export HOMEBREW_GITHUB_API_TOKEN=''
 
 # eval "$(pyenv init --path)"
+
+# sentry
+fpath=("/Users/ryan953/.local/share/zsh/site-functions" $fpath)
