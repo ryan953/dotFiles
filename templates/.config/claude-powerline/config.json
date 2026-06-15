@@ -1,0 +1,204 @@
+{
+  "theme": "tokyo-night",
+  "display": {
+    "style": "powerline",
+    "charset": "unicode",
+    "colorCompatibility": "auto",
+    "autoWrap": true,
+    "padding": 1,
+    "lines": [
+      {
+        "segments": {
+          "directory": {
+            "enabled": true,
+            "style": "fish"
+          },
+          "git": {
+            "enabled": true,
+            "showAheadBehind": false,
+            "showSha": false,
+            "showWorkingTree": false,
+            "showOperation": false,
+            "showTag": false,
+            "showTimeSinceCommit": false,
+            "showStashCount": false,
+            "showUpstream": false,
+            "showRepoName": false
+          },
+          "model": {
+            "enabled": true
+          },
+          "session": {
+            "enabled": true,
+            "type": "tokens"
+          },
+          "context": {
+            "enabled": true,
+            "displayStyle": "text",
+            "showPercentageOnly": false,
+            "percentageMode": "used",
+            "autocompactBuffer": 33000
+          },
+          "today": {
+            "enabled": true,
+            "type": "cost"
+          },
+          "block": {
+            "enabled": false,
+            "type": "cost",
+            "burnType": "cost",
+            "displayStyle": "text"
+          },
+          "weekly": {
+            "enabled": false,
+            "displayStyle": "text"
+          },
+          "version": {
+            "enabled": false
+          },
+          "tmux": {
+            "enabled": false
+          },
+          "sessionId": {
+            "enabled": false,
+            "showIdLabel": true
+          },
+          "metrics": {
+            "enabled": false,
+            "showResponseTime": false,
+            "showLastResponseTime": false,
+            "showDuration": false,
+            "showMessageCount": false,
+            "showLinesAdded": false,
+            "showLinesRemoved": false
+          },
+          "env": {
+            "enabled": false,
+            "variable": ""
+          },
+          "agent": {
+            "enabled": false,
+            "showLabel": false
+          },
+          "thinking": {
+            "enabled": false,
+            "showEnabled": true,
+            "showEffort": true
+          },
+          "cacheTimer": {
+            "enabled": false
+          }
+        }
+      },
+      {
+        "segments": {
+          "block": {
+            "enabled": false,
+            "type": "tokens"
+          },
+          "metrics": {
+            "enabled": false,
+            "showLastResponseTime": true
+          },
+          "today": {
+            "enabled": false,
+            "type": "cost"
+          },
+          "directory": {
+            "enabled": false,
+            "style": "basename"
+          },
+          "git": {
+            "enabled": false,
+            "showSha": false,
+            "showWorkingTree": false,
+            "showOperation": false,
+            "showTag": false,
+            "showTimeSinceCommit": false,
+            "showStashCount": false,
+            "showUpstream": false,
+            "showRepoName": false
+          },
+          "model": {
+            "enabled": false
+          },
+          "session": {
+            "enabled": false,
+            "type": "tokens",
+            "costSource": "calculated"
+          },
+          "weekly": {
+            "enabled": false,
+            "displayStyle": "text"
+          },
+          "version": {
+            "enabled": false
+          },
+          "tmux": {
+            "enabled": false
+          },
+          "sessionId": {
+            "enabled": false,
+            "showIdLabel": true
+          },
+          "context": {
+            "enabled": false,
+            "showPercentageOnly": false,
+            "displayStyle": "text",
+            "autocompactBuffer": 33000
+          },
+          "env": {
+            "enabled": false,
+            "variable": ""
+          },
+          "agent": {
+            "enabled": false,
+            "showLabel": false
+          },
+          "thinking": {
+            "enabled": false,
+            "showEnabled": true,
+            "showEffort": true
+          },
+          "cacheTimer": {
+            "enabled": false
+          }
+        }
+      },
+      {
+        "segments": {
+          "directory": {
+            "enabled": true,
+            "style": "basename"
+          },
+          "model": {
+            "enabled": true
+          }
+        }
+      }
+    ],
+    "showIcons": true
+  },
+  "budget": {
+    "session": {
+      "warningThreshold": 80,
+      "amount": 0,
+      "type": "tokens",
+      "showPercentage": false,
+      "showValue": false
+    },
+    "today": {
+      "warningThreshold": 80,
+      "amount": 50
+    },
+    "block": {
+      "warningThreshold": 80,
+      "amount": 15
+    }
+  },
+  "modelContextLimits": {
+    "default": 200000,
+    "sonnet": 200000,
+    "opus": 200000
+  }
+}
