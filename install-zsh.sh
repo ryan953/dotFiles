@@ -130,6 +130,9 @@ init () {
       hdiutil detach /Volumes/Alacritty
       rm Alacritty-${ALACRITTY_VERSION}.dmg
 
+      gh extension install seachicken/gh-poi
+      gh extension install github/gh-stack
+
       # OSX Settings
       ./install-osx.sh
 
