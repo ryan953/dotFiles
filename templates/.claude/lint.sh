@@ -15,21 +15,54 @@ INPUT=$(cat)
 # Extract file path from tool_input
 FILE_PATH=$(echo "$INPUT" | jq -r '.tool_input.file_path // .tool_input.path // empty')
 
-if [[ -z "$FILE_PATH" ]]; then
-  exit 0
-fi
+SKIP_EXTENSIONS='\.md$|\.txt$|\.json$|\.yaml$|\.yml$|\.lock$|\.svg$|\.png$|\.jpg$|\.gif$|\.ico$'
 
-# Skip non-existent files (might have been deleted)
-if [[ ! -f "$FILE_PATH" ]]; then
-  exit 0
-fi
+should_skip_file() {
+  local f="$1"
+  [[ ! -f "$f" ]] && return 0
+  echo "$f" | grep -qE "$SKIP_EXTENSIONS" && return 0
+  return 1
+}
 
-# Skip certain file types that don't need linting
-case "$FILE_PATH" in
-  *.md|*.txt|*.json|*.yaml|*.yml|*.lock|*.svg|*.png|*.jpg|*.gif|*.ico)
+# Build FILE_LIST from explicit path or git state
+FILE_LIST=()
+
+if [[ -n "$FILE_PATH" ]]; then
+  if should_skip_file "$FILE_PATH"; then
     exit 0
-    ;;
-esac
+  fi
+  FILE_LIST=("$FILE_PATH")
+else
+  # No file provided — discover from git state
+  RAW_FILES=()
+
+  # 1. Staged files
+  while IFS= read -r f; do
+    [[ -n "$f" ]] && RAW_FILES+=("$f")
+  done < <(git diff --cached --name-only --diff-filter=d 2>/dev/null)
+
+  # 2. Unstaged modified files (fallback)
+  if [[ ${#RAW_FILES[@]} -eq 0 ]]; then
+    while IFS= read -r f; do
+      [[ -n "$f" ]] && RAW_FILES+=("$f")
+    done < <(git diff --name-only --diff-filter=d 2>/dev/null)
+  fi
+
+  # 3. Most recent commit (fallback)
+  if [[ ${#RAW_FILES[@]} -eq 0 ]]; then
+    while IFS= read -r f; do
+      [[ -n "$f" ]] && RAW_FILES+=("$f")
+    done < <(git diff --name-only --diff-filter=d HEAD~1 HEAD 2>/dev/null)
+  fi
+
+  for f in "${RAW_FILES[@]}"; do
+    should_skip_file "$f" || FILE_LIST+=("$f")
+  done
+
+  if [[ ${#FILE_LIST[@]} -eq 0 ]]; then
+    exit 0
+  fi
+fi
 
 # Find project root by walking up directories
 find_project_root() {
@@ -109,23 +142,28 @@ get_prek_cmd() {
   return 1
 }
 
-# Run prek on the file
+# Run prek on file(s) — pass all remaining args as file paths
 run_prek() {
   local project_root="$1"
-  local file_path="$2"
+  shift
   local prek_cmd
 
   prek_cmd=$(get_prek_cmd "$project_root") || return 1
 
-  local relative_path
-  relative_path=$(get_relative_path "$project_root" "$file_path")
+  local rel_paths=()
+  for f in "$@"; do
+    rel_paths+=("$(get_relative_path "$project_root" "$f")")
+  done
 
   cd "$project_root"
 
-  if $prek_cmd run --files "$relative_path" 2>&1; then
+  local files_arg
+  files_arg=$(IFS=,; echo "${rel_paths[*]}")
+
+  if $prek_cmd run --files "$files_arg" 2>&1; then
     return 0
   else
-    return 0
+    return 1
   fi
 }
 
@@ -203,96 +241,89 @@ get_relative_path() {
   echo "${real_file#$real_root/}"
 }
 
-# Run pre-commit on the file
+# Run pre-commit on file(s)
 run_precommit() {
   local project_root="$1"
-  local file_path="$2"
+  shift
   local precommit_cmd
-  
+
   precommit_cmd=$(get_precommit_cmd "$project_root") || return 1
-  
-  local relative_path
-  relative_path=$(get_relative_path "$project_root" "$file_path")
-  
+
+  local rel_paths=()
+  for f in "$@"; do
+    rel_paths+=("$(get_relative_path "$project_root" "$f")")
+  done
+
   cd "$project_root"
-  
-  # Run pre-commit on specific file
-  # Use --files to target specific file, allow failures (lint errors shouldn't block)
-  if $precommit_cmd run --files "$relative_path" 2>&1; then
-    return 0
-  else
-    # Pre-commit returns non-zero if it made changes or found issues
-    # This is expected behavior, not an error
-    return 0
-  fi
+
+  # pre-commit --files accepts multiple paths
+  $precommit_cmd run --files "${rel_paths[@]}" 2>&1 || true
+  return 0
 }
 
-# Run JS linters (eslint/prettier) on the file
+# Run JS linters (eslint/prettier) on file(s)
 run_js_linters() {
   local project_root="$1"
-  local file_path="$2"
-  local pm="$3"
+  local pm="$2"
+  shift 2
   local pkg="$project_root/package.json"
-  
-  local relative_path
-  relative_path=$(get_relative_path "$project_root" "$file_path")
-  
+
+  local rel_paths=()
+  for f in "$@"; do
+    rel_paths+=("$(get_relative_path "$project_root" "$f")")
+  done
+
   cd "$project_root"
-  
+
   local ran_something=false
-  
-  # Check for lint:fix or lint script
+
   if jq -e '.scripts["lint:fix"]' "$pkg" &>/dev/null; then
-    $pm run lint:fix -- "$relative_path" 2>&1 || true
+    $pm run lint:fix -- "${rel_paths[@]}" 2>&1 || true
     ran_something=true
   elif jq -e '.scripts.lint' "$pkg" &>/dev/null; then
-    # Try with --fix flag for eslint-based lint scripts
-    $pm run lint -- --fix "$relative_path" 2>&1 || true
+    $pm run lint -- --fix "${rel_paths[@]}" 2>&1 || true
     ran_something=true
   fi
-  
-  # Check for format script (usually prettier)
+
   if jq -e '.scripts.format' "$pkg" &>/dev/null; then
-    $pm run format -- "$relative_path" 2>&1 || true
+    $pm run format -- "${rel_paths[@]}" 2>&1 || true
     ran_something=true
   fi
-  
-  # If no scripts, try running eslint/prettier directly if installed
+
   if [[ "$ran_something" == "false" ]]; then
-    # Check if eslint is available
     if jq -e '.devDependencies.eslint // .dependencies.eslint' "$pkg" &>/dev/null; then
-      $pm exec eslint --fix "$relative_path" 2>&1 || true
+      $pm exec eslint --fix "${rel_paths[@]}" 2>&1 || true
       ran_something=true
     fi
-    
-    # Check if prettier is available
+
     if jq -e '.devDependencies.prettier // .dependencies.prettier' "$pkg" &>/dev/null; then
-      $pm exec prettier --write "$relative_path" 2>&1 || true
+      $pm exec prettier --write "${rel_paths[@]}" 2>&1 || true
       ran_something=true
     fi
   fi
-  
+
   if [[ "$ran_something" == "true" ]]; then
     return 0
   fi
-  
+
   return 1
 }
 
 # Main execution
 main() {
+  local first_file="${FILE_LIST[0]}"
   local project_root
-  project_root=$(find_project_root "$(dirname "$FILE_PATH")") || exit 0
-  
+  project_root=$(find_project_root "$(dirname "$first_file")") || exit 0
+
   # Strategy 1: Try prek
   if has_prek "$project_root"; then
-    run_prek "$project_root" "$FILE_PATH"
+    run_prek "$project_root" "${FILE_LIST[@]}"
     exit 0
   fi
 
   # Strategy 2: Try pre-commit
   if has_precommit "$project_root"; then
-    run_precommit "$project_root" "$FILE_PATH"
+    run_precommit "$project_root" "${FILE_LIST[@]}"
     exit 0
   fi
 
@@ -300,11 +331,10 @@ main() {
   if has_js_linters "$project_root"; then
     local pm
     pm=$(detect_package_manager "$project_root")
-    run_js_linters "$project_root" "$FILE_PATH" "$pm"
+    run_js_linters "$project_root" "$pm" "${FILE_LIST[@]}"
     exit 0
   fi
-  
-  # No linting strategy found, exit silently
+
   exit 0
 }
 

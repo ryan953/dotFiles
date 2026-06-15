@@ -1,0 +1,7 @@
+[tee]
+enabled = true    # save raw output on failure (default: true)
+mode = "failures" # "failures", "always", or "never"
+max_files = 20              # rotation: keep last N files
+
+[telemetry]
+enabled = false              # anonymous daily ping — see Telemetry & Privacy for full details

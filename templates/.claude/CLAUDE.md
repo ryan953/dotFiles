@@ -6,66 +6,33 @@ Senior Frontend Developer with React expertise, web technologies (HTML/CSS/JavaS
 ## Package Manager
 Detect from project: `package.json` → check `packageManager` field or lockfile (`pnpm-lock.yaml`, `yarn.lock`, `package-lock.json`)
 
+When starting a new JavaScript or TypeScript project prefer `pnpm` and the latest release of Node v24
+
 ## Task tracking
 
-Use the `dex` command to decompose plans, create tasks, and track progress.
+Use the `dex` command to create tasks, and track progress.
 Check `dex --help` for available commands.
 
-## Browser automation
+When making a PR always record the url into the task it's related to. For tracking and followup.
 
-Use `rodney` for interacting with websites: taking screenshots, making assertions, and navigating pages.
-Check `rodney --help` for available commands.
-Prefer `rodney` over `playwright-cli` for website interaction — it has simpler, more direct commands for screenshots and assertions.
-Use `playwright-cli` only for lower-level automation not covered by rodney.
-Use `--headed` whenever I need to manually test something.
+### Code Intelligence
 
-## Workflow Automation Strategy
+Prefer LSP over Grep/Read for code navigation — it's faster, precise, and avoids reading entire files:
+- `workspaceSymbol` to find where something is defined
+- `findReferences` to see all usages across the codebase
+- `goToDefinition` / `goToImplementation` to jump to source
+- `hover` for type info without reading the file
 
-When facing a problem:
+Use Grep only when LSP isn't available or for text/pattern searches (comments, strings, config).
 
-1. **Define needed skills** - Identify what skills/agents would solve this
-2. **Check available skills** - Search:
-   ```bash
-   find .claude/skills -name "SKILL.md" 2>/dev/null
-   ls plugins/*/skills/*/SKILL.md 2>/dev/null
-   ```
-3. **Create missing skills** - Use Task tool with `subagent_type` or create new skill files
-4. **Delegate to agents** - Let specialized agents handle their domain
-
-## Creating Skills
-
-New skill structure:
-```
-.claude/skills/<skill-name>/
-├── SKILL.md          # Frontmatter + instructions
-└── skill.ts          # Optional: code implementation
-```
-
-SKILL.md frontmatter:
-```yaml
----
-name: skill-name
-description: Brief trigger description
-trigger: "Use when user asks to..."
----
-```
-
-## Global vs. Project Settings
-
-**Global settings and skills** (apply to all projects):
-- Location: `~/.dotFiles/templates/.claude/`
-- Use for: Universal workflow skills, global settings, cross-project configurations
-- Examples: `start-task`, `wrap-up-task`, `learning-mode`
-
-**Project-specific settings** (apply to current project only):
-- Location: `.claude/` in project root
-- Use for: Project-specific skills, repository-specific configurations
+After writing or editing code, check LSP diagnostics and fix errors before proceeding.
 
 ## Testing Philosophy
 - Write tests for React components using React Testing Library
 - Focus on user behavior over implementation
 - Test accessibility (roles, labels, keyboard nav)
 - Prefer integration tests over unit tests
+- Use browser automation to take screenshots and include them in Pull Request descriptions
 
 ## React Patterns
 - Functional components with hooks
@@ -80,11 +47,4 @@ trigger: "Use when user asks to..."
 - **Build**: Vite, Webpack, esbuild, Turbopack
 - **Types**: TypeScript preferred
 
-## Sub-agent Delegation
-
-Use Task tool with appropriate `subagent_type`:
-- `Explore` - Codebase exploration and understanding
-- `Plan` - Implementation planning for complex features
-- `general-purpose` - Multi-step research and searching
-
-Create custom agents on-demand for recurring patterns.
+@RTK.md

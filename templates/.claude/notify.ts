@@ -1,4 +1,4 @@
-#!/usr/bin/env npx tsx
+#!/usr/bin/env node
 
 import { execSync } from "node:child_process";
 import { appendFileSync, readFileSync } from "node:fs";

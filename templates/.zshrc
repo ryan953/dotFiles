@@ -57,7 +57,7 @@ alias rg='rg --hidden'
 
 alias top='htop'
 
-alias claude='brew upgrade -q claude-code && claude'
+alias claude='brew upgrade -q claude-code && claude agents'
 export CLAUDE_POWERLINE_THEME=tokyo-night
 export CLAUDE_POWERLINE_STYLE=powerline
 export CLAUDE_POWERLINE_DEBUG=0

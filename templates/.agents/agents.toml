@@ -1,20 +1,44 @@
-version = 1
-gitignore = true
-# Keeps all the skills up to date
-pin = false
-agents = ["claude", "cursor"]
+# Reload with: npx @sentry/dotagents --user install
 
-[trust]
-allow_all = true
+version = 1
+agents = ["claude", "cursor", "codex", "vscode", "opencode"]
 
 [[skills]]
 name = "*"
+source = "ryan953/skills"
+
+[[skills]]
+name = "dex"
 source = "dcramer/dex"
 
 [[skills]]
-name = "*"
+name = "pr-writer"
 source = "getsentry/skills"
 
 [[skills]]
-name = "*"
-source = "getsentry/warden"
+name = "skill-writer"
+source = "getsentry/skills"
+
+[[skills]]
+name = "iterate-pr"
+source = "getsentry/skills"
+
+[[skills]]
+name = "commit"
+source = "getsentry/skills"
+
+[[skills]]
+name = "agents-md"
+source = "getsentry/skills"
+
+[[skills]]
+name = "prompt-optimizer"
+source = "getsentry/skills"
+
+[[skills]]
+name = "agent-browser"
+source = "vercel-labs/agent-browser"
+
+[[skills]]
+name = "revdiff"
+source = "umputun/revdiff"

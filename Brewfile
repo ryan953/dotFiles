@@ -3,16 +3,17 @@ brew "bat"
 brew "direnv"
 brew "eza"
 brew "fd"
-brew "fx"
+brew "fx" # JSON viewer
 brew "git"
 brew "git-delta"
 brew "htop"
-brew "jq"
+brew "jq" # JSON processor
 brew "pyenv"
-brew "rnr"
+brew "rnr" # Rename multiple files
 brew "ripgrep"
 brew "the_silver_searcher"
 brew "tmux"
+brew "umputun/apps/revdiff"
 brew "vim"
 brew "zx"
 
@@ -23,10 +24,11 @@ brew "terminal-notifier"
 cask "font-meslo-lg-nerd-font"
 
 # UI Programs
+cask "agentsview"
 cask "anki"
 cask "brave-browser"
 cask "brave-browser@beta"
-brew "bitwarden"
+cask "bitwarden"
 brew "bitwarden-cli"
 cask "boop"
 cask "chromedriver"

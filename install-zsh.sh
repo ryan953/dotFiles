@@ -135,8 +135,6 @@ init () {
 
       # OSX Settings
       ./install-osx.sh
-
-      npx @sentry/dotagents --user install
     ;;
     Linux)
       echo "###### Installing Linux Dependencies"
@@ -241,6 +239,9 @@ init () {
   ensure_repo "fzf" https://github.com/junegunn/fzf.git ~/.fzf
   ~/.fzf/install --key-bindings --completion --no-update-rc
 
+  ensure_repo "Tmux Autoreload" https://github.com/b0o/tmux-autoreload ~/.tmux/tmux-autoreload
+  ensure_repo "Tmux Resurrect" https://github.com/tmux-plugins/tmux-resurrect ~/.tmux/tmux-resurrect
+  ensure_repo "Tmux Continuum" https://github.com/tmux-plugins/tmux-continuum ~/.tmux/tmux-continuum
   ensure_repo "Tmux Theme (clone)" https://github.com/ryan953/tmux-onedark-theme.git ~/.tmux/tmux-onedark-theme
   ensure_repo "Tmux Sensible" https://github.com/tmux-plugins/tmux-sensible ~/.tmux/tmux-sensible
   ensure_repo "Tmux Prefix Highlight" https://github.com/tmux-plugins/tmux-prefix-highlight.git ~/.tmux/tmux-prefix-highlight
@@ -265,6 +266,15 @@ init () {
       fi
 
       npm install -g @playwright/cli@latest
+
+      npx @sentry/dotagents --user install
+
+      claude plugin marketplace add anthropics/claude-plugins-official
+      claude plugin install code-review@claude-plugins-official
+      claude plugin install playground@claude-plugins-official
+      claude plugin install pr-review-toolkit@claude-plugins-official
+      claude plugin install skill-creator@claude-plugins-official
+      claude plugin install typescript-lsp@claude-plugins-official
     ;;
     Linux)
     ;;
