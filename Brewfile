@@ -1,4 +1,5 @@
 # Dependencies from install-zsh.sh
+brew "ast-grep"
 brew "bat"
 brew "direnv"
 brew "eza"

@@ -72,6 +72,7 @@
 
 [pull]
   rebase = true
+  ff = only
 
 [push]
   default = simple # (default since 2.0)
