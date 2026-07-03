@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Collect per-folder code metrics for getsentry/sentry.
+#
+# Keeps a headless (bare) clone with no working tree, updates master, then walks
+# every commit since 2026-01-01 at folder granularity and stores the results in
+# a SQLite database. Incremental: already-analyzed commits are skipped, so
+# re-running only processes new commits.
+#
+# Driven by ~/Library/LaunchAgents/com.ryan953.repo-metrics.sentry-commits.plist
+
+# LaunchAgents run with a minimal PATH; make sure ~/bin (repo-metrics) and
+# Homebrew (git) are reachable.
+export PATH="$HOME/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+
+REPO="getsentry/sentry"
+BRANCH="master"
+SINCE="2026-01-01"
+
+DATA_DIR="$HOME/.local/repo-metrics/sentry"
+REPO_DIR="$DATA_DIR/sentry.git"   # bare repo — no working tree
+DB="$DATA_DIR/commits.db"
+
+# logs/ must exist before launchd opens StandardOut/ErrorPath.
+mkdir -p "$DATA_DIR/logs"
+
+# Clone bare on first run; update the master ref on every run after that. A bare
+# clone has no working copy to check out, which keeps disk usage down — analyze
+# reads history straight from the object database.
+if [ ! -f "$REPO_DIR/HEAD" ]; then
+  echo "### Bare-cloning $REPO into $REPO_DIR (large; may take a while)"
+  git clone --bare "https://github.com/${REPO}.git" "$REPO_DIR"
+fi
+
+echo "### Fetching $BRANCH"
+git -C "$REPO_DIR" fetch --prune origin "+refs/heads/${BRANCH}:refs/heads/${BRANCH}"
+
+echo "### Analyzing commits (folder granularity, since $SINCE) -> $DB"
+repo-metrics analyze "$REPO_DIR" \
+  --repo "$REPO" \
+  --commit "$BRANCH" \
+  --granularity folder \
+  --since "$SINCE" \
+  --db "$DB"

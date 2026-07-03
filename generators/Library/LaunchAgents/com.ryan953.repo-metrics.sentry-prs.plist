@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+set -e
+
+# Generates ~/Library/LaunchAgents/com.ryan953.repo-metrics.sentry-prs.plist
+# with the real home directory baked in (launchd does not expand ~ or $HOME in
+# StandardOut/ErrorPath, so those must be absolute).
+#
+# Runs repo-metrics against getsentry/sentry pull requests once a day at 04:00
+# (staggered after the commits job). Needs a GitHub token via $GITHUB_TOKEN or
+# `gh auth token`.
+#
+# Load:    launchctl load  -w ~/Library/LaunchAgents/com.ryan953.repo-metrics.sentry-prs.plist
+# Unload:  launchctl unload -w ~/Library/LaunchAgents/com.ryan953.repo-metrics.sentry-prs.plist
+# Run now: launchctl start     com.ryan953.repo-metrics.sentry-prs
+
+cat <<EOF
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.ryan953.repo-metrics.sentry-prs</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>${HOME}/bin/repo-metrics-sentry-prs</string>
+    </array>
+
+    <key>StartCalendarInterval</key>
+    <dict>
+        <key>Hour</key>
+        <integer>4</integer>
+        <key>Minute</key>
+        <integer>0</integer>
+    </dict>
+
+    <key>RunAtLoad</key>
+    <false/>
+
+    <key>StandardOutPath</key>
+    <string>${HOME}/.local/repo-metrics/sentry/logs/prs.out.log</string>
+    <key>StandardErrorPath</key>
+    <string>${HOME}/.local/repo-metrics/sentry/logs/prs.err.log</string>
+
+    <key>ProcessType</key>
+    <string>Background</string>
+    <key>LowPriorityIO</key>
+    <true/>
+    <key>Nice</key>
+    <integer>5</integer>
+</dict>
+</plist>
+EOF

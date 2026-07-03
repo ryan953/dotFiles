@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Collect pull request authors/reviewers for getsentry/sentry from the GitHub
+# API into a SQLite database. Incremental: PRs whose updated_at hasn't changed
+# are skipped.
+#
+# Needs a GitHub token: uses $GITHUB_TOKEN if set, otherwise falls back to
+# `gh auth token`.
+#
+# Driven by ~/Library/LaunchAgents/com.ryan953.repo-metrics.sentry-prs.plist
+
+# LaunchAgents run with a minimal PATH; make sure ~/bin (repo-metrics) and
+# Homebrew (gh) are reachable.
+export PATH="$HOME/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+
+REPO="getsentry/sentry"
+SINCE="2026-01-01"
+
+DATA_DIR="$HOME/.local/repo-metrics/sentry"
+DB="$DATA_DIR/pull-requests.db"
+
+# logs/ must exist before launchd opens StandardOut/ErrorPath.
+mkdir -p "$DATA_DIR/logs"
+
+# repo-metrics reads GITHUB_TOKEN; fall back to the gh CLI's stored token.
+if [ -z "${GITHUB_TOKEN:-}" ] && command -v gh >/dev/null 2>&1; then
+  GITHUB_TOKEN="$(gh auth token)"
+fi
+export GITHUB_TOKEN
+
+echo "### Fetching pull requests (since $SINCE) -> $DB"
+repo-metrics prs \
+  --repo "$REPO" \
+  --since "$SINCE" \
+  --db "$DB"

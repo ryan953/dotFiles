@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+set -e
+
+# Generates ~/Library/LaunchAgents/com.ryan953.repo-metrics.sentry-commits.plist
+# with the real home directory baked in (launchd does not expand ~ or $HOME in
+# StandardOut/ErrorPath, so those must be absolute).
+#
+# Runs repo-metrics against getsentry/sentry commit history (folder
+# granularity) once a day at 03:00. The wrapper script pulls master first.
+#
+# Load:    launchctl load  -w ~/Library/LaunchAgents/com.ryan953.repo-metrics.sentry-commits.plist
+# Unload:  launchctl unload -w ~/Library/LaunchAgents/com.ryan953.repo-metrics.sentry-commits.plist
+# Run now: launchctl start     com.ryan953.repo-metrics.sentry-commits
+
+cat <<EOF
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.ryan953.repo-metrics.sentry-commits</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>${HOME}/bin/repo-metrics-sentry-commits</string>
+    </array>
+
+    <key>StartCalendarInterval</key>
+    <dict>
+        <key>Hour</key>
+        <integer>3</integer>
+        <key>Minute</key>
+        <integer>0</integer>
+    </dict>
+
+    <!-- Don't pile up runs if the machine was asleep at 03:00. -->
+    <key>RunAtLoad</key>
+    <false/>
+
+    <key>StandardOutPath</key>
+    <string>${HOME}/.local/repo-metrics/sentry/logs/commits.out.log</string>
+    <key>StandardErrorPath</key>
+    <string>${HOME}/.local/repo-metrics/sentry/logs/commits.err.log</string>
+
+    <key>ProcessType</key>
+    <string>Background</string>
+    <key>LowPriorityIO</key>
+    <true/>
+    <key>Nice</key>
+    <integer>5</integer>
+</dict>
+</plist>
+EOF

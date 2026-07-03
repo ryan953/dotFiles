@@ -72,6 +72,35 @@ install_dpkg () {
   $Sudo dpkg -i "/tmp/${filename}"
 }
 
+install_repo_metrics () {
+  # Download + extract the latest repo-metrics release binary into ~/bin.
+  # $1 is the release target triple, e.g. x86_64-unknown-linux-gnu.
+  local target="$1"
+
+  # Resolve the download URL for this target directly from the latest release,
+  # so we skip cleanly when a release has no matching binary attached.
+  local url
+  url=$(curl -sL https://api.github.com/repos/ryan953/repo-metrics/releases/latest \
+    | grep '"browser_download_url":' \
+    | grep "$target" \
+    | head -n1 \
+    | sed -E 's/.*"(https[^"]+)".*/\1/')
+  if [ -z "$url" ]; then
+    echo "   --- No repo-metrics release asset for ${target}; skipping"
+    return 0
+  fi
+
+  local archive
+  archive=$(basename "$url")
+  echo "###### Installing repo-metrics (${archive})"
+  mkdir -p ~/bin
+  (
+    cd /tmp \
+    && curl -fLO "$url" \
+    && tar -xzf "$archive" -C ~/bin
+  ) || echo "   --- Failed to install repo-metrics; skipping"
+}
+
 file_exists_indicator () {
   file="${1:-}"
 
@@ -132,6 +161,12 @@ init () {
 
       gh extension install seachicken/gh-poi
       gh extension install github/gh-stack
+
+      if [ "$arch_name" = "arm64" ]; then
+        install_repo_metrics aarch64-apple-darwin
+      else
+        echo "   --- No repo-metrics release build for ${arch_name} macOS; skipping"
+      fi
 
       # OSX Settings
       ./install-osx.sh
@@ -202,6 +237,12 @@ init () {
         && unzip -o exa-linux-x86_64-v0.10.1.zip -d ~/bin
       )
       ln -sf ~/bin/exa-linux-x86_64 ~/bin/exa
+
+      if [ "$arch_name" = "x86_64" ]; then
+        install_repo_metrics x86_64-unknown-linux-gnu
+      else
+        echo "   --- No repo-metrics release build for ${arch_name} Linux; skipping"
+      fi
 
       # NerdFonts
       echo "### Download fonts"
