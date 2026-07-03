@@ -1,2 +1,3 @@
 *.local.json
 *.env.local
+.claude/worktrees/

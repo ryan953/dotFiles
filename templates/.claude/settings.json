@@ -119,7 +119,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.claude/hooks/direnv-load.sh"
+            "command": "~/.claude/direnv-load.sh"
           }
         ]
       }
