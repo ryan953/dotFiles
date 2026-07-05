@@ -6,7 +6,7 @@ set -e
 # StandardOut/ErrorPath, so those must be absolute).
 #
 # Runs repo-metrics against getsentry/sentry commit history (folder
-# granularity) once a day at 03:00. The wrapper script pulls master first.
+# granularity) every hour at :00. The wrapper script pulls master first.
 #
 # Load:    launchctl load  -w ~/Library/LaunchAgents/com.ryan953.repo-metrics.sentry-commits.plist
 # Unload:  launchctl unload -w ~/Library/LaunchAgents/com.ryan953.repo-metrics.sentry-commits.plist
@@ -25,15 +25,14 @@ cat <<EOF
         <string>${HOME}/bin/repo-metrics-sentry-commits</string>
     </array>
 
+    <!-- Only Minute set => runs every hour at :00. -->
     <key>StartCalendarInterval</key>
     <dict>
-        <key>Hour</key>
-        <integer>3</integer>
         <key>Minute</key>
         <integer>0</integer>
     </dict>
 
-    <!-- Don't pile up runs if the machine was asleep at 03:00. -->
+    <!-- Missed runs (asleep/off) collapse into a single run on wake. -->
     <key>RunAtLoad</key>
     <false/>
 

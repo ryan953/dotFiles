@@ -5,7 +5,7 @@ set -e
 # with the real home directory baked in (launchd does not expand ~ or $HOME in
 # StandardOut/ErrorPath, so those must be absolute).
 #
-# Runs repo-metrics against getsentry/sentry pull requests once a day at 04:00
+# Runs repo-metrics against getsentry/sentry pull requests every hour at :30
 # (staggered after the commits job). Needs a GitHub token via $GITHUB_TOKEN or
 # `gh auth token`.
 #
@@ -26,14 +26,14 @@ cat <<EOF
         <string>${HOME}/bin/repo-metrics-sentry-prs</string>
     </array>
 
+    <!-- Only Minute set => runs every hour at :30 (staggered after commits). -->
     <key>StartCalendarInterval</key>
     <dict>
-        <key>Hour</key>
-        <integer>4</integer>
         <key>Minute</key>
-        <integer>0</integer>
+        <integer>30</integer>
     </dict>
 
+    <!-- Missed runs (asleep/off) collapse into a single run on wake. -->
     <key>RunAtLoad</key>
     <false/>
 
