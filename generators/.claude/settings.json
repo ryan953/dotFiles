@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+set -e
+
+TEMPLATE="$(pwd)/templates/.claude/settings.template.json"
+
+if [ ! -f "$TEMPLATE" ]; then
+  echo "Missing template: $TEMPLATE" >&2
+  exit 1
+fi
+
+if [ -z "${OPENROUTER_API_KEY:-}" ]; then
+  echo "Warning: OPENROUTER_API_KEY is not set; leaving placeholder in place" >&2
+fi
+
+# Read the template and replace the placeholder API keys with the values from
+# the current environment. Uses envsubst-free sed so it works everywhere.
+sed \
+  -e "s#\"OPENROUTER_API_KEY\": \"sk-or-XXXXXX\"#\"OPENROUTER_API_KEY\": \"${OPENROUTER_API_KEY}\"#" \
+  -e "s#\"ANTHROPIC_AUTH_TOKEN\": \"sk-or-XXXXXX\"#\"ANTHROPIC_AUTH_TOKEN\": \"${OPENROUTER_API_KEY}\"#" \
+  "$TEMPLATE"
