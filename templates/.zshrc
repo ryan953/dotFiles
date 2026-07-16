@@ -14,7 +14,7 @@ fi
 echo_path () {
   echo $PATH  | tr ':' '\n'
 }
-export PATH=$HOME/bin:$PATH
+export PATH=$HOME/bin:$HOME/.local/bin:$PATH
 
 if command -v brew > /dev/null; then
   alias ctags="$(brew --prefix)/bin/ctags"
@@ -57,7 +57,6 @@ alias rg='rg --hidden'
 
 alias top='htop'
 
-alias claude='brew upgrade -q claude-code && claude agents'
 export CLAUDE_POWERLINE_THEME=tokyo-night
 export CLAUDE_POWERLINE_STYLE=powerline
 export CLAUDE_POWERLINE_DEBUG=0
