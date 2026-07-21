@@ -1,12 +1,11 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "apiKeyHelper": "~/.claude/openrouter-key.sh",
   "env": {
-    "CLAUDE_CODE_ENABLE_TELEMETRY": "0",
-    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
-    "OPENROUTER_API_KEY": "sk-or-XXXXXX",
+    "ANTHROPIC_API_KEY": "",
     "ANTHROPIC_BASE_URL": "https://openrouter.ai/api",
-    "ANTHROPIC_AUTH_TOKEN": "sk-or-XXXXXX",
-    "ANTHROPIC_API_KEY": ""
+    "CLAUDE_CODE_ENABLE_TELEMETRY": "0",
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
   },
   "attribution": {
     "commit": "",
@@ -116,7 +115,7 @@
     ],
     "defaultMode": "auto"
   },
-  "model": "claude-opus-4-8",
+  "model": "opus[1m]",
   "hooks": {
     "SessionStart": [
       {
@@ -154,17 +153,6 @@
           {
             "type": "command",
             "command": "~/.claude/notify.ts 'Claude Code' 'Permission Requested'"
-          }
-        ]
-      }
-    ],
-    "PreToolUse": [
-      {
-        "matcher": "Bash",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "rtk hook claude"
           }
         ]
       }
