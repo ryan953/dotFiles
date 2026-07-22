@@ -28,6 +28,14 @@
 [init]
   defaultBranch = main
 
+# Where to get credentials for HTTPS GitHub operations
+[credential "https://github.com"]
+	helper = 
+	helper = !/opt/homebrew/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+	helper = 
+	helper = !/opt/homebrew/bin/gh auth git-credential
+
 [interactive]
   diffFilter = delta --color-only
 
