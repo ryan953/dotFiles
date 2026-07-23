@@ -185,13 +185,15 @@
   },
   "enabledPlugins": {
     "code-review@claude-plugins-official": true,
+    "notion@claude-plugins-official": true,
     "playground@claude-plugins-official": true,
     "pr-review-toolkit@claude-plugins-official": true,
-    "skill-creator@claude-plugins-official": true,
-    "typescript-lsp@claude-plugins-official": true,
-    "session-report@claude-plugins-official": true,
     "revdiff@revdiff": true,
-    "sentry@claude-plugins-official": true
+    "sentry@claude-plugins-official": true,
+    "session-report@claude-plugins-official": true,
+    "skill-creator@claude-plugins-official": true,
+    "slack@claude-plugins-official": true,
+    "typescript-lsp@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
     "claude-plugins-official": {
