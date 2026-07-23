@@ -5,19 +5,25 @@ version = 1
 source = "vercel-labs/agent-browser"
 resolved_url = "https://github.com/vercel-labs/agent-browser"
 resolved_path = "skills/agent-browser"
-resolved_commit = "ed2e10598c9064aecfaeb7cf21b540684db4be2c"
+resolved_commit = "1ed371f3af472cc0d6cd8fdaea75d1a085ff7534"
 
 [skills.agents-md]
 source = "getsentry/skills"
 resolved_url = "https://github.com/getsentry/skills"
 resolved_path = "skills/agents-md"
-resolved_commit = "5a64b36c62d042d3981b7937d9d6ca7bd1753b9a"
+resolved_commit = "9a85b59acc928789b49907109483f46aee1050cd"
+
+[skills.autofix-issue-sweep]
+source = "ryan953/skills"
+resolved_url = "https://github.com/ryan953/skills"
+resolved_path = "skills/autofix-issue-sweep"
+resolved_commit = "8e1d6ced15b8becd47f8c170268f5726ca14eb44"
 
 [skills.commit]
 source = "getsentry/skills"
 resolved_url = "https://github.com/getsentry/skills"
 resolved_path = "skills/commit"
-resolved_commit = "5a64b36c62d042d3981b7937d9d6ca7bd1753b9a"
+resolved_commit = "9a85b59acc928789b49907109483f46aee1050cd"
 
 [skills.dex]
 source = "dcramer/dex"
@@ -25,44 +31,56 @@ resolved_url = "https://github.com/dcramer/dex"
 resolved_path = "plugins/dex/skills/dex"
 resolved_commit = "3f55b2a3ec9746fc56cf62037ca6a828555ce17d"
 
+[skills.diff]
+source = "ryan953/skills"
+resolved_url = "https://github.com/ryan953/skills"
+resolved_path = "skills/diff"
+resolved_commit = "8e1d6ced15b8becd47f8c170268f5726ca14eb44"
+
 [skills.frontend-conventions]
 source = "ryan953/skills"
 resolved_url = "https://github.com/ryan953/skills"
 resolved_path = "skills/frontend-conventions"
-resolved_commit = "c95993459523c47a72a20eb324f587f93780165b"
+resolved_commit = "8e1d6ced15b8becd47f8c170268f5726ca14eb44"
 
 [skills.frontend-conventions-fix]
 source = "ryan953/skills"
 resolved_url = "https://github.com/ryan953/skills"
 resolved_path = "skills/frontend-conventions-fix"
-resolved_commit = "c95993459523c47a72a20eb324f587f93780165b"
+resolved_commit = "8e1d6ced15b8becd47f8c170268f5726ca14eb44"
+
+[skills.html-review]
+source = "ryan953/skills"
+resolved_url = "https://github.com/ryan953/skills"
+resolved_path = "skills/html-review"
+resolved_commit = "8e1d6ced15b8becd47f8c170268f5726ca14eb44"
 
 [skills.iterate-pr]
 source = "getsentry/skills"
 resolved_url = "https://github.com/getsentry/skills"
 resolved_path = "skills/iterate-pr"
-resolved_commit = "5a64b36c62d042d3981b7937d9d6ca7bd1753b9a"
+resolved_commit = "9a85b59acc928789b49907109483f46aee1050cd"
 
 [skills.pr-writer]
 source = "getsentry/skills"
 resolved_url = "https://github.com/getsentry/skills"
 resolved_path = "skills/pr-writer"
-resolved_commit = "5a64b36c62d042d3981b7937d9d6ca7bd1753b9a"
+resolved_commit = "9a85b59acc928789b49907109483f46aee1050cd"
 
 [skills.prompt-optimizer]
 source = "getsentry/skills"
 resolved_url = "https://github.com/getsentry/skills"
 resolved_path = "skills/prompt-optimizer"
-resolved_commit = "5a64b36c62d042d3981b7937d9d6ca7bd1753b9a"
+resolved_commit = "9a85b59acc928789b49907109483f46aee1050cd"
 
 [skills.revdiff]
 source = "umputun/revdiff"
 resolved_url = "https://github.com/umputun/revdiff"
 resolved_path = "plugins/codex/skills/revdiff"
-resolved_commit = "1c1b873c1d6e1b5a0f7c8d1f05e284d9aa640c76"
+resolved_commit = "ecc7685550aa0f79e7aab3eb9ffdf3316dc97ebb"
 
 [skills.skill-writer]
 source = "getsentry/skills"
 resolved_url = "https://github.com/getsentry/skills"
 resolved_path = "skills/skill-writer"
-resolved_commit = "5a64b36c62d042d3981b7937d9d6ca7bd1753b9a"
+resolved_commit = "9a85b59acc928789b49907109483f46aee1050cd"
