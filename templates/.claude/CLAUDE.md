@@ -55,5 +55,3 @@ Use Grep only when LSP isn't available or for text/pattern searches (comments, s
 - **Styling**: CSS Modules, Tailwind, CSS-in-JS, vanilla CSS
 - **Build**: Vite, Webpack, esbuild, Turbopack
 - **Types**: TypeScript preferred
-
-@RTK.md
