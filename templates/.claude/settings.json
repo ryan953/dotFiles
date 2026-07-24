@@ -115,7 +115,7 @@
     ],
     "defaultMode": "auto"
   },
-  "model": "opus[1m]",
+  "model": "~anthropic/claude-sonnet-latest",
   "hooks": {
     "SessionStart": [
       {
