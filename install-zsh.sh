@@ -149,6 +149,9 @@ init () {
       # Keep homebrew up to date
       brew autoupdate --start || true
 
+      mkdir -p ~/.docker/cli-plugins
+      ln -sfn $(brew --prefix)/opt/docker-compose/bin/docker-compose ~/.docker/cli-plugins/docker-compose
+
       ./templates/bin/check-brew-drift.sh
 
       echo "###### Installing Alacritty"
