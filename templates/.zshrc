@@ -14,7 +14,7 @@ fi
 echo_path () {
   echo $PATH  | tr ':' '\n'
 }
-export PATH=$HOME/bin:$HOME/.local/bin:$PATH
+export PATH=$HOME/bin:$HOME/.local/bin:$HOME/go/bin:$PATH
 
 if command -v brew > /dev/null; then
   alias ctags="$(brew --prefix)/bin/ctags"

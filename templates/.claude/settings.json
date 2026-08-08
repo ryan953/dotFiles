@@ -1,9 +1,6 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
-  "apiKeyHelper": "~/.claude/openrouter-key.sh",
   "env": {
-    "ANTHROPIC_API_KEY": "",
-    "ANTHROPIC_BASE_URL": "https://openrouter.ai/api",
     "CLAUDE_CODE_ENABLE_TELEMETRY": "0",
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
   },
@@ -115,7 +112,11 @@
     ],
     "defaultMode": "auto"
   },
-  "model": "~anthropic/claude-sonnet-latest",
+  "model": "opus[1m]",
+  "skillOverrides": {
+    "agents-md": "off",
+    "prompt-optimizer": "off"
+  },
   "hooks": {
     "SessionStart": [
       {
@@ -184,15 +185,15 @@
     "command": "npx -y @owloops/claude-powerline@latest"
   },
   "enabledPlugins": {
-    "code-review@claude-plugins-official": true,
+    "code-review@claude-plugins-official": false,
     "notion@claude-plugins-official": true,
-    "playground@claude-plugins-official": true,
-    "pr-review-toolkit@claude-plugins-official": true,
+    "playground@claude-plugins-official": false,
+    "pr-review-toolkit@claude-plugins-official": false,
     "revdiff@revdiff": true,
     "sentry@claude-plugins-official": true,
-    "session-report@claude-plugins-official": true,
-    "skill-creator@claude-plugins-official": true,
-    "slack@claude-plugins-official": true,
+    "session-report@claude-plugins-official": false,
+    "skill-creator@claude-plugins-official": false,
+    "slack@claude-plugins-official": false,
     "typescript-lsp@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
@@ -206,6 +207,8 @@
   "effortLevel": "high",
   "skipDangerousModePermissionPrompt": true,
   "theme": "dark",
+  "editorMode": "normal",
+  "teammateMode": "in-process",
   "agentPushNotifEnabled": true,
   "skipAutoPermissionPrompt": true
 }

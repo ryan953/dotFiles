@@ -310,6 +310,7 @@ init () {
 
       npx @sentry/dotagents --user install
 
+      curl -fsSL https://claude.ai/install.sh | bash
       claude plugin marketplace add anthropics/claude-plugins-official
       claude plugin install code-review@claude-plugins-official
       claude plugin install playground@claude-plugins-official

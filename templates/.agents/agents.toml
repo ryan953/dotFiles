@@ -42,3 +42,11 @@ source = "vercel-labs/agent-browser"
 [[skills]]
 name = "revdiff"
 source = "umputun/revdiff"
+
+[[skills]]
+name = "meat-pr-review"
+source = "path:skills/meat-pr-review"
+
+[[skills]]
+name = "local-pr-review"
+source = "path:skills/local-pr-review"

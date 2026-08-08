@@ -5,25 +5,31 @@ version = 1
 source = "vercel-labs/agent-browser"
 resolved_url = "https://github.com/vercel-labs/agent-browser"
 resolved_path = "skills/agent-browser"
-resolved_commit = "1ed371f3af472cc0d6cd8fdaea75d1a085ff7534"
+resolved_commit = "acbc22bdc5d4f6c5a88d97d4a4745d3c5eb0591f"
 
 [skills.agents-md]
 source = "getsentry/skills"
 resolved_url = "https://github.com/getsentry/skills"
 resolved_path = "skills/agents-md"
-resolved_commit = "9a85b59acc928789b49907109483f46aee1050cd"
+resolved_commit = "e7a87fa72645158f9b5e722cbb1c7e09266f48f1"
 
 [skills.autofix-issue-sweep]
 source = "ryan953/skills"
 resolved_url = "https://github.com/ryan953/skills"
 resolved_path = "skills/autofix-issue-sweep"
-resolved_commit = "8e1d6ced15b8becd47f8c170268f5726ca14eb44"
+resolved_commit = "b9d753e85ce55db3f1f0cb2dccbec82f4b8a8fd7"
 
 [skills.commit]
 source = "getsentry/skills"
 resolved_url = "https://github.com/getsentry/skills"
 resolved_path = "skills/commit"
-resolved_commit = "9a85b59acc928789b49907109483f46aee1050cd"
+resolved_commit = "e7a87fa72645158f9b5e722cbb1c7e09266f48f1"
+
+[skills.deep-pr-review]
+source = "ryan953/skills"
+resolved_url = "https://github.com/ryan953/skills"
+resolved_path = "skills/deep-pr-review"
+resolved_commit = "b9d753e85ce55db3f1f0cb2dccbec82f4b8a8fd7"
 
 [skills.dex]
 source = "dcramer/dex"
@@ -35,52 +41,58 @@ resolved_commit = "3f55b2a3ec9746fc56cf62037ca6a828555ce17d"
 source = "ryan953/skills"
 resolved_url = "https://github.com/ryan953/skills"
 resolved_path = "skills/diff"
-resolved_commit = "8e1d6ced15b8becd47f8c170268f5726ca14eb44"
+resolved_commit = "b9d753e85ce55db3f1f0cb2dccbec82f4b8a8fd7"
 
 [skills.frontend-conventions]
 source = "ryan953/skills"
 resolved_url = "https://github.com/ryan953/skills"
 resolved_path = "skills/frontend-conventions"
-resolved_commit = "8e1d6ced15b8becd47f8c170268f5726ca14eb44"
+resolved_commit = "b9d753e85ce55db3f1f0cb2dccbec82f4b8a8fd7"
 
 [skills.frontend-conventions-fix]
 source = "ryan953/skills"
 resolved_url = "https://github.com/ryan953/skills"
 resolved_path = "skills/frontend-conventions-fix"
-resolved_commit = "8e1d6ced15b8becd47f8c170268f5726ca14eb44"
+resolved_commit = "b9d753e85ce55db3f1f0cb2dccbec82f4b8a8fd7"
 
 [skills.html-review]
 source = "ryan953/skills"
 resolved_url = "https://github.com/ryan953/skills"
 resolved_path = "skills/html-review"
-resolved_commit = "8e1d6ced15b8becd47f8c170268f5726ca14eb44"
+resolved_commit = "b9d753e85ce55db3f1f0cb2dccbec82f4b8a8fd7"
 
 [skills.iterate-pr]
 source = "getsentry/skills"
 resolved_url = "https://github.com/getsentry/skills"
 resolved_path = "skills/iterate-pr"
-resolved_commit = "9a85b59acc928789b49907109483f46aee1050cd"
+resolved_commit = "e7a87fa72645158f9b5e722cbb1c7e09266f48f1"
+
+[skills.local-pr-review]
+source = "path:skills/local-pr-review"
+
+[skills.meat-pr-review]
+source = "path:skills/meat-pr-review"
 
 [skills.pr-writer]
 source = "getsentry/skills"
 resolved_url = "https://github.com/getsentry/skills"
 resolved_path = "skills/pr-writer"
-resolved_commit = "9a85b59acc928789b49907109483f46aee1050cd"
+resolved_commit = "e7a87fa72645158f9b5e722cbb1c7e09266f48f1"
 
 [skills.prompt-optimizer]
 source = "getsentry/skills"
 resolved_url = "https://github.com/getsentry/skills"
 resolved_path = "skills/prompt-optimizer"
-resolved_commit = "9a85b59acc928789b49907109483f46aee1050cd"
+resolved_commit = "e7a87fa72645158f9b5e722cbb1c7e09266f48f1"
 
 [skills.revdiff]
 source = "umputun/revdiff"
 resolved_url = "https://github.com/umputun/revdiff"
 resolved_path = "plugins/codex/skills/revdiff"
-resolved_commit = "ecc7685550aa0f79e7aab3eb9ffdf3316dc97ebb"
+resolved_commit = "98a25b5f9a4cb8b179fd1ac8e3562a108ca335f6"
 
 [skills.skill-writer]
 source = "getsentry/skills"
 resolved_url = "https://github.com/getsentry/skills"
 resolved_path = "skills/skill-writer"
-resolved_commit = "9a85b59acc928789b49907109483f46aee1050cd"
+resolved_commit = "e7a87fa72645158f9b5e722cbb1c7e09266f48f1"
