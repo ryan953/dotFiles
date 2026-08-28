@@ -3,9 +3,9 @@ set -euo pipefail
 
 # Open the text an Alacritty hint matched.
 #
-# Alacritty appends the matched text as the last argument, so the hint rules in
-# ~/.config/alacritty/hints.toml and hints-dex.toml just point their `command`
-# here:
+# Alacritty appends the matched text as the last argument, so the generated
+# hint rules under ~/.config/alacritty -- hints-github.toml, hints-linear.toml
+# and hints-dex.toml -- just point their `command` here:
 #
 #   alacritty-hint-open getsentry/sentry-toolbar#272
 #     -> https://github.com/getsentry/sentry-toolbar/issues/272
