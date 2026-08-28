@@ -1,0 +1,65 @@
+#!/usr/bin/env bash
+set -e
+
+# Generates ~/Library/LaunchAgents/com.ryan953.alacritty-hints-dex.plist with
+# the real home directory baked in (launchd does not expand ~ or $HOME in
+# WatchPaths or StandardOut/ErrorPath, so those must be absolute).
+#
+# Watches the dex task store and rewrites ~/.config/alacritty/hints-dex.toml
+# whenever a task is added or removed, which keeps the ids in the Alacritty
+# hint regex current. Alacritty reloads the file on its own.
+#
+# Load:    launchctl load  -w ~/Library/LaunchAgents/com.ryan953.alacritty-hints-dex.plist
+# Unload:  launchctl unload -w ~/Library/LaunchAgents/com.ryan953.alacritty-hints-dex.plist
+# Run now: launchctl start     com.ryan953.alacritty-hints-dex
+
+# `path = "/Users/ryan953/.dex"` under [storage.file], the dex default.
+store="$(sed -n 's/^path[[:space:]]*=[[:space:]]*"\([^"]*\)".*/\1/p' \
+  "$HOME/.config/dex/dex.toml" 2>/dev/null | head -1)"
+store="${store:-$HOME/.dex}"
+
+cat <<EOF
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.ryan953.alacritty-hints-dex</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>${HOME}/bin/alacritty-hints</string>
+        <string>refresh-dex</string>
+    </array>
+
+    <!-- dex 0.16 rewrites tasks.jsonl on every change; older versions wrote a
+         file per task under tasks/. Both are watched, and launchd is happy to
+         watch a path that does not exist yet. -->
+    <key>WatchPaths</key>
+    <array>
+        <string>${store}/tasks.jsonl</string>
+        <string>${store}/tasks</string>
+    </array>
+
+    <!-- A burst of task edits collapses into one run. -->
+    <key>ThrottleInterval</key>
+    <integer>10</integer>
+
+    <!-- Also refresh at login, to pick up tasks made on another machine. -->
+    <key>RunAtLoad</key>
+    <true/>
+
+    <key>StandardOutPath</key>
+    <string>${HOME}/.local/alacritty-hints/logs/dex.out.log</string>
+    <key>StandardErrorPath</key>
+    <string>${HOME}/.local/alacritty-hints/logs/dex.err.log</string>
+
+    <key>ProcessType</key>
+    <string>Background</string>
+    <key>LowPriorityIO</key>
+    <true/>
+    <key>Nice</key>
+    <integer>5</integer>
+</dict>
+</plist>
+EOF

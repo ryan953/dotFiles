@@ -1,5 +1,11 @@
 [general]
-import = ["${HOME}/.config/alacritty/main.toml"]
+import = [
+  "${HOME}/.config/alacritty/main.toml",
+  # One generated file per source, see generators/.config/alacritty/
+  "${HOME}/.config/alacritty/hints-github.toml",
+  "${HOME}/.config/alacritty/hints-linear.toml",
+  "${HOME}/.config/alacritty/hints-dex.toml",
+]
 
 [font]
 size = 13.0
