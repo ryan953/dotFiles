@@ -1,3 +1,19 @@
+# My own taps: trusted wholesale, and everything published in them is installed.
+# Adding a personal tap is one line here; adding a formula or cask to a tap that
+# is already listed needs no change at all.
+personal_taps = %w[
+  ryan953/tap
+]
+
+personal_taps.each do |tap_name|
+  tap tap_name, trusted: true
+
+  personal_tap = ::Tap.fetch(tap_name)
+  personal_tap.install unless personal_tap.installed?
+  personal_tap.formula_names.sort.each { |formula| brew formula }
+  personal_tap.cask_tokens.sort.each { |token| cask token }
+end
+
 # Dependencies from install-zsh.sh
 brew "ast-grep"
 brew "bat"
