@@ -31,13 +31,22 @@ store="$(sed -n 's/^path[[:space:]]*=[[:space:]]*"\([^"]*\)".*/\1/p' \
   "$HOME/.config/dex/dex.toml" 2>/dev/null | head -1)"
 store="${store:-$HOME/.dex}"
 
+# dex 0.16 keeps every task on one line of tasks.jsonl. Older versions kept a
+# file per task under tasks/, which is still read when that is what is there.
 ids=""
-if [ -d "$store/tasks" ]; then
-  # Longest first is pointless here (every id is eight characters), but sorted
-  # output keeps the file from churning between runs.
-  ids="$(cd "$store/tasks" && ls -1 2>/dev/null \
-    | sed -n 's/^\([a-z0-9]\{8\}\)\.json$/\1/p' | sort | tr '\n' '|' | sed 's/|$//')"
+if [ -f "$store/tasks.jsonl" ]; then
+  if command -v jq > /dev/null; then
+    ids="$(jq -r 'select(.id) | .id' "$store/tasks.jsonl" 2>/dev/null)"
+  else
+    ids="$(grep -o '"id"[[:space:]]*:[[:space:]]*"[a-z0-9]\{8\}"' "$store/tasks.jsonl" | cut -d'"' -f4)"
+  fi
+elif [ -d "$store/tasks" ]; then
+  ids="$(cd "$store/tasks" && ls -1 2>/dev/null | sed -n 's/\.json$//p')"
 fi
+
+# Sorted output keeps the file from churning between runs. Length ordering is
+# pointless here, every id is eight characters.
+ids="$(printf '%s\n' "$ids" | grep '^[a-z0-9]\{8\}$' | sort -u | tr '\n' '|' | sed 's/|$//' || true)"
 count="$(awk -F'|' '{print NF}' <<<"${ids:-}" 2>/dev/null || echo 0)"
 [ -n "$ids" ] || count=0
 

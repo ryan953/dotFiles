@@ -39,6 +39,14 @@ if [ -z "$raw" ]; then
   exit 64
 fi
 
+# dex 0.16 keeps every task on one line of tasks.jsonl; older versions kept a
+# file per task under tasks/.
+dex_task_exists() {
+  [ -f "$dex_store/tasks/$1.json" ] && return 0
+  [ -f "$dex_store/tasks.jsonl" ] || return 1
+  grep -q "\"id\"[[:space:]]*:[[:space:]]*\"$1\"" "$dex_store/tasks.jsonl"
+}
+
 # A dex id turns up bare, or decorated the way dex list and dex show print it.
 dex_id=""
 if [[ "$raw" =~ ^\[[[:space:]x]\][[:space:]]([a-z0-9]{8}):$ ]] || [[ "$raw" =~ ^([a-z0-9]{8})$ ]]; then
@@ -69,14 +77,15 @@ elif [[ "$text" =~ ^([A-Za-z][A-Za-z0-9]{1,9})-([0-9]+)$ ]]; then
   else
     target="https://linear.app/${workspace}/issue/${id}"
   fi
-elif [ -n "$dex_id" ] && [ -f "$dex_store/tasks/$dex_id.json" ]; then
+elif [ -n "$dex_id" ] && dex_task_exists "$dex_id"; then
   if [ -n "$url_template" ]; then
     target="${url_template//\{id\}/$dex_id}"
   else
     target="$dex_store/tasks/$dex_id.json"
+    [ -f "$target" ] || target="$dex_store/tasks.jsonl"
   fi
 elif [ -n "$dex_id" ]; then
-  echo "$(basename "$0"): no dex task $dex_id in $dex_store/tasks" >&2
+  echo "$(basename "$0"): no dex task $dex_id in $dex_store" >&2
   exit 1
 else
   echo "$(basename "$0"): don't know how to open '$raw'" >&2

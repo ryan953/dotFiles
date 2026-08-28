@@ -31,10 +31,12 @@ cat <<EOF
         <string>${HOME}/bin/alacritty-hints-dex-refresh</string>
     </array>
 
-    <!-- dex writes one file per task, so adding or completing a task changes
-         this directory and wakes the job. -->
+    <!-- dex 0.16 rewrites tasks.jsonl on every change; older versions wrote a
+         file per task under tasks/. Both are watched, and launchd is happy to
+         watch a path that does not exist yet. -->
     <key>WatchPaths</key>
     <array>
+        <string>${store}/tasks.jsonl</string>
         <string>${store}/tasks</string>
     </array>
 
