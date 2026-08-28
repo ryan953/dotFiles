@@ -5,25 +5,25 @@ version = 1
 source = "vercel-labs/agent-browser"
 resolved_url = "https://github.com/vercel-labs/agent-browser"
 resolved_path = "skills/agent-browser"
-resolved_commit = "acbc22bdc5d4f6c5a88d97d4a4745d3c5eb0591f"
+resolved_commit = "fbd046c23a2c1156891bda294aaaee715c23b3f1"
 
 [skills.agents-md]
 source = "getsentry/skills"
 resolved_url = "https://github.com/getsentry/skills"
 resolved_path = "skills/agents-md"
-resolved_commit = "24fdb833b9e67670a027e3b482189100a69ff7f9"
+resolved_commit = "c2f99a5b04b4cd992ec3022d7c2c3e23e938d241"
 
 [skills.commit]
 source = "getsentry/skills"
 resolved_url = "https://github.com/getsentry/skills"
 resolved_path = "skills/commit"
-resolved_commit = "24fdb833b9e67670a027e3b482189100a69ff7f9"
+resolved_commit = "c2f99a5b04b4cd992ec3022d7c2c3e23e938d241"
 
 [skills.deep-pr-review]
 source = "ryan953/skills"
 resolved_url = "https://github.com/ryan953/skills"
 resolved_path = "skills/deep-pr-review"
-resolved_commit = "c532c1e4516b0feed366225ba8addcc3fdce27be"
+resolved_commit = "0b73a3420e974a470d62c2f57b264fac0267afbc"
 
 [skills.dex]
 source = "dcramer/dex"
@@ -35,70 +35,64 @@ resolved_commit = "3f55b2a3ec9746fc56cf62037ca6a828555ce17d"
 source = "ryan953/skills"
 resolved_url = "https://github.com/ryan953/skills"
 resolved_path = "skills/diff"
-resolved_commit = "c532c1e4516b0feed366225ba8addcc3fdce27be"
+resolved_commit = "0b73a3420e974a470d62c2f57b264fac0267afbc"
 
 [skills.frontend-conventions]
 source = "ryan953/skills"
 resolved_url = "https://github.com/ryan953/skills"
 resolved_path = "skills/frontend-conventions"
-resolved_commit = "c532c1e4516b0feed366225ba8addcc3fdce27be"
+resolved_commit = "0b73a3420e974a470d62c2f57b264fac0267afbc"
 
 [skills.frontend-conventions-fix]
 source = "ryan953/skills"
 resolved_url = "https://github.com/ryan953/skills"
 resolved_path = "skills/frontend-conventions-fix"
-resolved_commit = "c532c1e4516b0feed366225ba8addcc3fdce27be"
-
-[skills.html-review]
-source = "ryan953/skills"
-resolved_url = "https://github.com/ryan953/skills"
-resolved_path = "skills/html-review"
-resolved_commit = "c532c1e4516b0feed366225ba8addcc3fdce27be"
+resolved_commit = "0b73a3420e974a470d62c2f57b264fac0267afbc"
 
 [skills.iterate-pr]
 source = "getsentry/skills"
 resolved_url = "https://github.com/getsentry/skills"
 resolved_path = "skills/iterate-pr"
-resolved_commit = "24fdb833b9e67670a027e3b482189100a69ff7f9"
+resolved_commit = "c2f99a5b04b4cd992ec3022d7c2c3e23e938d241"
 
 [skills.local-pr-review]
 source = "ryan953/skills"
 resolved_url = "https://github.com/ryan953/skills"
 resolved_path = "skills/local-pr-review"
-resolved_commit = "c532c1e4516b0feed366225ba8addcc3fdce27be"
+resolved_commit = "0b73a3420e974a470d62c2f57b264fac0267afbc"
 
 [skills.meat-pr-review]
 source = "ryan953/skills"
 resolved_url = "https://github.com/ryan953/skills"
 resolved_path = "skills/meat-pr-review"
-resolved_commit = "c532c1e4516b0feed366225ba8addcc3fdce27be"
+resolved_commit = "0b73a3420e974a470d62c2f57b264fac0267afbc"
 
 [skills.pr-writer]
 source = "getsentry/skills"
 resolved_url = "https://github.com/getsentry/skills"
 resolved_path = "skills/pr-writer"
-resolved_commit = "24fdb833b9e67670a027e3b482189100a69ff7f9"
+resolved_commit = "c2f99a5b04b4cd992ec3022d7c2c3e23e938d241"
 
 [skills.prompt-optimizer]
 source = "getsentry/skills"
 resolved_url = "https://github.com/getsentry/skills"
 resolved_path = "skills/prompt-optimizer"
-resolved_commit = "24fdb833b9e67670a027e3b482189100a69ff7f9"
+resolved_commit = "c2f99a5b04b4cd992ec3022d7c2c3e23e938d241"
 
 [skills.revdiff]
 source = "umputun/revdiff"
 resolved_url = "https://github.com/umputun/revdiff"
 resolved_path = "plugins/codex/skills/revdiff"
-resolved_commit = "98a25b5f9a4cb8b179fd1ac8e3562a108ca335f6"
+resolved_commit = "e3eb7328a49753d1c9c78c9c50a67339f9bb23f7"
 
 [skills.skill-writer]
 source = "getsentry/skills"
 resolved_url = "https://github.com/getsentry/skills"
 resolved_path = "skills/skill-writer"
-resolved_commit = "24fdb833b9e67670a027e3b482189100a69ff7f9"
+resolved_commit = "c2f99a5b04b4cd992ec3022d7c2c3e23e938d241"
 
 [skills.trigger-autofix]
 source = "ryan953/skills"
 resolved_url = "https://github.com/ryan953/skills"
 resolved_path = "skills/trigger-autofix"
-resolved_commit = "c532c1e4516b0feed366225ba8addcc3fdce27be"
+resolved_commit = "0b73a3420e974a470d62c2f57b264fac0267afbc"
