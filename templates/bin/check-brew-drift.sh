@@ -66,10 +66,12 @@ main() {
 
   # --- Gather all data upfront ---
 
+  # Let brew evaluate the Brewfile instead of grepping it: entries can be
+  # generated in Ruby (the personal taps block) and never appear literally.
   local brewfile_brews_raw brewfile_casks brewfile_taps
-  brewfile_brews_raw=$(grep '^brew ' "$BREWFILE" | sed 's/brew "\(.*\)"/\1/' || true)
-  brewfile_casks=$(grep '^cask ' "$BREWFILE" | sed 's/cask "\(.*\)"/\1/' || true)
-  brewfile_taps=$(grep '^tap ' "$BREWFILE" | sed 's/tap "\(.*\)"/\1/' || true)
+  brewfile_brews_raw=$(brew bundle list --file="$BREWFILE" --formula)
+  brewfile_casks=$(brew bundle list --file="$BREWFILE" --cask)
+  brewfile_taps=$(brew bundle list --file="$BREWFILE" --tap)
 
   # Normalize tap-prefixed names for comparison with `brew list` output
   local brewfile_brews
