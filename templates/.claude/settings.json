@@ -128,6 +128,16 @@
         ]
       }
     ],
+    "SubagentStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/direnv-load.sh"
+          }
+        ]
+      }
+    ],
     "Notification": [
       {
         "matcher": "permission_prompt",
@@ -194,7 +204,8 @@
     "session-report@claude-plugins-official": false,
     "skill-creator@claude-plugins-official": true,
     "slack@claude-plugins-official": false,
-    "typescript-lsp@claude-plugins-official": true
+    "typescript-lsp@claude-plugins-official": true,
+    "worktrunk@worktrunk": true
   },
   "extraKnownMarketplaces": {
     "claude-plugins-official": {
@@ -202,8 +213,15 @@
         "source": "github",
         "repo": "anthropics/claude-plugins-official"
       }
+    },
+    "worktrunk": {
+      "source": {
+        "source": "github",
+        "repo": "max-sixty/worktrunk"
+      }
     }
   },
+  "language": "ASD-STE100",
   "effortLevel": "high",
   "tui": "fullscreen",
   "skipDangerousModePermissionPrompt": true,
