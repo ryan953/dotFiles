@@ -17,7 +17,7 @@ end
 # Other people's taps. Trust is granted per item, never to the whole tap, so a
 # formula added to one of these later stays untrusted until I say otherwise.
 tap "domt4/autoupdate", trusted: { commands: ["autoupdate"] }
-tap "umputun/apps"
+tap "umputun/apps", trusted: { formulae: ["revdiff"] }
 
 # Dependencies from install-zsh.sh
 brew "ast-grep"
@@ -40,7 +40,7 @@ brew "rnr" # Rename multiple files
 brew "ripgrep"
 brew "the_silver_searcher"
 brew "tmux"
-brew "umputun/apps/revdiff", trusted: true
+brew "umputun/apps/revdiff"
 brew "vim"
 brew "zx"
 
