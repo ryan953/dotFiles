@@ -1,0 +1,147 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# The one helper behind the Alacritty issue hints. It has two jobs:
+#
+#   alacritty-hints open TEXT    turn the text a hint matched into a URL, open it
+#   alacritty-hints refresh-dex  rewrite the dex id rules from the task store
+#
+# Alacritty appends the matched text as the last argument, so the generated
+# hint rules under ~/.config/alacritty -- hints-github.toml, hints-linear.toml
+# and hints-dex.toml -- point their `command` at `open`:
+#
+#   alacritty-hints open getsentry/sentry-toolbar#272
+#     -> https://github.com/getsentry/sentry-toolbar/issues/272
+#        (GitHub redirects /issues/N to /pull/N when N is a pull request)
+#   alacritty-hints open --workspace getsentry --linear-url 'task://linear/{id}' REPLAY-431
+#     -> task://linear/REPLAY-431, or the Linear website without --linear-url
+#   alacritty-hints open --dex-url 'task://dex/{id}' r3jiacqe
+#     -> task://dex/r3jiacqe, or the task's own file without --dex-url
+#
+# Linear and dex take their own URL option on purpose. One shared option would
+# resolve either way round, so a slip in a generator could quietly hand a dex
+# id to the Linear scheme and open something that does not exist.
+#
+# Those rules are generated, see ~/.dotFiles/generators/.config/alacritty/.
+
+usage() {
+  cat >&2 <<'USAGE'
+usage: alacritty-hints open [--workspace SLUG] [--linear-url TEMPLATE]
+                           [--dex-url TEMPLATE] [--dex-store DIR] [--print] TEXT
+       alacritty-hints refresh-dex
+USAGE
+}
+
+cmd_open() {
+  local workspace="" linear_url="" dex_url="" dex_store="$HOME/.dex" print_only=""
+
+  while [ $# -gt 1 ]; do
+    case "$1" in
+      --workspace) workspace="$2"; shift 2 ;;
+      --linear-url) linear_url="$2"; shift 2 ;;
+      --dex-url) dex_url="$2"; shift 2 ;;
+      --dex-store) dex_store="$2"; shift 2 ;;
+      --print) print_only=1; shift ;;
+      --) shift; break ;;
+      *) shift ;;
+    esac
+  done
+
+  local raw="${1:-}"
+  if [ -z "$raw" ]; then usage; exit 64; fi
+
+  # dex 0.16 keeps every task on one line of tasks.jsonl; older versions kept a
+  # file per task under tasks/.
+  dex_task_exists() {
+    [ -f "$dex_store/tasks/$1.json" ] && return 0
+    [ -f "$dex_store/tasks.jsonl" ] || return 1
+    grep -q "\"id\"[[:space:]]*:[[:space:]]*\"$1\"" "$dex_store/tasks.jsonl"
+  }
+
+  # A dex id turns up bare, or decorated the way dex list and dex show print it.
+  local dex_id=""
+  if [[ "$raw" =~ ^\[[[:space:]x]\][[:space:]]([a-z0-9]{8}):$ ]] || [[ "$raw" =~ ^([a-z0-9]{8})$ ]]; then
+    dex_id="${BASH_REMATCH[1]}"
+  fi
+
+  # Hints grab whatever the regex matched; drop wrapping punctuation.
+  local text="${raw#[\(\[\<\"\']}"
+  text="${text%[\)\]\>\"\',.:;]}"
+
+  if [ -z "$workspace" ]; then
+    # `default = "getsentry"`, as written by the linear CLI.
+    workspace="$(sed -n 's/^default[[:space:]]*=[[:space:]]*"\([^"]*\)".*/\1/p' \
+      "$HOME/.config/linear/credentials.toml" 2>/dev/null | head -1)"
+  fi
+
+  local target key id
+  if [[ "$text" =~ ^([A-Za-z0-9][A-Za-z0-9._-]*/[A-Za-z0-9._-]+)#([0-9]+)$ ]]; then
+    target="https://github.com/${BASH_REMATCH[1]}/issues/${BASH_REMATCH[2]}"
+  elif [[ "$text" =~ ^([A-Za-z][A-Za-z0-9]{1,9})-([0-9]+)$ ]]; then
+    key="$(echo "${BASH_REMATCH[1]}" | tr '[:lower:]' '[:upper:]')"
+    id="${key}-${BASH_REMATCH[2]}"
+    if [ -n "$linear_url" ]; then
+      target="${linear_url//\{id\}/$id}"
+    elif [ -n "$workspace" ]; then
+      target="https://linear.app/${workspace}/issue/${id}"
+    else
+      echo "alacritty-hints: no Linear workspace; pass --workspace or run \`linear auth login\`" >&2
+      exit 1
+    fi
+  elif [ -n "$dex_id" ] && dex_task_exists "$dex_id"; then
+    if [ -n "$dex_url" ]; then
+      target="${dex_url//\{id\}/$dex_id}"
+    else
+      target="$dex_store/tasks/$dex_id.json"
+      [ -f "$target" ] || target="$dex_store/tasks.jsonl"
+    fi
+  elif [ -n "$dex_id" ]; then
+    echo "alacritty-hints: no dex task $dex_id in $dex_store" >&2
+    exit 1
+  else
+    echo "alacritty-hints: don't know how to open '$raw'" >&2
+    exit 1
+  fi
+
+  if [ -n "$print_only" ]; then
+    echo "$target"
+  elif command -v open > /dev/null; then
+    exec open "$target"
+  else
+    exec xdg-open "$target"
+  fi
+}
+
+# Rewrite ~/.config/alacritty/hints-dex.toml so that task ids created since the
+# last run become clickable. Alacritty reloads the file once it changes. Run by
+# hand after adding tasks, or left to the LaunchAgent that watches the store,
+# ~/Library/LaunchAgents/com.ryan953.alacritty-hints-dex.plist.
+cmd_refresh_dex() {
+  # LaunchAgents run with a minimal PATH; the generator wants the usual tools.
+  export PATH="/usr/bin:/bin:/usr/sbin:/sbin:/opt/homebrew/bin:/usr/local/bin"
+
+  local generator="$HOME/.dotFiles/generators/.config/alacritty/hints-dex.toml"
+  local out="$HOME/.config/alacritty/hints-dex.toml"
+
+  # logs/ must exist before launchd opens StandardOut/ErrorPath.
+  mkdir -p "$HOME/.local/alacritty-hints/logs"
+
+  [ -x "$generator" ] || { echo "alacritty-hints: no generator at $generator" >&2; exit 1; }
+
+  # Write beside the target first, so a failed run leaves the old file in place.
+  local tmp
+  tmp="$(mktemp "${TMPDIR:-/tmp}/hints-dex.XXXXXX")"
+  trap 'rm -f "$tmp"' EXIT
+  "$generator" > "$tmp"
+  mv "$tmp" "$out"
+  trap - EXIT
+
+  echo "### $(date '+%Y-%m-%d %H:%M:%S') wrote $out"
+}
+
+case "${1:-}" in
+  open) shift; cmd_open "$@" ;;
+  refresh-dex) shift; cmd_refresh_dex "$@" ;;
+  -h|--help|"") usage; exit 64 ;;
+  *) echo "alacritty-hints: unknown command '$1'" >&2; usage; exit 64 ;;
+esac

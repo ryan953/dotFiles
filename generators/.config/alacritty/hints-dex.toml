@@ -15,16 +15,16 @@ set -e
 # of each other.
 #
 # A LaunchAgent keeps this current: com.ryan953.alacritty-hints-dex watches the
-# task store and calls ~/bin/alacritty-hints-dex-refresh, which reruns this.
+# task store and runs `alacritty-hints refresh-dex`, which reruns this.
 #
-# Run now: alacritty-hints-dex-refresh
+# Run now: alacritty-hints refresh-dex
 # Or re-run every generator: ~/.dotFiles/install-zsh.sh
 
 # Where a task opens, with {id} standing in for the task id. The task: scheme
 # is claimed by the dex UI app. Empty falls back to the task JSON file.
 TASK_URL="task://dex/{id}"
 
-opener="$HOME/bin/alacritty-hint-open"
+opener="$HOME/bin/alacritty-hints"
 
 # `path = "/Users/ryan953/.dex"` under [storage.file], the dex default.
 store="$(sed -n 's/^path[[:space:]]*=[[:space:]]*"\([^"]*\)".*/\1/p' \
@@ -55,10 +55,10 @@ count="$(awk -F'|' '{print NF}' <<<"${ids:-}" 2>/dev/null || echo 0)"
 alternatives='\[[ x]\] [a-z0-9]{8}:'
 [ -z "$ids" ] || alternatives="$alternatives|$ids"
 
-args="\"--dex-store\", \"$store\""
-opens="the task JSON file"
+args="\"open\", \"--dex-store\", \"$store\""
+opens="the task's own entry in the store"
 if [ -n "$TASK_URL" ]; then
-  args="$args, \"--url-template\", \"$TASK_URL\""
+  args="$args, \"--dex-url\", \"$TASK_URL\""
   opens="$TASK_URL"
 fi
 

@@ -15,7 +15,7 @@ set -e
 #   * every other team -- clickable only, and keys shorter than three letters
 #     are dropped so that "GO-1" in a changelog stays plain text.
 #
-# Opening a match is left to ~/bin/alacritty-hint-open. Its path is written out
+# Opening a match is left to ~/bin/alacritty-hints. Its path is written out
 # absolute, because Alacritty runs hint commands without a shell and without
 # expanding $HOME.
 #
@@ -33,7 +33,7 @@ EXCLUDE=""
 # website. Empty falls back to linear.app.
 ISSUE_URL="task://linear/{id}"
 
-opener="$HOME/bin/alacritty-hint-open"
+opener="$HOME/bin/alacritty-hints"
 
 # `default = "getsentry"`, as written by the linear CLI.
 workspace="$(sed -n 's/^default[[:space:]]*=[[:space:]]*"\([^"]*\)".*/\1/p' \
@@ -52,10 +52,10 @@ else
   fi
 fi
 
-linear_args="\"--workspace\", \"$workspace\""
+linear_args="\"open\", \"--workspace\", \"$workspace\""
 opens="the Linear website"
 if [ -n "$ISSUE_URL" ]; then
-  linear_args="$linear_args, \"--url-template\", \"$ISSUE_URL\""
+  linear_args="$linear_args, \"--linear-url\", \"$ISSUE_URL\""
   opens="$ISSUE_URL"
 fi
 

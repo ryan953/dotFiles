@@ -28,7 +28,8 @@ cat <<EOF
 
     <key>ProgramArguments</key>
     <array>
-        <string>${HOME}/bin/alacritty-hints-dex-refresh</string>
+        <string>${HOME}/bin/alacritty-hints</string>
+        <string>refresh-dex</string>
     </array>
 
     <!-- dex 0.16 rewrites tasks.jsonl on every change; older versions wrote a
