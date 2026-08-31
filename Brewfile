@@ -11,7 +11,7 @@ personal_taps.each do |tap_name|
   personal_tap = ::Tap.fetch(tap_name)
   personal_tap.install unless personal_tap.installed?
   personal_tap.formula_names.sort.each { |formula| brew formula }
-  personal_tap.cask_tokens.sort.each { |token| cask token }
+  personal_tap.cask_tokens.sort.each { |token| cask token, greedy: true }
 end
 
 # Other people's taps. Trust is granted per item, never to the whole tap, so a
@@ -47,29 +47,32 @@ brew "zx"
 # Keep homebrew up to date
 brew "terminal-notifier"
 
+# Casks are marked greedy. Without this, any cask that sets auto_updates is 
+# reported as current forever and never gets upgraded here.
+
 # NerdFonts
-cask "font-meslo-lg-nerd-font"
+cask "font-meslo-lg-nerd-font", greedy: true
 
 # UI Programs
-cask "agentsview"
-cask "anki"
-cask "brave-browser"
-cask "brave-browser@beta"
-cask "bitwarden"
+cask "agentsview", greedy: true
+cask "anki", greedy: true
+cask "brave-browser", greedy: true
+cask "brave-browser@beta", greedy: true
+cask "bitwarden", greedy: true
 brew "bitwarden-cli"
-cask "boop"
-cask "chromedriver"
-cask "cursor"
-cask "cyberduck"
-cask "firefox"
-cask "ghostty"
-cask "gcloud-cli"
-cask "maestral"
-cask "obsidian"
-cask "shottr"
-cask "slack"
-cask "sonos"
-cask "spotify"
-cask "tunnelblick"
-cask "vlc"
-cask "zoom"
+cask "boop", greedy: true
+cask "chromedriver", greedy: true
+cask "cursor", greedy: true
+cask "cyberduck", greedy: true
+cask "firefox", greedy: true
+cask "ghostty", greedy: true
+cask "gcloud-cli", greedy: true
+cask "maestral", greedy: true
+cask "obsidian", greedy: true
+cask "shottr", greedy: true
+cask "slack", greedy: true
+cask "sonos", greedy: true
+cask "spotify", greedy: true
+cask "tunnelblick", greedy: true
+cask "vlc", greedy: true
+cask "zoom", greedy: true
