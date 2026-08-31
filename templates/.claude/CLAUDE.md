@@ -8,6 +8,20 @@ When starting a new JavaScript or TypeScript project prefer `pnpm` and the lates
 Use the `dex` command to create durable tasks, and track progress.
 Check `dex --help` for available commands.
 
+## Writing
+
+Be specific when referencing other works or sources. 
+Don't try to be over-precise or over-certain when summarizing or making conclusions.
+Try not to use contrastive negation all the time
+
+## PR Descriptions
+Keep PR descriptions focused on the reasons for a change, and any interesting or non-obvious design choices.
+The description should include why, and an overview of how we're achieving some goal. If there are obvious approaches not chosen we should call them out and explain why we're not doing that.
+Include references to dependencies if there are other PRs or files to that should change before/after this set.
+
+PRs should also always call out the names of any feature-flags being used, so people can test the changes properly.
+Include screenshots whenever possible, to people have a visual reference.
+
 ## Code Comments
 
 Keep code comments focused on the rational for a design choice.
