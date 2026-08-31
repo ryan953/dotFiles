@@ -8,7 +8,14 @@ When starting a new JavaScript or TypeScript project prefer `pnpm` and the lates
 Use the `dex` command to create durable tasks, and track progress.
 Check `dex --help` for available commands.
 
-### Code Search & Intelligence
+## Code Comments
+
+Keep code comments focused on the rational for a design choice.
+The purpose is not to re-state what the code is already doing, unless the code is non-conventional or is too terse.
+Do not reference other places, especially external sources, or previous descisions that are no longer part of the codebase. Just explain the reasons why this was chosen, rarely compare to other options unless they're the obvious paths not taken.
+Comments should be to the point, and not "AI slop"
+
+## Code Search & Intelligence
 
 `ast-grep` is an abstract syntax tree based tool to search code by pattern code. You can write patterns as 
 if you are writing ordinary code. It will match all code that has the same syntactical structure. You can 
