@@ -4,7 +4,7 @@
 # Tries linting strategies in order:
 # 1. prek (if .venv/bin/prek exists)
 # 2. pre-commit (if .pre-commit-config.yaml exists and pre-commit is available)
-# 3. eslint/prettier via package.json (using pnpm, yarn, or npm)
+# 3. oxlint/oxfmt/eslint/prettier via package.json (using pnpm, yarn, or npm)
 #
 
 set -euo pipefail
@@ -208,19 +208,19 @@ get_precommit_cmd() {
   return 1
 }
 
-# Check if package.json has eslint or prettier
+# Check if package.json has oxlint, oxfmt, eslint, or prettier
 has_js_linters() {
   local project_root="$1"
   local pkg="$project_root/package.json"
   
   [[ -f "$pkg" ]] || return 1
   
-  # Check for eslint or prettier in devDependencies or dependencies
-  if jq -e '.devDependencies.eslint // .dependencies.eslint // .devDependencies.prettier // .dependencies.prettier' "$pkg" &>/dev/null; then
+  # Check for oxlint, oxfmt, eslint, or prettier in devDependencies or dependencies
+  if jq -e '.devDependencies.oxlint // .dependencies.oxlint // .devDependencies.oxfmt // .dependencies.oxfmt // .devDependencies.eslint // .dependencies.eslint // .devDependencies.prettier // .dependencies.prettier' "$pkg" &>/dev/null; then
     return 0
   fi
   
-  # Check for eslint/prettier scripts
+  # Check for lint/format scripts
   if jq -e '.scripts.lint // .scripts.format // .scripts["lint:fix"]' "$pkg" &>/dev/null; then
     return 0
   fi
@@ -261,7 +261,7 @@ run_precommit() {
   return 0
 }
 
-# Run JS linters (eslint/prettier) on file(s)
+# Run JS linters (oxlint over eslint, oxfmt over prettier) on file(s)
 run_js_linters() {
   local project_root="$1"
   local pm="$2"
@@ -291,12 +291,20 @@ run_js_linters() {
   fi
 
   if [[ "$ran_something" == "false" ]]; then
-    if jq -e '.devDependencies.eslint // .dependencies.eslint' "$pkg" &>/dev/null; then
+    # Prefer oxlint over eslint when both are present
+    if jq -e '.devDependencies.oxlint // .dependencies.oxlint' "$pkg" &>/dev/null; then
+      $pm exec oxlint --fix "${rel_paths[@]}" 2>&1 || true
+      ran_something=true
+    elif jq -e '.devDependencies.eslint // .dependencies.eslint' "$pkg" &>/dev/null; then
       $pm exec eslint --fix "${rel_paths[@]}" 2>&1 || true
       ran_something=true
     fi
 
-    if jq -e '.devDependencies.prettier // .dependencies.prettier' "$pkg" &>/dev/null; then
+    # Prefer oxfmt over prettier when both are present
+    if jq -e '.devDependencies.oxfmt // .dependencies.oxfmt' "$pkg" &>/dev/null; then
+      $pm exec oxfmt --write "${rel_paths[@]}" 2>&1 || true
+      ran_something=true
+    elif jq -e '.devDependencies.prettier // .dependencies.prettier' "$pkg" &>/dev/null; then
       $pm exec prettier --write "${rel_paths[@]}" 2>&1 || true
       ran_something=true
     fi
@@ -327,7 +335,7 @@ main() {
     exit 0
   fi
 
-  # Strategy 3: Try JS linters (eslint/prettier)
+  # Strategy 3: Try JS linters (oxlint/oxfmt/eslint/prettier)
   if has_js_linters "$project_root"; then
     local pm
     pm=$(detect_package_manager "$project_root")
