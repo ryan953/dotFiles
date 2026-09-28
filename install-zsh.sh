@@ -61,19 +61,48 @@ sudo_cmd () {
   fi
 }
 
-# Ask for the password once, then refresh the sudo timestamp until the script
-# exits. Child processes in this terminal (brew casks, install-osx.sh) share the
-# timestamp, so a long `brew bundle` can't outlast it and re-prompt. The
-# password itself is never stored.
+# Ask for the password once. Every `brew` run resets the sudo timestamp, so a
+# cached timestamp can't carry `brew bundle` through its casks. Homebrew uses
+# `sudo -A` when SUDO_ASKPASS is set, so the password is served to an askpass
+# helper through a FIFO: it stays in memory, off disk, and out of the
+# environment that brew passes to formula and cask scripts.
 start_sudo_session () {
   if [ "$(id -u)" = "0" ] || ! command -v sudo > /dev/null; then
     return
   fi
 
-  sudo -v
-  while true; do sudo -n -v; sleep 60; kill -0 "$$" || exit; done 2> /dev/null &
+  local password
+  read -rsp "Password for sudo: " password
+  echo
+
+  # mktemp -d is 0700, so only this user can open the FIFO
+  sudo_dir=$(mktemp -d)
+  mkfifo "$sudo_dir/password"
+  printf '#!/bin/sh\ncat "%s/password"\n' "$sudo_dir" > "$sudo_dir/askpass"
+  chmod 700 "$sudo_dir/askpass"
+  export SUDO_ASKPASS="$sudo_dir/askpass"
+
+  (
+    trap '' PIPE
+    while true; do printf '%s\n' "$password" > "$sudo_dir/password"; done
+  ) 2> /dev/null &
+  password_pid=$!
+  trap 'kill "$password_pid" ${keepalive_pid:-} 2> /dev/null; rm -rf "$sudo_dir"' EXIT
+
+  if ! sudo -A -v; then
+    echo "ERROR: sudo rejected that password"
+    exit 1
+  fi
+
+  # Re-authenticate rather than refresh, so plain `sudo` calls work again after
+  # brew resets the timestamp. The password loop blocks on the FIFO and can't
+  # notice a `kill -9` of this script, so this loop also cleans up after it.
+  (
+    while kill -0 "$$"; do sudo -A -v; sleep 60; done
+    kill "$password_pid"
+    rm -rf "$sudo_dir"
+  ) 2> /dev/null &
   keepalive_pid=$!
-  trap 'kill "$keepalive_pid" 2> /dev/null' EXIT
 }
 
 install_dpkg () {
@@ -188,7 +217,9 @@ init () {
         echo "   --- No repo-metrics release build for ${arch_name} macOS; skipping"
       fi
 
-      # OSX Settings
+      # OSX Settings. brew just reset the sudo timestamp, and install-osx.sh
+      # runs a plain `sudo -v`
+      sudo -A -v
       ./install-osx.sh
     ;;
     Linux)
@@ -323,9 +354,9 @@ init () {
       if [[ $(dscl . -read ~/ UserShell | sed 's/UserShell: //') == $zsh_path ]]; then
         echo "Shell set to $zsh_path"
       else
-        sudo sh -c "echo $zsh_path >> /etc/shells"
-        # chsh prompts for its own password; through sudo it uses the cached timestamp
-        sudo chsh -s "$zsh_path" "$USER"
+        sudo -A sh -c "echo $zsh_path >> /etc/shells"
+        # chsh prompts for its own password; through sudo -A it uses askpass
+        sudo -A chsh -s "$zsh_path" "$USER"
       fi
 
       npm install -g @playwright/cli@latest
