@@ -61,48 +61,32 @@ sudo_cmd () {
   fi
 }
 
-# Ask for the password once. Every `brew` run resets the sudo timestamp, so a
-# cached timestamp can't carry `brew bundle` through its casks. Homebrew uses
-# `sudo -A` when SUDO_ASKPASS is set, so the password is served to an askpass
-# helper through a FIFO: it stays in memory, off disk, and out of the
-# environment that brew passes to formula and cask scripts.
-start_sudo_session () {
-  if [ "$(id -u)" = "0" ] || ! command -v sudo > /dev/null; then
+# Every `brew` run resets the sudo timestamp, so each cask that needs root
+# prompts again. Touch ID turns those prompts into a touch without storing the
+# password anywhere. pam_reattach makes Touch ID work inside tmux, and
+# ignore_ssh falls back to the password over SSH.
+enable_touch_id_sudo () {
+  local reattach sudo_local
+  reattach="$(brew --prefix)/lib/pam/pam_reattach.so"
+  sudo_local="auth       optional       $reattach ignore_ssh
+auth       sufficient     pam_tid.so"
+
+  if [ "$(cat /etc/pam.d/sudo_local 2> /dev/null)" = "$sudo_local" ]; then
     return
   fi
 
-  local password
-  read -rsp "Password for sudo: " password
-  echo
-
-  # mktemp -d is 0700, so only this user can open the FIFO
-  sudo_dir=$(mktemp -d)
-  mkfifo "$sudo_dir/password"
-  printf '#!/bin/sh\ncat "%s/password"\n' "$sudo_dir" > "$sudo_dir/askpass"
-  chmod 700 "$sudo_dir/askpass"
-  export SUDO_ASKPASS="$sudo_dir/askpass"
-
-  (
-    trap '' PIPE
-    while true; do printf '%s\n' "$password" > "$sudo_dir/password"; done
-  ) 2> /dev/null &
-  password_pid=$!
-  trap 'kill "$password_pid" ${keepalive_pid:-} 2> /dev/null; rm -rf "$sudo_dir"' EXIT
-
-  if ! sudo -A -v; then
-    echo "ERROR: sudo rejected that password"
-    exit 1
+  echo "###### Enabling Touch ID for sudo"
+  brew install pam-reattach
+  if [ ! -f "$reattach" ]; then
+    echo "   --- $reattach not found; skipping Touch ID for sudo"
+    return
   fi
-
-  # Re-authenticate rather than refresh, so plain `sudo` calls work again after
-  # brew resets the timestamp. The password loop blocks on the FIFO and can't
-  # notice a `kill -9` of this script, so this loop also cleans up after it.
-  (
-    while kill -0 "$$"; do sudo -A -v; sleep 60; done
-    kill "$password_pid"
-    rm -rf "$sudo_dir"
-  ) 2> /dev/null &
-  keepalive_pid=$!
+  if [ -f /etc/pam.d/sudo_local ]; then
+    sudo cp /etc/pam.d/sudo_local /etc/pam.d/sudo_local.bak
+    echo "   --- Backed up: /etc/pam.d/sudo_local"
+  fi
+  printf '%s\n' "$sudo_local" | sudo tee /etc/pam.d/sudo_local > /dev/null
+  sudo chmod 444 /etc/pam.d/sudo_local
 }
 
 install_dpkg () {
@@ -177,8 +161,6 @@ init () {
         echo "Unknown architecture: ${arch_name}"
       fi
 
-      start_sudo_session
-
       echo "##### Install Apple Command Line Tools"
       xcode-select --install || true
 
@@ -188,6 +170,8 @@ init () {
       if [[ -f /opt/homebrew/bin/brew ]]; then
         eval "$(/opt/homebrew/bin/brew shellenv)"
       fi
+
+      enable_touch_id_sudo
 
       echo "###### Installing OSX Dependencies"
       brew bundle
@@ -217,14 +201,11 @@ init () {
         echo "   --- No repo-metrics release build for ${arch_name} macOS; skipping"
       fi
 
-      # OSX Settings. brew just reset the sudo timestamp, and install-osx.sh
-      # runs a plain `sudo -v`
-      sudo -A -v
+      # OSX Settings
       ./install-osx.sh
     ;;
     Linux)
       echo "###### Installing Linux Dependencies"
-      start_sudo_session
       local Sudo
       Sudo=$(sudo_cmd)
 
@@ -354,9 +335,9 @@ init () {
       if [[ $(dscl . -read ~/ UserShell | sed 's/UserShell: //') == $zsh_path ]]; then
         echo "Shell set to $zsh_path"
       else
-        sudo -A sh -c "echo $zsh_path >> /etc/shells"
-        # chsh prompts for its own password; through sudo -A it uses askpass
-        sudo -A chsh -s "$zsh_path" "$USER"
+        sudo sh -c "echo $zsh_path >> /etc/shells"
+        # chsh asks for the password itself; through sudo it can use Touch ID
+        sudo chsh -s "$zsh_path" "$USER"
       fi
 
       npm install -g @playwright/cli@latest

@@ -35,6 +35,7 @@ brew "git-delta"
 brew "gh"
 brew "htop"
 brew "jq" # JSON processor
+brew "pam-reattach" # Touch ID for sudo inside tmux
 brew "pyenv"
 brew "rnr" # Rename multiple files
 brew "ripgrep"
