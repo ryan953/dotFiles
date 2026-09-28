@@ -320,6 +320,10 @@ init () {
       claude plugin install pr-review-toolkit@claude-plugins-official
       claude plugin install skill-creator@claude-plugins-official
       claude plugin install typescript-lsp@claude-plugins-official
+
+      # Brewfile installs construct from ryan953/tap. Setup comes after the
+      # claude install because it registers construct's skills with claude.
+      construct setup
     ;;
     Linux)
     ;;
@@ -333,6 +337,7 @@ init () {
   echo " $(file_exists_indicator "$HOME/.ssh/config.local") ~/.ssh/config.local"
   echo ""
   echo "Install gcloud CLI with: curl https://sdk.cloud.google.com | bash"
+  echo "Configure construct searches in ~/.config/construct/config.toml, and load its browser extension once: https://github.com/ryan953/construct/tree/main/extension"
 
   echo ""
   # https://github.com/romkatv/powerlevel10k/blob/master/README.md#weird-things-happen-after-typing-source-zshrc
