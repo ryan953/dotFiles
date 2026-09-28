@@ -61,6 +61,34 @@ sudo_cmd () {
   fi
 }
 
+# Every `brew` run resets the sudo timestamp, so each cask that needs root
+# prompts again. Touch ID turns those prompts into a touch without storing the
+# password anywhere. pam_reattach makes Touch ID work inside tmux, and
+# ignore_ssh falls back to the password over SSH.
+enable_touch_id_sudo () {
+  local reattach sudo_local
+  reattach="$(brew --prefix)/lib/pam/pam_reattach.so"
+  sudo_local="auth       optional       $reattach ignore_ssh
+auth       sufficient     pam_tid.so"
+
+  if [ "$(cat /etc/pam.d/sudo_local 2> /dev/null)" = "$sudo_local" ]; then
+    return
+  fi
+
+  echo "###### Enabling Touch ID for sudo"
+  brew install pam-reattach
+  if [ ! -f "$reattach" ]; then
+    echo "   --- $reattach not found; skipping Touch ID for sudo"
+    return
+  fi
+  if [ -f /etc/pam.d/sudo_local ]; then
+    sudo cp /etc/pam.d/sudo_local /etc/pam.d/sudo_local.bak
+    echo "   --- Backed up: /etc/pam.d/sudo_local"
+  fi
+  printf '%s\n' "$sudo_local" | sudo tee /etc/pam.d/sudo_local > /dev/null
+  sudo chmod 444 /etc/pam.d/sudo_local
+}
+
 install_dpkg () {
   local url="${1}"
   local filename
@@ -142,6 +170,8 @@ init () {
       if [[ -f /opt/homebrew/bin/brew ]]; then
         eval "$(/opt/homebrew/bin/brew shellenv)"
       fi
+
+      enable_touch_id_sudo
 
       echo "###### Installing OSX Dependencies"
       brew bundle
@@ -306,7 +336,8 @@ init () {
         echo "Shell set to $zsh_path"
       else
         sudo sh -c "echo $zsh_path >> /etc/shells"
-        chsh -s "$zsh_path"
+        # chsh asks for the password itself; through sudo it can use Touch ID
+        sudo chsh -s "$zsh_path" "$USER"
       fi
 
       npm install -g @playwright/cli@latest
