@@ -61,6 +61,34 @@ sudo_cmd () {
   fi
 }
 
+# Ask for the password once. `brew bundle` runs cask installers through
+# `sudo -A` when SUDO_ASKPASS is set, so a long bundle never re-prompts, and
+# the keep-alive covers plain `sudo` calls in this and child scripts.
+cache_sudo_password () {
+  if [ "$(id -u)" = "0" ] || ! command -v sudo > /dev/null; then
+    return
+  fi
+
+  local password
+  read -rsp "Password for sudo: " password
+  echo
+  if ! printf '%s\n' "$password" | sudo -S -p '' -v 2> /dev/null; then
+    echo "ERROR: sudo rejected that password"
+    exit 1
+  fi
+
+  # mktemp -d is 0700, so only this user can read the password file
+  askpass_dir=$(mktemp -d)
+  printf '%s\n' "$password" > "$askpass_dir/password"
+  printf '#!/bin/sh\ncat "%s/password"\n' "$askpass_dir" > "$askpass_dir/askpass"
+  chmod 700 "$askpass_dir/askpass"
+  export SUDO_ASKPASS="$askpass_dir/askpass"
+
+  while true; do sudo -n -v; sleep 60; kill -0 "$$" || exit; done 2> /dev/null &
+  keepalive_pid=$!
+  trap 'kill "$keepalive_pid" 2> /dev/null; rm -rf "$askpass_dir"' EXIT
+}
+
 install_dpkg () {
   local url="${1}"
   local filename
@@ -133,6 +161,8 @@ init () {
         echo "Unknown architecture: ${arch_name}"
       fi
 
+      cache_sudo_password
+
       echo "##### Install Apple Command Line Tools"
       xcode-select --install || true
 
@@ -176,6 +206,7 @@ init () {
     ;;
     Linux)
       echo "###### Installing Linux Dependencies"
+      cache_sudo_password
       local Sudo
       Sudo=$(sudo_cmd)
 
@@ -306,7 +337,8 @@ init () {
         echo "Shell set to $zsh_path"
       else
         sudo sh -c "echo $zsh_path >> /etc/shells"
-        chsh -s "$zsh_path"
+        # chsh prompts for its own password; through sudo it uses the cached one
+        sudo chsh -s "$zsh_path" "$USER"
       fi
 
       npm install -g @playwright/cli@latest
