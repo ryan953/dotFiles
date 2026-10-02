@@ -61,11 +61,6 @@ run_if_command_exists vim "Vim plugins" vim +PluginUpdate +qall
 # Update Homebrew
 run_if_command_exists brew "Homebrew" brew update && brew upgrade
 
-# construct's skills and browser extension are copies stamped with its version,
-# so they go stale after brew upgrades the CLI.
-run_if_command_exists construct "construct skills" construct skills install
-run_if_command_exists construct "construct browser extension" construct extension install
-
 echo ""
 echo "Don't forget to update zinit & its plugins..."
 echo "Run: zinit self-update && zinit update --all"
