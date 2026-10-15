@@ -1,3 +1,7 @@
+Simplify output. Remove fluff.
+
+Verify before asserting answers.
+
 ## Package Manager
 Detect from project: `package.json` → check `packageManager` field or lockfile (`pnpm-lock.yaml`, `yarn.lock`, `package-lock.json`)
 
