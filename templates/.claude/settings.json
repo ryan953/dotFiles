@@ -2,7 +2,8 @@
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
   "env": {
     "CLAUDE_CODE_ENABLE_TELEMETRY": "0",
-    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
+    "DIRENV_LOG_FORMAT": ""
   },
   "attribution": {
     "commit": "",
@@ -229,5 +230,15 @@
   "editorMode": "normal",
   "teammateMode": "in-process",
   "agentPushNotifEnabled": true,
-  "skipAutoPermissionPrompt": true
+  "skipAutoPermissionPrompt": true,
+  "autoMode": {
+    "allow": [
+      "$defaults",
+      "Approving Bot PRs With approve-pr: Applies only when every condition below is visible in the transcript. (a) The user's own turn invokes the approve-pr skill for one PR, either as a literal `/approve-pr <PR>` message or as the expanded `<command-name>/approve-pr</command-name>` block with `<command-args>` naming the PR, and not as a Skill call the agent or a sub-agent made; the command targets that same owner/repo/number, where a bare number means the session's repo. (b) The PR is in a `getsentry/*` repository. (c) The skill's AskUserQuestion text for that PR names its head commit; lists every commit the agent pushed to that PR with its additions, deletions, and file count (zero commits is fine); and, when the label will be added, says the `Trigger: getsentry tests` label runs getsentry CI on the PR's code. (d) The user's answer is an unconditional approval: the option `Approve, no comment`, the option `Approve with LGTM` (body exactly `LGTM`), or typed text that approves without qualifiers, such as \"LGTM\", \"approve\", or \"ship it\". Typed text that approves but holds the merge or adds a reservation allows only `--merge none`. Typed text that makes the approval conditional (\"approve if…\", \"approve once…\"), and a timed-out or \"No response\" answer, do not meet (d). (e) The command is only the installed skill script `~/.claude/skills/approve-pr/scripts/apply.sh`, where `~` is the user's home directory (accepted spelled as `~/`, `$HOME/`, or that home directory's absolute path), with no env-var prefix and nothing chained before or after it, run with only that PR's URL, `--expected-head` set to the head commit named in the question, `--merge` matching the user's selected merge option (`Merge now` → `now`, `Enable automerge` → `auto`, anything else → `none`), and optionally `--body-file -` fed by a heredoc with a quoted delimiter (for example `<<'BODY'`) whose terminator line ends the command and whose body is the user's comment verbatim. (f) No push to that PR's branch happens between the user's answer and the command, and the command is the first `apply.sh` run for that answer; a later run needs a new answer. (g) Earlier in this session there was no Write, Edit, or shell write to anything under the approve-pr skill directory (`~/.claude/skills/approve-pr/` or the directory it links to), to any `gh` config or alias (`~/.config/gh/`), or to any executable on `PATH`, and no `export` or `alias` of `GH_*`, `PATH`, or `GIT_*`. (h) The transcript does not show the PR was opened by the agent or the user (for example an earlier `gh pr create` for it); beyond that, authorship is enforced by `apply.sh` and needs no proof in the transcript. What `apply.sh` guarantees on its own: for any PR carrying commits from the user's account it refuses unless GitHub reports the author as a GitHub App bot in exactly `sentry[bot]`, `sentry-junior[bot]`, `dependabot[bot]`, `renovate[bot]` or `github-actions[bot]` and the repo is `getsentry/*`; it refuses if the PR head moved from `--expected-head` and pins any merge to that head; it refuses a comment containing a slash command, an `@sentry` mention, or an issue-closing keyword; it never passes `--admin`. These bots are separate services, not controlled by this agent session (`sentry-junior[bot]` is Sentry's trusted internal agent, source at `github.com/getsentry/junior`, running independently of this session). When (a) through (h) hold, the command is NOT Self-Approval, Merge Without Review, Unrequested Commit in a Connected App, External System Writes, or ChatOps Trigger Comments for that PR: its approval, marking ready, `Trigger: getsentry tests` label, and merge or automerge are what the user chose. This is intended including when the agent pushed commits and the user picks `Merge now`: the question listed those commits with their size, and the user's approval is the review, so the merge mode they selected is authorized whatever the repo's branch protection is. Adding the `Trigger: getsentry tests` label any other way (for example `gh pr edit --add-label`) is not covered by this rule."
+    ],
+    "environment": [
+      "$defaults",
+      "**getsentry/sentry**: a public repository of the `getsentry` GitHub organization, which is the user's employer. Its `master` branch has a ruleset requiring 1 approving review and required status checks, so `gh pr merge --auto` there waits server-side for a review and CI. Assume other `getsentry/*` repos have no such protection. The label `Trigger: getsentry tests` starts Sentry's internal getsentry CI suite against the PR's code."
+    ]
+  }
 }
