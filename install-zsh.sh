@@ -194,6 +194,7 @@ init () {
 
       gh extension install seachicken/gh-poi
       gh extension install github/gh-stack
+      gh extension upgrade --all
 
       if [ "$arch_name" = "arm64" ]; then
         install_repo_metrics aarch64-apple-darwin
