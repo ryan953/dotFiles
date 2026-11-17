@@ -66,7 +66,6 @@ cask "chromedriver", greedy: true
 cask "cursor", greedy: true
 cask "cyberduck", greedy: true
 cask "firefox", greedy: true
-cask "ghostty", greedy: true
 cask "gcloud-cli", greedy: true
 cask "maestral", greedy: true
 cask "obsidian", greedy: true
