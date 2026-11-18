@@ -206,23 +206,6 @@ fi
 
 # }}}
 
-### Dex Tasks tooling {{{
-
-# claude plugin marketplace add dcramer/dex
-# claude plugin install dex@dex
-# npx skills add dcramer/dex
-# npm install -g @zeeg/dex
-
-# Lazy-load dex completions
-if command -v dex &>/dev/null; then
-  dex() {
-    unset -f dex
-    eval "$(command dex completion zsh)"
-    dex "$@"
-  }
-fi
-# }}}
-
 ### Zinit Plugin Manager {{{
 
 # Initialize Zinit

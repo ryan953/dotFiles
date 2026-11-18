@@ -29,7 +29,7 @@ set -e
 EXCLUDE=""
 
 # Where a Linear issue opens, with {id} standing in for an id like REPLAY-431.
-# The task: scheme is claimed by the dex UI app, which is preferred over the
+# The task: scheme is claimed by Tasks.app, which is preferred over the
 # website. Empty falls back to linear.app.
 ISSUE_URL="task://linear/{id}"
 

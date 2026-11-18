@@ -4,7 +4,6 @@ import = [
   # One generated file per source, see generators/.config/alacritty/
   "${HOME}/.config/alacritty/hints-github.toml",
   "${HOME}/.config/alacritty/hints-linear.toml",
-  "${HOME}/.config/alacritty/hints-dex.toml",
 ]
 
 [font]
