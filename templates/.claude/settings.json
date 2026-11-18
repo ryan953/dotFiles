@@ -13,7 +13,6 @@
   "permissions": {
     "allow": [
       "Bash(cat:*)",
-      "Bash(dex add:*)",
       "Bash(docker --version:*)",
       "Bash(docker compose config:*)",
       "Bash(docker compose ps:*)",

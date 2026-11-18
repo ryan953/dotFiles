@@ -31,12 +31,6 @@ resolved_url = "https://github.com/ryan953/skills"
 resolved_path = "skills/deep-pr-review"
 resolved_commit = "7f573426036b0ca343b3e5eca950ae6ab6af15be"
 
-[skills.dex]
-source = "dcramer/dex"
-resolved_url = "https://github.com/dcramer/dex"
-resolved_path = "plugins/dex/skills/dex"
-resolved_commit = "3f55b2a3ec9746fc56cf62037ca6a828555ce17d"
-
 [skills.diff]
 source = "ryan953/skills"
 resolved_url = "https://github.com/ryan953/skills"

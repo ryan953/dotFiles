@@ -7,11 +7,6 @@ Detect from project: `package.json` → check `packageManager` field or lockfile
 
 When starting a new JavaScript or TypeScript project prefer `pnpm` and the latest release of Node v24
 
-## Task tracking
-
-Use the `dex` command to create durable tasks, and track progress.
-Check `dex --help` for available commands.
-
 ## Writing
 
 Be specific when referencing other works or sources. 

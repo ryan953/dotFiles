@@ -8,10 +8,6 @@ name = "*"
 source = "ryan953/skills"
 
 [[skills]]
-name = "dex"
-source = "dcramer/dex"
-
-[[skills]]
 name = "pr-writer"
 source = "getsentry/skills"
 
