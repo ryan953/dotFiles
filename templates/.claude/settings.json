@@ -230,7 +230,7 @@
     "box": {
       "source": {
         "source": "directory",
-        "path": "/Users/ryan953/.config/box/plugin"
+        "path": "~/.config/box/plugin"
       }
     }
   },
