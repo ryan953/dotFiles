@@ -124,6 +124,10 @@
           {
             "type": "command",
             "command": "~/.claude/direnv-load.sh"
+          },
+          {
+            "type": "command",
+            "command": "~/.claude/dedupe-mcp.py"
           }
         ]
       }
