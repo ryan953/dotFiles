@@ -275,8 +275,6 @@ zinit wait lucid for \
 eval "$(direnv hook zsh)"
 
 
-if command -v wt >/dev/null 2>&1; then eval "$(command wt config shell init zsh)"; fi
-
 # sentry
 fpath=("$HOME/.local/share/zsh/site-functions" $fpath); if [[ -o interactive ]]; then if ! (( $+functions[compdef] )); then autoload -Uz compinit; compinit; fi; autoload -Uz _sentry; compdef _sentry sentry; fi
 
