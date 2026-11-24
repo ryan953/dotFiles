@@ -17,7 +17,7 @@ resolved_commit = "a582c51ee29d0f35e6ac321340796f77d43da733"
 source = "ryan953/skills@taskboard"
 resolved_url = "https://github.com/ryan953/skills"
 resolved_path = "skills/approve-pr"
-resolved_commit = "a64848dad3bfcc80bfce40c64f59b8ee2a2e7387"
+resolved_commit = "8fe8d47fb7146d8a1ba05e758fcaffc91a814885"
 resolved_ref = "taskboard"
 
 [skills.commit]
@@ -30,28 +30,28 @@ resolved_commit = "a582c51ee29d0f35e6ac321340796f77d43da733"
 source = "ryan953/skills@taskboard"
 resolved_url = "https://github.com/ryan953/skills"
 resolved_path = "skills/deep-pr-review"
-resolved_commit = "a64848dad3bfcc80bfce40c64f59b8ee2a2e7387"
+resolved_commit = "8fe8d47fb7146d8a1ba05e758fcaffc91a814885"
 resolved_ref = "taskboard"
 
 [skills.diff]
 source = "ryan953/skills@taskboard"
 resolved_url = "https://github.com/ryan953/skills"
 resolved_path = "skills/diff"
-resolved_commit = "a64848dad3bfcc80bfce40c64f59b8ee2a2e7387"
+resolved_commit = "8fe8d47fb7146d8a1ba05e758fcaffc91a814885"
 resolved_ref = "taskboard"
 
 [skills.frontend-conventions]
 source = "ryan953/skills@taskboard"
 resolved_url = "https://github.com/ryan953/skills"
 resolved_path = "skills/frontend-conventions"
-resolved_commit = "a64848dad3bfcc80bfce40c64f59b8ee2a2e7387"
+resolved_commit = "8fe8d47fb7146d8a1ba05e758fcaffc91a814885"
 resolved_ref = "taskboard"
 
 [skills.frontend-conventions-fix]
 source = "ryan953/skills@taskboard"
 resolved_url = "https://github.com/ryan953/skills"
 resolved_path = "skills/frontend-conventions-fix"
-resolved_commit = "a64848dad3bfcc80bfce40c64f59b8ee2a2e7387"
+resolved_commit = "8fe8d47fb7146d8a1ba05e758fcaffc91a814885"
 resolved_ref = "taskboard"
 
 [skills.iterate-pr]
@@ -64,21 +64,21 @@ resolved_commit = "a582c51ee29d0f35e6ac321340796f77d43da733"
 source = "ryan953/skills@taskboard"
 resolved_url = "https://github.com/ryan953/skills"
 resolved_path = "skills/local-pr-review"
-resolved_commit = "a64848dad3bfcc80bfce40c64f59b8ee2a2e7387"
+resolved_commit = "8fe8d47fb7146d8a1ba05e758fcaffc91a814885"
 resolved_ref = "taskboard"
 
 [skills.meat-pr-review]
 source = "ryan953/skills@taskboard"
 resolved_url = "https://github.com/ryan953/skills"
 resolved_path = "skills/meat-pr-review"
-resolved_commit = "a64848dad3bfcc80bfce40c64f59b8ee2a2e7387"
+resolved_commit = "8fe8d47fb7146d8a1ba05e758fcaffc91a814885"
 resolved_ref = "taskboard"
 
 [skills.pr-classifier]
 source = "ryan953/skills@taskboard"
 resolved_url = "https://github.com/ryan953/skills"
 resolved_path = "skills/pr-classifier"
-resolved_commit = "a64848dad3bfcc80bfce40c64f59b8ee2a2e7387"
+resolved_commit = "8fe8d47fb7146d8a1ba05e758fcaffc91a814885"
 resolved_ref = "taskboard"
 
 [skills.pr-writer]
@@ -109,12 +109,12 @@ resolved_commit = "a582c51ee29d0f35e6ac321340796f77d43da733"
 source = "ryan953/skills@taskboard"
 resolved_url = "https://github.com/ryan953/skills"
 resolved_path = "skills/taskboard"
-resolved_commit = "a64848dad3bfcc80bfce40c64f59b8ee2a2e7387"
+resolved_commit = "8fe8d47fb7146d8a1ba05e758fcaffc91a814885"
 resolved_ref = "taskboard"
 
 [skills.trigger-autofix]
 source = "ryan953/skills@taskboard"
 resolved_url = "https://github.com/ryan953/skills"
 resolved_path = "skills/trigger-autofix"
-resolved_commit = "a64848dad3bfcc80bfce40c64f59b8ee2a2e7387"
+resolved_commit = "8fe8d47fb7146d8a1ba05e758fcaffc91a814885"
 resolved_ref = "taskboard"
