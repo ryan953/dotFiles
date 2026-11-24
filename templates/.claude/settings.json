@@ -1,10 +1,10 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
   "env": {
-    "CLAUDE_CODE_ENABLE_TELEMETRY": "0",
-    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
     "AGENT_BROWSER_EXECUTABLE_PATH": "/Applications/Brave Browser.app/Contents/MacOS/Brave Browser",
     "AGENT_BROWSER_HEADED": "1",
+    "CLAUDE_CODE_ENABLE_TELEMETRY": "0",
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
     "DIRENV_LOG_FORMAT": ""
   },
   "attribution": {
@@ -201,6 +201,7 @@
     "command": "npx -y @owloops/claude-powerline@latest"
   },
   "enabledPlugins": {
+    "box@box": true,
     "code-review@claude-plugins-official": true,
     "notion@claude-plugins-official": true,
     "playground@claude-plugins-official": true,
@@ -211,10 +212,15 @@
     "skill-creator@claude-plugins-official": true,
     "slack@claude-plugins-official": false,
     "typescript-lsp@claude-plugins-official": true,
-    "worktrunk@worktrunk": true,
-    "box@box": true
+    "worktrunk@worktrunk": true
   },
   "extraKnownMarketplaces": {
+    "box": {
+      "source": {
+        "source": "directory",
+        "path": "~/.config/box/plugin"
+      }
+    },
     "claude-plugins-official": {
       "source": {
         "source": "github",
@@ -225,12 +231,6 @@
       "source": {
         "source": "github",
         "repo": "max-sixty/worktrunk"
-      }
-    },
-    "box": {
-      "source": {
-        "source": "directory",
-        "path": "~/.config/box/plugin"
       }
     }
   },

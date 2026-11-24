@@ -11,7 +11,6 @@ import json
 import os
 import subprocess
 import sys
-import tempfile
 import time
 from urllib.parse import urlsplit
 
@@ -64,22 +63,27 @@ def server_identity(config):
 def refresh_connector_cache():
     # `claude mcp list` health-checks every server and takes a few seconds,
     # so run it detached and use the result on the next session start.
+    # It runs in an empty directory so no project's .mcp.json is listed.
+    # An empty result (not signed in, `claude` missing) is not cached, so
+    # the name-only fallback stays in use until a real list is available.
     script = (
-        "import json,os,subprocess,sys\n"
-        "out=subprocess.run(['claude','mcp','list'],capture_output=True,text=True,"
-        "cwd=sys.argv[2],timeout=120).stdout\n"
+        "import json,os,subprocess,sys,tempfile\n"
+        "with tempfile.TemporaryDirectory() as cwd:\n"
+        "  out=subprocess.run(['claude','mcp','list'],capture_output=True,text=True,"
+        "cwd=cwd,timeout=120).stdout\n"
         "rows=[]\n"
         "for line in out.splitlines():\n"
         "  if not line.startswith(%r) or ': ' not in line: continue\n"
         "  name,rest=line.split(': ',1)\n"
         "  rows.append({'name':name,'url':rest.split(' - ')[0].split(' (')[0].strip()})\n"
-        "os.makedirs(os.path.dirname(sys.argv[1]),exist_ok=True)\n"
-        "tmp=sys.argv[1]+'.tmp'\n"
-        "json.dump(rows,open(tmp,'w'))\n"
-        "os.replace(tmp,sys.argv[1])\n"
+        "if rows:\n"
+        "  os.makedirs(os.path.dirname(sys.argv[1]),exist_ok=True)\n"
+        "  tmp=sys.argv[1]+'.tmp'\n"
+        "  json.dump(rows,open(tmp,'w'))\n"
+        "  os.replace(tmp,sys.argv[1])\n"
     ) % CONNECTOR_PREFIX
     subprocess.Popen(
-        [sys.executable, "-c", script, CACHE_FILE, tempfile.mkdtemp()],
+        [sys.executable, "-c", script, CACHE_FILE],
         stdin=subprocess.DEVNULL,
         stdout=subprocess.DEVNULL,
         stderr=subprocess.DEVNULL,
