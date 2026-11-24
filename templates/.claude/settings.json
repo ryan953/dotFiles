@@ -213,8 +213,7 @@
     "session-report@claude-plugins-official": false,
     "skill-creator@claude-plugins-official": true,
     "slack@claude-plugins-official": false,
-    "typescript-lsp@claude-plugins-official": true,
-    "worktrunk@worktrunk": true
+    "typescript-lsp@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
     "box": {
@@ -227,12 +226,6 @@
       "source": {
         "source": "github",
         "repo": "anthropics/claude-plugins-official"
-      }
-    },
-    "worktrunk": {
-      "source": {
-        "source": "github",
-        "repo": "max-sixty/worktrunk"
       }
     }
   },
