@@ -14,11 +14,11 @@ resolved_path = "skills/agents-md"
 resolved_commit = "a582c51ee29d0f35e6ac321340796f77d43da733"
 
 [skills.approve-pr]
-source = "ryan953/skills@ryan953/taskboard-skill"
+source = "ryan953/skills@taskboard"
 resolved_url = "https://github.com/ryan953/skills"
 resolved_path = "skills/approve-pr"
-resolved_commit = "ab06682436985e168efb6bac8bdbb2040d68f4ad"
-resolved_ref = "ryan953/taskboard-skill"
+resolved_commit = "27be868199f2659e930ce804548fe8ae54a39252"
+resolved_ref = "taskboard"
 
 [skills.commit]
 source = "getsentry/skills"
@@ -27,32 +27,32 @@ resolved_path = "skills/commit"
 resolved_commit = "a582c51ee29d0f35e6ac321340796f77d43da733"
 
 [skills.deep-pr-review]
-source = "ryan953/skills@ryan953/taskboard-skill"
+source = "ryan953/skills@taskboard"
 resolved_url = "https://github.com/ryan953/skills"
 resolved_path = "skills/deep-pr-review"
-resolved_commit = "ab06682436985e168efb6bac8bdbb2040d68f4ad"
-resolved_ref = "ryan953/taskboard-skill"
+resolved_commit = "27be868199f2659e930ce804548fe8ae54a39252"
+resolved_ref = "taskboard"
 
 [skills.diff]
-source = "ryan953/skills@ryan953/taskboard-skill"
+source = "ryan953/skills@taskboard"
 resolved_url = "https://github.com/ryan953/skills"
 resolved_path = "skills/diff"
-resolved_commit = "ab06682436985e168efb6bac8bdbb2040d68f4ad"
-resolved_ref = "ryan953/taskboard-skill"
+resolved_commit = "27be868199f2659e930ce804548fe8ae54a39252"
+resolved_ref = "taskboard"
 
 [skills.frontend-conventions]
-source = "ryan953/skills@ryan953/taskboard-skill"
+source = "ryan953/skills@taskboard"
 resolved_url = "https://github.com/ryan953/skills"
 resolved_path = "skills/frontend-conventions"
-resolved_commit = "ab06682436985e168efb6bac8bdbb2040d68f4ad"
-resolved_ref = "ryan953/taskboard-skill"
+resolved_commit = "27be868199f2659e930ce804548fe8ae54a39252"
+resolved_ref = "taskboard"
 
 [skills.frontend-conventions-fix]
-source = "ryan953/skills@ryan953/taskboard-skill"
+source = "ryan953/skills@taskboard"
 resolved_url = "https://github.com/ryan953/skills"
 resolved_path = "skills/frontend-conventions-fix"
-resolved_commit = "ab06682436985e168efb6bac8bdbb2040d68f4ad"
-resolved_ref = "ryan953/taskboard-skill"
+resolved_commit = "27be868199f2659e930ce804548fe8ae54a39252"
+resolved_ref = "taskboard"
 
 [skills.iterate-pr]
 source = "getsentry/skills"
@@ -61,25 +61,25 @@ resolved_path = "skills/iterate-pr"
 resolved_commit = "a582c51ee29d0f35e6ac321340796f77d43da733"
 
 [skills.local-pr-review]
-source = "ryan953/skills@ryan953/taskboard-skill"
+source = "ryan953/skills@taskboard"
 resolved_url = "https://github.com/ryan953/skills"
 resolved_path = "skills/local-pr-review"
-resolved_commit = "ab06682436985e168efb6bac8bdbb2040d68f4ad"
-resolved_ref = "ryan953/taskboard-skill"
+resolved_commit = "27be868199f2659e930ce804548fe8ae54a39252"
+resolved_ref = "taskboard"
 
 [skills.meat-pr-review]
-source = "ryan953/skills@ryan953/taskboard-skill"
+source = "ryan953/skills@taskboard"
 resolved_url = "https://github.com/ryan953/skills"
 resolved_path = "skills/meat-pr-review"
-resolved_commit = "ab06682436985e168efb6bac8bdbb2040d68f4ad"
-resolved_ref = "ryan953/taskboard-skill"
+resolved_commit = "27be868199f2659e930ce804548fe8ae54a39252"
+resolved_ref = "taskboard"
 
 [skills.pr-classifier]
-source = "ryan953/skills@ryan953/taskboard-skill"
+source = "ryan953/skills@taskboard"
 resolved_url = "https://github.com/ryan953/skills"
 resolved_path = "skills/pr-classifier"
-resolved_commit = "ab06682436985e168efb6bac8bdbb2040d68f4ad"
-resolved_ref = "ryan953/taskboard-skill"
+resolved_commit = "27be868199f2659e930ce804548fe8ae54a39252"
+resolved_ref = "taskboard"
 
 [skills.pr-writer]
 source = "getsentry/skills"
@@ -106,15 +106,15 @@ resolved_path = "skills/skill-writer"
 resolved_commit = "a582c51ee29d0f35e6ac321340796f77d43da733"
 
 [skills.taskboard]
-source = "ryan953/skills@ryan953/taskboard-skill"
+source = "ryan953/skills@taskboard"
 resolved_url = "https://github.com/ryan953/skills"
 resolved_path = "skills/taskboard"
-resolved_commit = "ab06682436985e168efb6bac8bdbb2040d68f4ad"
-resolved_ref = "ryan953/taskboard-skill"
+resolved_commit = "27be868199f2659e930ce804548fe8ae54a39252"
+resolved_ref = "taskboard"
 
 [skills.trigger-autofix]
-source = "ryan953/skills@ryan953/taskboard-skill"
+source = "ryan953/skills@taskboard"
 resolved_url = "https://github.com/ryan953/skills"
 resolved_path = "skills/trigger-autofix"
-resolved_commit = "ab06682436985e168efb6bac8bdbb2040d68f4ad"
-resolved_ref = "ryan953/taskboard-skill"
+resolved_commit = "27be868199f2659e930ce804548fe8ae54a39252"
+resolved_ref = "taskboard"
