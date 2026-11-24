@@ -1,6 +1,8 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
   "env": {
+    "AGENT_BROWSER_EXECUTABLE_PATH": "/Applications/Brave Browser.app/Contents/MacOS/Brave Browser",
+    "AGENT_BROWSER_HEADED": "1",
     "CLAUDE_CODE_ENABLE_TELEMETRY": "0",
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
     "AGENT_BROWSER_EXECUTABLE_PATH": "/Applications/Brave Browser.app/Contents/MacOS/Brave Browser",
@@ -126,6 +128,10 @@
           {
             "type": "command",
             "command": "~/.claude/direnv-load.sh"
+          },
+          {
+            "type": "command",
+            "command": "~/.claude/dedupe-mcp.py"
           }
         ]
       }
@@ -197,6 +203,7 @@
     "command": "npx -y @owloops/claude-powerline@latest"
   },
   "enabledPlugins": {
+    "box@box": true,
     "code-review@claude-plugins-official": true,
     "notion@claude-plugins-official": true,
     "playground@claude-plugins-official": true,
@@ -210,6 +217,12 @@
     "worktrunk@worktrunk": true
   },
   "extraKnownMarketplaces": {
+    "box": {
+      "source": {
+        "source": "directory",
+        "path": "~/.config/box/plugin"
+      }
+    },
     "claude-plugins-official": {
       "source": {
         "source": "github",
