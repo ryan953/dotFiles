@@ -5,7 +5,7 @@ agents = ["claude", "cursor", "codex", "vscode", "opencode"]
 
 [[skills]]
 name = "*"
-source = "ryan953/skills"
+source = "ryan953/skills@taskboard"
 
 [[skills]]
 name = "pr-writer"
